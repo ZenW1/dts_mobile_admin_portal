@@ -1,0 +1,32 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'core/router/app_router.dart';
+import 'core/theme/theme.dart';
+import 'core/theme/theme_provider.dart';
+
+void main() {
+  runApp(
+    const ProviderScope(
+      child: DTSAdminApp(),
+    ),
+  );
+}
+
+/// Main application widget
+class DTSAdminApp extends ConsumerWidget {
+  const DTSAdminApp({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeMode = ref.watch(themeModeProvider);
+
+    return MaterialApp.router(
+      title: 'DTS Admin Portal',
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: themeMode,
+      routerConfig: appRouter,
+    );
+  }
+}

@@ -1,0 +1,12 @@
+targets:
+  $default:
+    builders:
+      swagger_dart_code_generator:
+        options:
+          input_folder: "lib/swagger/"
+          input_urls:
+            - url: "http://192.168.168.168:3000/swagger/v1/swagger.json"
+          #          include_paths:
+          #            - '/Mobile/'
+          output_folder: "lib/generated_code/"
+          use_path_for_request_names: false
