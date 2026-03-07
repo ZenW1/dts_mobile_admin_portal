@@ -537,16 +537,14 @@ CreatePortfolioDTO _$CreatePortfolioDTOFromJson(Map<String, dynamic> json) =>
       title: json['title'] as String,
       description: json['description'] as String,
       category: json['category'] as String,
-      imageUrl: json['imageUrl'] as String,
+      image:
+          (json['image'] as List<dynamic>?)?.map((e) => e as String).toList() ??
+              [],
       projectUrl: json['projectUrl'] as String?,
       $client: json['client'] as String?,
       startDate: json['startDate'] as String?,
       endDate: json['endDate'] as String?,
       jobScope: json['jobScope'] as String?,
-      images: (json['images'] as List<dynamic>?)
-              ?.map((e) => e as String)
-              .toList() ??
-          [],
       isActive: json['isActive'] as bool?,
     );
 
@@ -555,13 +553,12 @@ Map<String, dynamic> _$CreatePortfolioDTOToJson(CreatePortfolioDTO instance) =>
       'title': instance.title,
       'description': instance.description,
       'category': instance.category,
-      'imageUrl': instance.imageUrl,
+      'image': instance.image,
       'projectUrl': instance.projectUrl,
       'client': instance.$client,
       'startDate': instance.startDate,
       'endDate': instance.endDate,
       'jobScope': instance.jobScope,
-      'images': instance.images,
       'isActive': instance.isActive,
     };
 
@@ -596,16 +593,14 @@ PortfolioResponseDTO _$PortfolioResponseDTOFromJson(
     PortfolioResponseDTO(
       title: json['title'] as String,
       description: json['description'] as String,
-      imageUrl: json['imageUrl'] as String,
+      image:
+          (json['image'] as List<dynamic>?)?.map((e) => e as String).toList() ??
+              [],
       projectUrl: json['projectUrl'] as String?,
       $client: json['client'] as String?,
       startDate: json['startDate'] as String?,
       endDate: json['endDate'] as String?,
       jobScope: json['jobScope'] as String?,
-      images: (json['images'] as List<dynamic>?)
-              ?.map((e) => e as String)
-              .toList() ??
-          [],
       isActive: json['isActive'] as bool?,
       id: json['_id'] as String,
       createdAt: json['createdAt'] == null
@@ -625,18 +620,31 @@ Map<String, dynamic> _$PortfolioResponseDTOToJson(
     <String, dynamic>{
       'title': instance.title,
       'description': instance.description,
-      'imageUrl': instance.imageUrl,
+      'image': instance.image,
       'projectUrl': instance.projectUrl,
       'client': instance.$client,
       'startDate': instance.startDate,
       'endDate': instance.endDate,
       'jobScope': instance.jobScope,
-      'images': instance.images,
       'isActive': instance.isActive,
       '_id': instance.id,
       'createdAt': instance.createdAt?.toIso8601String(),
       'updatedAt': instance.updatedAt?.toIso8601String(),
       'category': instance.category?.toJson(),
+    };
+
+CreatePortfolioResponseDTO _$CreatePortfolioResponseDTOFromJson(
+        Map<String, dynamic> json) =>
+    CreatePortfolioResponseDTO(
+      message: json['message'] as String,
+      data: PortfolioResponseDTO.fromJson(json['data'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$CreatePortfolioResponseDTOToJson(
+        CreatePortfolioResponseDTO instance) =>
+    <String, dynamic>{
+      'message': instance.message,
+      'data': instance.data.toJson(),
     };
 
 GetAllPortfoliosResponseDTO _$GetAllPortfoliosResponseDTOFromJson(
@@ -891,6 +899,60 @@ Map<String, dynamic> _$GetAllLeadsResponseDTOToJson(
         GetAllLeadsResponseDTO instance) =>
     <String, dynamic>{
       'data': instance.data.map((e) => e.toJson()).toList(),
+    };
+
+CreateClientDTO _$CreateClientDTOFromJson(Map<String, dynamic> json) =>
+    CreateClientDTO(
+      name: json['name'] as String,
+      company: json['company'] as String,
+      email: json['email'] as String,
+      phone: json['phone'] as String?,
+      totalProjects: (json['totalProjects'] as num?)?.toDouble(),
+      status: CreateClientDTO.createClientDTOStatusStatusNullableFromJson(
+          json['status']),
+    );
+
+Map<String, dynamic> _$CreateClientDTOToJson(CreateClientDTO instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'company': instance.company,
+      'email': instance.email,
+      'phone': instance.phone,
+      'totalProjects': instance.totalProjects,
+      'status': createClientDTOStatusNullableToJson(instance.status),
+    };
+
+UpdateClientDTO _$UpdateClientDTOFromJson(Map<String, dynamic> json) =>
+    UpdateClientDTO(
+      name: json['name'] as String?,
+      company: json['company'] as String?,
+      email: json['email'] as String?,
+      phone: json['phone'] as String?,
+      totalProjects: (json['totalProjects'] as num?)?.toDouble(),
+      status: UpdateClientDTO.updateClientDTOStatusStatusNullableFromJson(
+          json['status']),
+    );
+
+Map<String, dynamic> _$UpdateClientDTOToJson(UpdateClientDTO instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'company': instance.company,
+      'email': instance.email,
+      'phone': instance.phone,
+      'totalProjects': instance.totalProjects,
+      'status': updateClientDTOStatusNullableToJson(instance.status),
+    };
+
+ImagesUploadPost$RequestBody _$ImagesUploadPost$RequestBodyFromJson(
+        Map<String, dynamic> json) =>
+    ImagesUploadPost$RequestBody(
+      file: json['file'] as String,
+    );
+
+Map<String, dynamic> _$ImagesUploadPost$RequestBodyToJson(
+        ImagesUploadPost$RequestBody instance) =>
+    <String, dynamic>{
+      'file': instance.file,
     };
 
 CreateProductDTO$VariantImages$Item

@@ -56,6 +56,10 @@ dependencies:
   dio: ^5.9.1
   dartz: ^0.10.1
   http: ^1.6.0
+  image_picker: ^1.2.1
+  flutter_image_compress: ^2.3.0
+  path_provider: ^2.1.2
+  http_parser: ^4.0.0
 
 dev_dependencies:
   flutter_test:

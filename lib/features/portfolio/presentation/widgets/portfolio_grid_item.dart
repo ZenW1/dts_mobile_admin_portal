@@ -59,9 +59,9 @@ class _PortfolioGridItemState extends State<PortfolioGridItem> {
               fit: StackFit.expand,
               children: [
                 // Image
-                if (widget.portfolio.imageUrl.isNotEmpty)
+                if (widget.portfolio.image.isNotEmpty)
                   CachedNetworkImage(
-                    imageUrl: widget.portfolio.imageUrl,
+                    imageUrl: widget.portfolio.projectUrl ?? '',
                     fit: BoxFit.cover,
                     placeholder: (context, url) => ImagePlaceholder(
                       text: widget.portfolio.title,

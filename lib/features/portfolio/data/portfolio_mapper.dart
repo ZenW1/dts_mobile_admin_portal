@@ -8,8 +8,8 @@ extension PortfolioResponseDTOMapper on PortfolioResponseDTO {
       id: id,
       title: title,
       description: description,
-      imageUrl: imageUrl,
-      galleryImages: images ?? [],
+      imageUrl: image.isNotEmpty ? image.first : '',
+      galleryImages: image,
       categoryId: category?.id ?? '',
       clientName: $client,
       projectDate: startDate != null ? DateTime.tryParse(startDate!) : null,
@@ -27,14 +27,13 @@ extension PortfolioMapper on Portfolio {
       title: title,
       description: description ?? '',
       category: categoryId,
-      imageUrl: imageUrl ?? '',
       projectUrl: '',
       $client: clientName,
       startDate: projectDate?.toIso8601String(),
       endDate: null,
       jobScope: null,
-      images: galleryImages,
       isActive: isFeatured,
+      image: [],
     );
   }
 }

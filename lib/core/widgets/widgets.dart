@@ -4,3 +4,4 @@ export 'shimmer_loading.dart';
 export 'custom_text_field.dart';
 export 'image_placeholder.dart';
 export 'responsive_layout.dart';
+export 'custom_image_picker.dart';

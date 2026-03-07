@@ -15,6 +15,10 @@ import '../../features/feedback/presentation/pages/feedbacks_page.dart';
 import '../../features/feedback/presentation/pages/feedback_detail_page.dart';
 import '../../features/feedback/presentation/pages/feedback_form_page.dart';
 import '../../features/feedback/domain/entities/customer_feedback.dart';
+import '../../features/clients/presentation/pages/client_list_page.dart';
+import '../../features/clients/presentation/pages/client_detail_page.dart';
+import '../../features/clients/presentation/pages/client_form_page.dart';
+import '../../features/clients/domain/entities/client.dart';
 import '../../shared/layouts/admin_layout.dart';
 
 /// Application router configuration
@@ -166,6 +170,38 @@ final appRouter = GoRouter(
             child: FeedbackFormPage(
               id: state.pathParameters['id'],
               feedback: state.extra as CustomerFeedback?,
+            ),
+          ),
+        ),
+
+        // Clients
+        GoRoute(
+          path: '/clients',
+          name: 'clients',
+          pageBuilder: (context, state) => const NoTransitionPage(
+            child: ClientListPage(),
+          ),
+        ),
+        GoRoute(
+          path: '/clients/create',
+          name: 'client-new',
+          pageBuilder: (context, state) => const NoTransitionPage(
+            child: ClientFormPage(),
+          ),
+        ),
+        GoRoute(
+          path: '/clients/:id',
+          name: 'client-detail',
+          pageBuilder: (context, state) => NoTransitionPage(
+            child: ClientDetailPage(clientId: state.pathParameters['id']!),
+          ),
+        ),
+        GoRoute(
+          path: '/clients/edit/:id',
+          name: 'client-edit',
+          pageBuilder: (context, state) => NoTransitionPage(
+            child: ClientFormPage(
+              client: state.extra as Client?,
             ),
           ),
         ),

@@ -563,7 +563,7 @@ final class _$Swagger extends Swagger {
   }
 
   @override
-  Future<Response<PortfolioResponseDTO>> _CreatePortfolio(
+  Future<Response<CreatePortfolioResponseDTO>> _CreatePortfolio(
       {required CreatePortfolioDTO? body}) {
     final Uri $url = Uri.parse('/portfolio/create');
     final $body = body;
@@ -573,7 +573,8 @@ final class _$Swagger extends Swagger {
       client.baseUrl,
       body: $body,
     );
-    return client.send<PortfolioResponseDTO, PortfolioResponseDTO>($request);
+    return client
+        .send<CreatePortfolioResponseDTO, CreatePortfolioResponseDTO>($request);
   }
 
   @override
@@ -912,5 +913,151 @@ final class _$Swagger extends Swagger {
       client.baseUrl,
     );
     return client.send<MessageResponseDTO, MessageResponseDTO>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> _uploadImage({required List<int> file}) {
+    final Uri $url = Uri.parse('/images/upload');
+    final List<PartValue> $parts = <PartValue>[
+      PartValueFile<List<int>>(
+        'file',
+        file,
+      )
+    ];
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      parts: $parts,
+      multipart: true,
+    );
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> _createClient({required CreateClientDTO? body}) {
+    final Uri $url = Uri.parse('/api/clients');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+    );
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> _getAllClients({
+    String? q,
+    String? status,
+    String? sortBy,
+    String? sortOrder,
+    num? page,
+    num? limit,
+  }) {
+    final Uri $url = Uri.parse('/api/clients');
+    final Map<String, dynamic> $params = <String, dynamic>{
+      'q': q,
+      'status': status,
+      'sortBy': sortBy,
+      'sortOrder': sortOrder,
+      'page': page,
+      'limit': limit,
+    };
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      parameters: $params,
+    );
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> _searchClients({
+    String? q,
+    String? status,
+    String? sortBy,
+    String? sortOrder,
+    num? page,
+    num? limit,
+  }) {
+    final Uri $url = Uri.parse('/api/clients/search');
+    final Map<String, dynamic> $params = <String, dynamic>{
+      'q': q,
+      'status': status,
+      'sortBy': sortBy,
+      'sortOrder': sortOrder,
+      'page': page,
+      'limit': limit,
+    };
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+      parameters: $params,
+    );
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> _getClientById({required String? id}) {
+    final Uri $url = Uri.parse('/api/clients/${id}');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+    );
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> _updateClient({
+    required String? id,
+    required UpdateClientDTO? body,
+  }) {
+    final Uri $url = Uri.parse('/api/clients/${id}');
+    final $body = body;
+    final Request $request = Request(
+      'PUT',
+      $url,
+      client.baseUrl,
+      body: $body,
+    );
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> _deleteClient({required String? id}) {
+    final Uri $url = Uri.parse('/api/clients/${id}');
+    final Request $request = Request(
+      'DELETE',
+      $url,
+      client.baseUrl,
+    );
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> _uploadClientImage({required String? id}) {
+    final Uri $url = Uri.parse('/api/clients/${id}/image');
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+    );
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<dynamic>> _removeClientImage({required String? id}) {
+    final Uri $url = Uri.parse('/api/clients/${id}/image');
+    final Request $request = Request(
+      'DELETE',
+      $url,
+      client.baseUrl,
+    );
+    return client.send<dynamic, dynamic>($request);
   }
 }

@@ -49,6 +49,38 @@ enum UpdateFeedbackStatusDTOStatus {
   const UpdateFeedbackStatusDTOStatus(this.value);
 }
 
+enum CreateClientDTOStatus {
+  @JsonValue(null)
+  swaggerGeneratedUnknown(null),
+
+  @JsonValue('active')
+  active('active'),
+  @JsonValue('inactive')
+  inactive('inactive'),
+  @JsonValue('prospect')
+  prospect('prospect');
+
+  final String? value;
+
+  const CreateClientDTOStatus(this.value);
+}
+
+enum UpdateClientDTOStatus {
+  @JsonValue(null)
+  swaggerGeneratedUnknown(null),
+
+  @JsonValue('active')
+  active('active'),
+  @JsonValue('inactive')
+  inactive('inactive'),
+  @JsonValue('prospect')
+  prospect('prospect');
+
+  final String? value;
+
+  const UpdateClientDTOStatus(this.value);
+}
+
 enum CustomerFeedbackByStatusGetStatus {
   @JsonValue(null)
   swaggerGeneratedUnknown(null),
@@ -63,4 +95,64 @@ enum CustomerFeedbackByStatusGetStatus {
   final String? value;
 
   const CustomerFeedbackByStatusGetStatus(this.value);
+}
+
+enum ApiClientsGetStatus {
+  @JsonValue(null)
+  swaggerGeneratedUnknown(null),
+
+  @JsonValue('active')
+  active('active'),
+  @JsonValue('inactive')
+  inactive('inactive'),
+  @JsonValue('prospect')
+  prospect('prospect');
+
+  final String? value;
+
+  const ApiClientsGetStatus(this.value);
+}
+
+enum ApiClientsGetSortOrder {
+  @JsonValue(null)
+  swaggerGeneratedUnknown(null),
+
+  @JsonValue('asc')
+  asc('asc'),
+  @JsonValue('desc')
+  desc('desc');
+
+  final String? value;
+
+  const ApiClientsGetSortOrder(this.value);
+}
+
+enum ApiClientsSearchGetStatus {
+  @JsonValue(null)
+  swaggerGeneratedUnknown(null),
+
+  @JsonValue('active')
+  active('active'),
+  @JsonValue('inactive')
+  inactive('inactive'),
+  @JsonValue('prospect')
+  prospect('prospect');
+
+  final String? value;
+
+  const ApiClientsSearchGetStatus(this.value);
+}
+
+enum ApiClientsSearchGetSortOrder {
+  @JsonValue(null)
+  swaggerGeneratedUnknown(null),
+
+  @JsonValue('asc')
+  asc('asc'),
+  @JsonValue('desc')
+  desc('desc');
+
+  final String? value;
+
+  const ApiClientsSearchGetSortOrder(this.value);
 }

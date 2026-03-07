@@ -45,7 +45,7 @@ class PortfolioRepositoryImpl implements PortfolioRepository {
       String categoryId) async {
     try {
       final all = await getAllPortfolios();
-      return all.data.where((p) => p.category == categoryId).toList();
+      return all.data.where((p) => p.category?.id == categoryId).toList();
     } catch (e) {
       _logger.e('Error getting portfolios by category: $e');
       rethrow;
@@ -65,13 +65,9 @@ class PortfolioRepositoryImpl implements PortfolioRepository {
   }
 
   @override
-  Future<PortfolioResponseDTO> createPortfolio(CreatePortfolioDTO dto) async {
+  Future<void> createPortfolio(CreatePortfolioDTO dto) async {
     try {
-      final response = await _api.CreatePortfolio(body: dto);
-      if (response.isSuccessful && response.body != null) {
-        return response.body!;
-      }
-      throw Exception('Failed to create portfolio: ${response.error}');
+      await _api.CreatePortfolio(body: dto);
     } on TypeError catch (e) {
       if (e.toString().contains('is not a subtype of type')) {
         _logger.w('API create succeeded but parsing failed: $e');

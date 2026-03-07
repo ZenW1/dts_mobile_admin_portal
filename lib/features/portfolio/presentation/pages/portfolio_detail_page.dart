@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dts_admin_portal/core/widgets/responsive_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -51,9 +53,13 @@ class PortfolioDetailPage extends ConsumerWidget {
             );
           }
 
-          final category = categoriesAsync.value?.firstWhere(
-            (c) => c.id == portfolio.id,
-          );
+          final categoryId = portfolio.category?.id;
+          final categories = categoriesAsync.value;
+          final category = categories != null &&
+                  categoryId != null &&
+                  categories.any((c) => c.id == categoryId)
+              ? categories.firstWhere((c) => c.id == categoryId)
+              : null;
 
           if (category == null) {
             return Center(
@@ -80,254 +86,352 @@ class PortfolioDetailPage extends ConsumerWidget {
           }
 
           return SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Hero image
-                Stack(
-                  children: [
-                    SizedBox(
-                      height: 400,
-                      width: double.infinity,
-                      child: ImagePlaceholder(
-                        text: portfolio.title,
-                        borderRadius: 0,
-                      ),
-                    ),
-                    // Gradient overlay
-                    Container(
-                      height: 400,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            Colors.black.withValues(alpha: 0.3),
-                            Colors.transparent,
-                            Colors.black.withValues(alpha: 0.5),
+            child: SafeArea(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Hero image
+                  Stack(
+                    children: [
+                      SizedBox(
+                        width: double.infinity,
+                        child: Column(
+                          children: [
+                            if (portfolio.image.isNotEmpty)
+                              CachedNetworkImage(
+                                imageUrl: portfolio.image.first,
+                                fit: BoxFit.cover,
+                                placeholder: (context, url) => ImagePlaceholder(
+                                  text: portfolio.title,
+                                  borderRadius: 0,
+                                ),
+                                errorWidget: (context, url, error) =>
+                                    ImagePlaceholder(
+                                  text: portfolio.title,
+                                      height: 200,
+                                      fit: BoxFit.cover,
+                                      width: double.infinity,
+                                  borderRadius: 0,
+                                ),
+                              )
+                            else
+                              ImagePlaceholder(
+                                text: portfolio.title,
+                                borderRadius: 0,
+                                height: 200,
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                              ),
                           ],
-                          stops: const [0.0, 0.3, 1.0],
                         ),
                       ),
+                      // Gradient overlay
+                      Container(
+                        height: 200,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.black.withValues(alpha: 0.3),
+                              Colors.transparent,
+                              Colors.black.withValues(alpha: 0.5),
+                            ],
+                            stops: const [0.0, 0.3, 1.0],
+                          ),
+                        ),
+                      ),
+                      // Back button and actions
+                      Positioned(
+                        top: AppSpacing.lg,
+                        left: AppSpacing.lg,
+                        right: AppSpacing.lg,
+                        child: Row(
+                          children: [
+                            IconButton.filled(
+                              onPressed: () => context.go('/portfolio'),
+                              icon: const Icon(Iconsax.arrow_left),
+                              style: IconButton.styleFrom(
+                                backgroundColor:
+                                    Colors.white.withValues(alpha: 0.2),
+                                foregroundColor: Colors.white,
+                              ),
+                            ),
+                            const Spacer(),
+                            IconButton.filled(
+                              onPressed: () => context.go('/portfolio/$id/edit'),
+                              icon: const Icon(Iconsax.edit),
+                              tooltip: 'Edit',
+                              style: IconButton.styleFrom(
+                                backgroundColor:
+                                    Colors.white.withValues(alpha: 0.2),
+                                foregroundColor: Colors.white,
+                              ),
+                            ),
+                            const SizedBox(width: AppSpacing.sm),
+                            IconButton.filled(
+                              onPressed: () => _showDeleteDialog(context, ref),
+                              icon: const Icon(Iconsax.trash),
+                              tooltip: 'Delete',
+                              style: IconButton.styleFrom(
+                                backgroundColor:
+                                    AppColors.error.withValues(alpha: 0.8),
+                                foregroundColor: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      // Active/Featured badge
+                      if (portfolio.isActive == true)
+                        Positioned(
+                          top: AppSpacing.lg + 56,
+                          left: AppSpacing.lg,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: AppSpacing.md,
+                              vertical: AppSpacing.sm,
+                            ),
+                            decoration: BoxDecoration(
+                              gradient: AppColors.accentGradient,
+                              borderRadius:
+                                  BorderRadius.circular(AppSpacing.radiusSm),
+                            ),
+                            child: const Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(Icons.star, size: 16, color: Colors.white),
+                                SizedBox(width: 6),
+                                Text(
+                                  'Featured Project',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+              
+                  // Content
+                  Padding(
+                    padding: const EdgeInsets.all(AppSpacing.lg),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Main content
+                        Expanded(
+                          flex: 2,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (true)
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: AppSpacing.md,
+                                    vertical: AppSpacing.sm,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: isDark
+                                        ? AppColors.primaryLight
+                                            .withValues(alpha: 0.15)
+                                        : AppColors.primary
+                                            .withValues(alpha: 0.1),
+                                    borderRadius: BorderRadius.circular(
+                                        AppSpacing.radiusSm),
+                                  ),
+                                  child: Text(
+                                    category.name,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
+                                      color: isDark
+                                          ? AppColors.primaryLight
+                                          : AppColors.primary,
+                                    ),
+                                  ),
+                                ),
+                              const SizedBox(height: AppSpacing.md),
+                              Text(
+                                portfolio.title,
+                                style: Theme.of(context).textTheme.displaySmall,
+                              ),
+                              const SizedBox(height: AppSpacing.lg),
+                              Text(
+                                'Project Description',
+                                style: Theme.of(context).textTheme.titleMedium,
+                              ),
+                              const SizedBox(height: AppSpacing.sm),
+                              Text(
+                                portfolio.description.isNotEmpty
+                                    ? portfolio.description
+                                    : 'No description available.',
+                                style: TextStyle(
+                                  height: 1.7,
+                                  color: isDark
+                                      ? AppColors.darkText
+                                      : AppColors.lightText,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: AppSpacing.xl),
+              
+                        if (ResponsiveLayout.isTablet(context) ||
+                            ResponsiveLayout.isDesktop(context))
+                          Expanded(
+                            child: Container(
+                              padding: const EdgeInsets.all(AppSpacing.lg),
+                              decoration: BoxDecoration(
+                                color: isDark
+                                    ? AppColors.darkCard
+                                    : AppColors.lightCard,
+                                borderRadius:
+                                    BorderRadius.circular(AppSpacing.radiusLg),
+                                border: Border.all(
+                                  color: isDark
+                                      ? AppColors.darkBorder
+                                      : AppColors.lightBorder,
+                                ),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Project Details',
+                                    style:
+                                        Theme.of(context).textTheme.titleMedium,
+                                  ),
+                                  const SizedBox(height: AppSpacing.lg),
+                                  if (portfolio.$client != null) ...[
+                                    _buildDetailRow(
+                                      context,
+                                      Iconsax.user,
+                                      'Client',
+                                      portfolio.$client!,
+                                      isDark,
+                                    ),
+                                    const SizedBox(height: AppSpacing.md),
+                                  ],
+                                  if (portfolio.startDate != null) ...[
+                                    _buildDetailRow(
+                                      context,
+                                      Iconsax.calendar,
+                                      'Date',
+                                      portfolio.startDate!,
+                                      isDark,
+                                    ),
+                                    const SizedBox(height: AppSpacing.md),
+                                  ],
+                                  _buildDetailRow(
+                                    context,
+                                    Iconsax.folder,
+                                    'Category',
+                                    category.name,
+                                    isDark,
+                                  ),
+                                  const SizedBox(height: AppSpacing.md),
+                                  const Divider(),
+                                  const SizedBox(height: AppSpacing.md),
+                                  _buildDetailRow(
+                                    context,
+                                    Iconsax.clock,
+                                    'Created',
+                                    portfolio.createdAt?.toIso8601String() ?? '-',
+                                    isDark,
+                                  ),
+                                  const SizedBox(height: AppSpacing.md),
+                                  _buildDetailRow(
+                                    context,
+                                    Iconsax.refresh,
+                                    'Updated',
+                                    portfolio.updatedAt?.toIso8601String() ?? '-',
+                                    isDark,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                      ],
                     ),
-                    // Back button and actions
-                    Positioned(
-                      top: AppSpacing.lg,
-                      left: AppSpacing.lg,
-                      right: AppSpacing.lg,
-                      child: Row(
+                  ),
+                  // if mobile
+                  if (ResponsiveLayout.isMobile(context))
+                    Container(
+                      padding: const EdgeInsets.all(AppSpacing.lg),
+                      margin: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                      decoration: BoxDecoration(
+                        color: isDark ? AppColors.darkCard : AppColors.lightCard,
+                        borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
+                        border: Border.all(
+                          color: isDark
+                              ? AppColors.darkBorder
+                              : AppColors.lightBorder,
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          IconButton.filled(
-                            onPressed: () => context.go('/portfolio'),
-                            icon: const Icon(Iconsax.arrow_left),
-                            style: IconButton.styleFrom(
-                              backgroundColor:
-                                  Colors.white.withValues(alpha: 0.2),
-                              foregroundColor: Colors.white,
-                            ),
+                          Text(
+                            'Project Details',
+                            style: Theme.of(context).textTheme.titleMedium,
                           ),
-                          const Spacer(),
-                          IconButton.filled(
-                            onPressed: () => context.go('/portfolio/$id/edit'),
-                            icon: const Icon(Iconsax.edit),
-                            tooltip: 'Edit',
-                            style: IconButton.styleFrom(
-                              backgroundColor:
-                                  Colors.white.withValues(alpha: 0.2),
-                              foregroundColor: Colors.white,
+                          const SizedBox(height: AppSpacing.lg),
+                          if (portfolio.$client != null) ...[
+                            _buildDetailRow(
+                              context,
+                              Iconsax.user,
+                              'Client',
+                              portfolio.$client!,
+                              isDark,
                             ),
+                            const SizedBox(height: AppSpacing.md),
+                          ],
+                          if (portfolio.startDate != null) ...[
+                            _buildDetailRow(
+                              context,
+                              Iconsax.calendar,
+                              'Date',
+                              portfolio.startDate!,
+                              isDark,
+                            ),
+                            const SizedBox(height: AppSpacing.md),
+                          ],
+                          _buildDetailRow(
+                            context,
+                            Iconsax.folder,
+                            'Category',
+                            category.name,
+                            isDark,
                           ),
-                          const SizedBox(width: AppSpacing.sm),
-                          IconButton.filled(
-                            onPressed: () => _showDeleteDialog(context, ref),
-                            icon: const Icon(Iconsax.trash),
-                            tooltip: 'Delete',
-                            style: IconButton.styleFrom(
-                              backgroundColor:
-                                  AppColors.error.withValues(alpha: 0.8),
-                              foregroundColor: Colors.white,
-                            ),
+                          const SizedBox(height: AppSpacing.md),
+                          const Divider(),
+                          const SizedBox(height: AppSpacing.md),
+                          _buildDetailRow(
+                            context,
+                            Iconsax.clock,
+                            'Created',
+                            portfolio.createdAt?.toIso8601String() ?? '-',
+                            isDark,
+                          ),
+                          const SizedBox(height: AppSpacing.md),
+                          _buildDetailRow(
+                            context,
+                            Iconsax.refresh,
+                            'Updated',
+                            portfolio.updatedAt?.toIso8601String() ?? '-',
+                            isDark,
                           ),
                         ],
                       ),
                     ),
-                    // Active/Featured badge
-                    if (portfolio.isActive == true)
-                      Positioned(
-                        top: AppSpacing.lg + 56,
-                        left: AppSpacing.lg,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: AppSpacing.md,
-                            vertical: AppSpacing.sm,
-                          ),
-                          decoration: BoxDecoration(
-                            gradient: AppColors.accentGradient,
-                            borderRadius:
-                                BorderRadius.circular(AppSpacing.radiusSm),
-                          ),
-                          child: const Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(Icons.star, size: 16, color: Colors.white),
-                              SizedBox(width: 6),
-                              Text(
-                                'Featured Project',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-
-                // Content
-                Padding(
-                  padding: const EdgeInsets.all(AppSpacing.lg),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Main content
-                      Expanded(
-                        flex: 2,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            if (category != null)
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: AppSpacing.md,
-                                  vertical: AppSpacing.sm,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: isDark
-                                      ? AppColors.primaryLight
-                                          .withValues(alpha: 0.15)
-                                      : AppColors.primary
-                                          .withValues(alpha: 0.1),
-                                  borderRadius: BorderRadius.circular(
-                                      AppSpacing.radiusSm),
-                                ),
-                                child: Text(
-                                  category.name,
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600,
-                                    color: isDark
-                                        ? AppColors.primaryLight
-                                        : AppColors.primary,
-                                  ),
-                                ),
-                              ),
-                            const SizedBox(height: AppSpacing.md),
-                            Text(
-                              portfolio.title,
-                              style: Theme.of(context).textTheme.displaySmall,
-                            ),
-                            const SizedBox(height: AppSpacing.lg),
-                            Text(
-                              'Project Description',
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                            const SizedBox(height: AppSpacing.sm),
-                            Text(
-                              portfolio.description.isNotEmpty
-                                  ? portfolio.description
-                                  : 'No description available.',
-                              style: TextStyle(
-                                height: 1.7,
-                                color: isDark
-                                    ? AppColors.darkText
-                                    : AppColors.lightText,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: AppSpacing.xl),
-
-                      // Project details sidebar
-                      Expanded(
-                        child: Container(
-                          padding: const EdgeInsets.all(AppSpacing.lg),
-                          decoration: BoxDecoration(
-                            color: isDark
-                                ? AppColors.darkCard
-                                : AppColors.lightCard,
-                            borderRadius:
-                                BorderRadius.circular(AppSpacing.radiusLg),
-                            border: Border.all(
-                              color: isDark
-                                  ? AppColors.darkBorder
-                                  : AppColors.lightBorder,
-                            ),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Project Details',
-                                style: Theme.of(context).textTheme.titleMedium,
-                              ),
-                              const SizedBox(height: AppSpacing.lg),
-                              if (portfolio.$client != null) ...[
-                                _buildDetailRow(
-                                  context,
-                                  Iconsax.user,
-                                  'Client',
-                                  portfolio.$client!,
-                                  isDark,
-                                ),
-                                const SizedBox(height: AppSpacing.md),
-                              ],
-                              if (portfolio.startDate != null) ...[
-                                _buildDetailRow(
-                                  context,
-                                  Iconsax.calendar,
-                                  'Date',
-                                  portfolio.startDate!,
-                                  isDark,
-                                ),
-                                const SizedBox(height: AppSpacing.md),
-                              ],
-                              _buildDetailRow(
-                                context,
-                                Iconsax.folder,
-                                'Category',
-                                category?.name ?? 'Uncategorized',
-                                isDark,
-                              ),
-                              const SizedBox(height: AppSpacing.md),
-                              const Divider(),
-                              const SizedBox(height: AppSpacing.md),
-                              _buildDetailRow(
-                                context,
-                                Iconsax.clock,
-                                'Created',
-                                portfolio.createdAt?.toIso8601String() ?? '-',
-                                isDark,
-                              ),
-                              const SizedBox(height: AppSpacing.md),
-                              _buildDetailRow(
-                                context,
-                                Iconsax.refresh,
-                                'Updated',
-                                portfolio.updatedAt?.toIso8601String() ?? '-',
-                                isDark,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         },

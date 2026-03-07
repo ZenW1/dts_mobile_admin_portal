@@ -811,12 +811,12 @@ abstract class Swagger extends ChopperService {
   });
 
   ///Create a new portfolio item
-  Future<chopper.Response<PortfolioResponseDTO>> CreatePortfolio({
+  Future<chopper.Response<CreatePortfolioResponseDTO>> CreatePortfolio({
     required CreatePortfolioDTO? body,
   }) {
     generatedMapping.putIfAbsent(
-      PortfolioResponseDTO,
-      () => PortfolioResponseDTO.fromJsonFactory,
+      CreatePortfolioResponseDTO,
+      () => CreatePortfolioResponseDTO.fromJsonFactory,
     );
 
     return _CreatePortfolio(body: body);
@@ -824,7 +824,7 @@ abstract class Swagger extends ChopperService {
 
   ///Create a new portfolio item
   @POST(path: '/portfolio/create', optionalBody: true)
-  Future<chopper.Response<PortfolioResponseDTO>> _CreatePortfolio({
+  Future<chopper.Response<CreatePortfolioResponseDTO>> _CreatePortfolio({
     @Body() required CreatePortfolioDTO? body,
   });
 
@@ -1272,6 +1272,176 @@ abstract class Swagger extends ChopperService {
   @POST(path: '/api/leads/update-status/{leadId}', optionalBody: true)
   Future<chopper.Response<MessageResponseDTO>> _UpdateLeadStatus({
     @Path('leadId') required String? leadId,
+  });
+
+  ///Upload an image
+  Future<chopper.Response> uploadImage({required List<int> file}) {
+    return _uploadImage(file: file);
+  }
+
+  ///Upload an image
+  @POST(path: '/images/upload', optionalBody: true)
+  @Multipart()
+  Future<chopper.Response> _uploadImage({@PartFile() required List<int> file});
+
+  ///
+  Future<chopper.Response> createClient({required CreateClientDTO? body}) {
+    return _createClient(body: body);
+  }
+
+  ///
+  @POST(path: '/api/clients', optionalBody: true)
+  Future<chopper.Response> _createClient({
+    @Body() required CreateClientDTO? body,
+  });
+
+  ///
+  ///@param q Search query for name and company
+  ///@param status Filter by status
+  ///@param sortBy Sort field
+  ///@param sortOrder Sort order
+  ///@param page Page number for pagination
+  ///@param limit Items per page
+  Future<chopper.Response> getAllClients({
+    String? q,
+    enums.ApiClientsGetStatus? status,
+    String? sortBy,
+    enums.ApiClientsGetSortOrder? sortOrder,
+    num? page,
+    num? limit,
+  }) {
+    return _getAllClients(
+      q: q,
+      status: status?.value?.toString(),
+      sortBy: sortBy,
+      sortOrder: sortOrder?.value?.toString(),
+      page: page,
+      limit: limit,
+    );
+  }
+
+  ///
+  ///@param q Search query for name and company
+  ///@param status Filter by status
+  ///@param sortBy Sort field
+  ///@param sortOrder Sort order
+  ///@param page Page number for pagination
+  ///@param limit Items per page
+  @GET(path: '/api/clients')
+  Future<chopper.Response> _getAllClients({
+    @Query('q') String? q,
+    @Query('status') String? status,
+    @Query('sortBy') String? sortBy,
+    @Query('sortOrder') String? sortOrder,
+    @Query('page') num? page,
+    @Query('limit') num? limit,
+  });
+
+  ///
+  ///@param q Search query for name and company
+  ///@param status Filter by status
+  ///@param sortBy Sort field
+  ///@param sortOrder Sort order
+  ///@param page Page number for pagination
+  ///@param limit Items per page
+  Future<chopper.Response> searchClients({
+    String? q,
+    enums.ApiClientsSearchGetStatus? status,
+    String? sortBy,
+    enums.ApiClientsSearchGetSortOrder? sortOrder,
+    num? page,
+    num? limit,
+  }) {
+    return _searchClients(
+      q: q,
+      status: status?.value?.toString(),
+      sortBy: sortBy,
+      sortOrder: sortOrder?.value?.toString(),
+      page: page,
+      limit: limit,
+    );
+  }
+
+  ///
+  ///@param q Search query for name and company
+  ///@param status Filter by status
+  ///@param sortBy Sort field
+  ///@param sortOrder Sort order
+  ///@param page Page number for pagination
+  ///@param limit Items per page
+  @GET(path: '/api/clients/search')
+  Future<chopper.Response> _searchClients({
+    @Query('q') String? q,
+    @Query('status') String? status,
+    @Query('sortBy') String? sortBy,
+    @Query('sortOrder') String? sortOrder,
+    @Query('page') num? page,
+    @Query('limit') num? limit,
+  });
+
+  ///
+  ///@param id
+  Future<chopper.Response> getClientById({required String? id}) {
+    return _getClientById(id: id);
+  }
+
+  ///
+  ///@param id
+  @GET(path: '/api/clients/{id}')
+  Future<chopper.Response> _getClientById({@Path('id') required String? id});
+
+  ///
+  ///@param id
+  Future<chopper.Response> updateClient({
+    required String? id,
+    required UpdateClientDTO? body,
+  }) {
+    return _updateClient(id: id, body: body);
+  }
+
+  ///
+  ///@param id
+  @PUT(path: '/api/clients/{id}', optionalBody: true)
+  Future<chopper.Response> _updateClient({
+    @Path('id') required String? id,
+    @Body() required UpdateClientDTO? body,
+  });
+
+  ///
+  ///@param id
+  Future<chopper.Response> deleteClient({required String? id}) {
+    return _deleteClient(id: id);
+  }
+
+  ///
+  ///@param id
+  @DELETE(path: '/api/clients/{id}')
+  Future<chopper.Response> _deleteClient({@Path('id') required String? id});
+
+  ///
+  ///@param id
+  Future<chopper.Response> uploadClientImage({required String? id}) {
+    return _uploadClientImage(id: id);
+  }
+
+  ///
+  ///@param id
+  @POST(path: '/api/clients/{id}/image', optionalBody: true)
+  Future<chopper.Response> _uploadClientImage({
+    @Path('id') required String? id,
+  });
+
+  ///
+  ///@param id
+  Future<chopper.Response> removeClientImage({required String? id}) {
+    return _removeClientImage(id: id);
+  }
+
+  ///
+  ///@param id
+  @DELETE(path: '/api/clients/{id}/image')
+  Future<chopper.Response> _removeClientImage({
+    @Path('id') required String? id,
   });
 }
 
@@ -3583,13 +3753,12 @@ class CreatePortfolioDTO {
     required this.title,
     required this.description,
     required this.category,
-    required this.imageUrl,
+    required this.image,
     this.projectUrl,
     this.$client,
     this.startDate,
     this.endDate,
     this.jobScope,
-    this.images,
     this.isActive,
   });
 
@@ -3605,8 +3774,8 @@ class CreatePortfolioDTO {
   final String description;
   @JsonKey(name: 'category')
   final String category;
-  @JsonKey(name: 'imageUrl')
-  final String imageUrl;
+  @JsonKey(name: 'image', defaultValue: <String>[])
+  final List<String> image;
   @JsonKey(name: 'projectUrl')
   final String? projectUrl;
   @JsonKey(name: 'client')
@@ -3617,8 +3786,6 @@ class CreatePortfolioDTO {
   final String? endDate;
   @JsonKey(name: 'jobScope')
   final String? jobScope;
-  @JsonKey(name: 'images', defaultValue: <String>[])
-  final List<String>? images;
   @JsonKey(name: 'isActive')
   final bool? isActive;
   static const fromJsonFactory = _$CreatePortfolioDTOFromJson;
@@ -3639,11 +3806,8 @@ class CreatePortfolioDTO {
                   other.category,
                   category,
                 )) &&
-            (identical(other.imageUrl, imageUrl) ||
-                const DeepCollectionEquality().equals(
-                  other.imageUrl,
-                  imageUrl,
-                )) &&
+            (identical(other.image, image) ||
+                const DeepCollectionEquality().equals(other.image, image)) &&
             (identical(other.projectUrl, projectUrl) ||
                 const DeepCollectionEquality().equals(
                   other.projectUrl,
@@ -3669,8 +3833,6 @@ class CreatePortfolioDTO {
                   other.jobScope,
                   jobScope,
                 )) &&
-            (identical(other.images, images) ||
-                const DeepCollectionEquality().equals(other.images, images)) &&
             (identical(other.isActive, isActive) ||
                 const DeepCollectionEquality().equals(
                   other.isActive,
@@ -3686,13 +3848,12 @@ class CreatePortfolioDTO {
       const DeepCollectionEquality().hash(title) ^
       const DeepCollectionEquality().hash(description) ^
       const DeepCollectionEquality().hash(category) ^
-      const DeepCollectionEquality().hash(imageUrl) ^
+      const DeepCollectionEquality().hash(image) ^
       const DeepCollectionEquality().hash(projectUrl) ^
       const DeepCollectionEquality().hash($client) ^
       const DeepCollectionEquality().hash(startDate) ^
       const DeepCollectionEquality().hash(endDate) ^
       const DeepCollectionEquality().hash(jobScope) ^
-      const DeepCollectionEquality().hash(images) ^
       const DeepCollectionEquality().hash(isActive) ^
       runtimeType.hashCode;
 }
@@ -3702,26 +3863,24 @@ extension $CreatePortfolioDTOExtension on CreatePortfolioDTO {
     String? title,
     String? description,
     String? category,
-    String? imageUrl,
+    List<String>? image,
     String? projectUrl,
     String? $client,
     String? startDate,
     String? endDate,
     String? jobScope,
-    List<String>? images,
     bool? isActive,
   }) {
     return CreatePortfolioDTO(
       title: title ?? this.title,
       description: description ?? this.description,
       category: category ?? this.category,
-      imageUrl: imageUrl ?? this.imageUrl,
+      image: image ?? this.image,
       projectUrl: projectUrl ?? this.projectUrl,
       $client: $client ?? this.$client,
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
       jobScope: jobScope ?? this.jobScope,
-      images: images ?? this.images,
       isActive: isActive ?? this.isActive,
     );
   }
@@ -3730,26 +3889,24 @@ extension $CreatePortfolioDTOExtension on CreatePortfolioDTO {
     Wrapped<String>? title,
     Wrapped<String>? description,
     Wrapped<String>? category,
-    Wrapped<String>? imageUrl,
+    Wrapped<List<String>>? image,
     Wrapped<String?>? projectUrl,
     Wrapped<String?>? $client,
     Wrapped<String?>? startDate,
     Wrapped<String?>? endDate,
     Wrapped<String?>? jobScope,
-    Wrapped<List<String>?>? images,
     Wrapped<bool?>? isActive,
   }) {
     return CreatePortfolioDTO(
       title: (title != null ? title.value : this.title),
       description: (description != null ? description.value : this.description),
       category: (category != null ? category.value : this.category),
-      imageUrl: (imageUrl != null ? imageUrl.value : this.imageUrl),
+      image: (image != null ? image.value : this.image),
       projectUrl: (projectUrl != null ? projectUrl.value : this.projectUrl),
       $client: ($client != null ? $client.value : this.$client),
       startDate: (startDate != null ? startDate.value : this.startDate),
       endDate: (endDate != null ? endDate.value : this.endDate),
       jobScope: (jobScope != null ? jobScope.value : this.jobScope),
-      images: (images != null ? images.value : this.images),
       isActive: (isActive != null ? isActive.value : this.isActive),
     );
   }
@@ -3874,13 +4031,12 @@ class PortfolioResponseDTO {
   const PortfolioResponseDTO({
     required this.title,
     required this.description,
-    required this.imageUrl,
+    required this.image,
     this.projectUrl,
     this.$client,
     this.startDate,
     this.endDate,
     this.jobScope,
-    this.images,
     this.isActive,
     required this.id,
     this.createdAt,
@@ -3898,8 +4054,8 @@ class PortfolioResponseDTO {
   final String title;
   @JsonKey(name: 'description')
   final String description;
-  @JsonKey(name: 'imageUrl')
-  final String imageUrl;
+  @JsonKey(name: 'image', defaultValue: <String>[])
+  final List<String> image;
   @JsonKey(name: 'projectUrl')
   final String? projectUrl;
   @JsonKey(name: 'client')
@@ -3910,8 +4066,6 @@ class PortfolioResponseDTO {
   final String? endDate;
   @JsonKey(name: 'jobScope')
   final String? jobScope;
-  @JsonKey(name: 'images', defaultValue: <String>[])
-  final List<String>? images;
   @JsonKey(name: 'isActive')
   final bool? isActive;
   @JsonKey(name: '_id')
@@ -3935,11 +4089,8 @@ class PortfolioResponseDTO {
                   other.description,
                   description,
                 )) &&
-            (identical(other.imageUrl, imageUrl) ||
-                const DeepCollectionEquality().equals(
-                  other.imageUrl,
-                  imageUrl,
-                )) &&
+            (identical(other.image, image) ||
+                const DeepCollectionEquality().equals(other.image, image)) &&
             (identical(other.projectUrl, projectUrl) ||
                 const DeepCollectionEquality().equals(
                   other.projectUrl,
@@ -3965,8 +4116,6 @@ class PortfolioResponseDTO {
                   other.jobScope,
                   jobScope,
                 )) &&
-            (identical(other.images, images) ||
-                const DeepCollectionEquality().equals(other.images, images)) &&
             (identical(other.isActive, isActive) ||
                 const DeepCollectionEquality().equals(
                   other.isActive,
@@ -3998,13 +4147,12 @@ class PortfolioResponseDTO {
   int get hashCode =>
       const DeepCollectionEquality().hash(title) ^
       const DeepCollectionEquality().hash(description) ^
-      const DeepCollectionEquality().hash(imageUrl) ^
+      const DeepCollectionEquality().hash(image) ^
       const DeepCollectionEquality().hash(projectUrl) ^
       const DeepCollectionEquality().hash($client) ^
       const DeepCollectionEquality().hash(startDate) ^
       const DeepCollectionEquality().hash(endDate) ^
       const DeepCollectionEquality().hash(jobScope) ^
-      const DeepCollectionEquality().hash(images) ^
       const DeepCollectionEquality().hash(isActive) ^
       const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(createdAt) ^
@@ -4017,13 +4165,12 @@ extension $PortfolioResponseDTOExtension on PortfolioResponseDTO {
   PortfolioResponseDTO copyWith({
     String? title,
     String? description,
-    String? imageUrl,
+    List<String>? image,
     String? projectUrl,
     String? $client,
     String? startDate,
     String? endDate,
     String? jobScope,
-    List<String>? images,
     bool? isActive,
     String? id,
     DateTime? createdAt,
@@ -4033,13 +4180,12 @@ extension $PortfolioResponseDTOExtension on PortfolioResponseDTO {
     return PortfolioResponseDTO(
       title: title ?? this.title,
       description: description ?? this.description,
-      imageUrl: imageUrl ?? this.imageUrl,
+      image: image ?? this.image,
       projectUrl: projectUrl ?? this.projectUrl,
       $client: $client ?? this.$client,
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
       jobScope: jobScope ?? this.jobScope,
-      images: images ?? this.images,
       isActive: isActive ?? this.isActive,
       id: id ?? this.id,
       createdAt: createdAt ?? this.createdAt,
@@ -4051,13 +4197,12 @@ extension $PortfolioResponseDTOExtension on PortfolioResponseDTO {
   PortfolioResponseDTO copyWithWrapped({
     Wrapped<String>? title,
     Wrapped<String>? description,
-    Wrapped<String>? imageUrl,
+    Wrapped<List<String>>? image,
     Wrapped<String?>? projectUrl,
     Wrapped<String?>? $client,
     Wrapped<String?>? startDate,
     Wrapped<String?>? endDate,
     Wrapped<String?>? jobScope,
-    Wrapped<List<String>?>? images,
     Wrapped<bool?>? isActive,
     Wrapped<String>? id,
     Wrapped<DateTime?>? createdAt,
@@ -4067,18 +4212,78 @@ extension $PortfolioResponseDTOExtension on PortfolioResponseDTO {
     return PortfolioResponseDTO(
       title: (title != null ? title.value : this.title),
       description: (description != null ? description.value : this.description),
-      imageUrl: (imageUrl != null ? imageUrl.value : this.imageUrl),
+      image: (image != null ? image.value : this.image),
       projectUrl: (projectUrl != null ? projectUrl.value : this.projectUrl),
       $client: ($client != null ? $client.value : this.$client),
       startDate: (startDate != null ? startDate.value : this.startDate),
       endDate: (endDate != null ? endDate.value : this.endDate),
       jobScope: (jobScope != null ? jobScope.value : this.jobScope),
-      images: (images != null ? images.value : this.images),
       isActive: (isActive != null ? isActive.value : this.isActive),
       id: (id != null ? id.value : this.id),
       createdAt: (createdAt != null ? createdAt.value : this.createdAt),
       updatedAt: (updatedAt != null ? updatedAt.value : this.updatedAt),
       category: (category != null ? category.value : this.category),
+    );
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class CreatePortfolioResponseDTO {
+  const CreatePortfolioResponseDTO({required this.message, required this.data});
+
+  factory CreatePortfolioResponseDTO.fromJson(Map<String, dynamic> json) =>
+      _$CreatePortfolioResponseDTOFromJson(json);
+
+  static const toJsonFactory = _$CreatePortfolioResponseDTOToJson;
+  Map<String, dynamic> toJson() => _$CreatePortfolioResponseDTOToJson(this);
+
+  @JsonKey(name: 'message')
+  final String message;
+  @JsonKey(name: 'data')
+  final PortfolioResponseDTO data;
+  static const fromJsonFactory = _$CreatePortfolioResponseDTOFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is CreatePortfolioResponseDTO &&
+            (identical(other.message, message) ||
+                const DeepCollectionEquality().equals(
+                  other.message,
+                  message,
+                )) &&
+            (identical(other.data, data) ||
+                const DeepCollectionEquality().equals(other.data, data)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(message) ^
+      const DeepCollectionEquality().hash(data) ^
+      runtimeType.hashCode;
+}
+
+extension $CreatePortfolioResponseDTOExtension on CreatePortfolioResponseDTO {
+  CreatePortfolioResponseDTO copyWith({
+    String? message,
+    PortfolioResponseDTO? data,
+  }) {
+    return CreatePortfolioResponseDTO(
+      message: message ?? this.message,
+      data: data ?? this.data,
+    );
+  }
+
+  CreatePortfolioResponseDTO copyWithWrapped({
+    Wrapped<String>? message,
+    Wrapped<PortfolioResponseDTO>? data,
+  }) {
+    return CreatePortfolioResponseDTO(
+      message: (message != null ? message.value : this.message),
+      data: (data != null ? data.value : this.data),
     );
   }
 }
@@ -5192,6 +5397,289 @@ extension $GetAllLeadsResponseDTOExtension on GetAllLeadsResponseDTO {
 }
 
 @JsonSerializable(explicitToJson: true)
+class CreateClientDTO {
+  const CreateClientDTO({
+    required this.name,
+    required this.company,
+    required this.email,
+    this.phone,
+    this.totalProjects,
+    this.status,
+  });
+
+  factory CreateClientDTO.fromJson(Map<String, dynamic> json) =>
+      _$CreateClientDTOFromJson(json);
+
+  static const toJsonFactory = _$CreateClientDTOToJson;
+  Map<String, dynamic> toJson() => _$CreateClientDTOToJson(this);
+
+  @JsonKey(name: 'name')
+  final String name;
+  @JsonKey(name: 'company')
+  final String company;
+  @JsonKey(name: 'email')
+  final String email;
+  @JsonKey(name: 'phone')
+  final String? phone;
+  @JsonKey(name: 'totalProjects')
+  final double? totalProjects;
+  @JsonKey(
+    name: 'status',
+    toJson: createClientDTOStatusNullableToJson,
+    fromJson: createClientDTOStatusStatusNullableFromJson,
+  )
+  final enums.CreateClientDTOStatus? status;
+  static enums.CreateClientDTOStatus?
+  createClientDTOStatusStatusNullableFromJson(Object? value) =>
+      createClientDTOStatusNullableFromJson(
+        value,
+        enums.CreateClientDTOStatus.prospect,
+      );
+
+  static const fromJsonFactory = _$CreateClientDTOFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is CreateClientDTO &&
+            (identical(other.name, name) ||
+                const DeepCollectionEquality().equals(other.name, name)) &&
+            (identical(other.company, company) ||
+                const DeepCollectionEquality().equals(
+                  other.company,
+                  company,
+                )) &&
+            (identical(other.email, email) ||
+                const DeepCollectionEquality().equals(other.email, email)) &&
+            (identical(other.phone, phone) ||
+                const DeepCollectionEquality().equals(other.phone, phone)) &&
+            (identical(other.totalProjects, totalProjects) ||
+                const DeepCollectionEquality().equals(
+                  other.totalProjects,
+                  totalProjects,
+                )) &&
+            (identical(other.status, status) ||
+                const DeepCollectionEquality().equals(other.status, status)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(name) ^
+      const DeepCollectionEquality().hash(company) ^
+      const DeepCollectionEquality().hash(email) ^
+      const DeepCollectionEquality().hash(phone) ^
+      const DeepCollectionEquality().hash(totalProjects) ^
+      const DeepCollectionEquality().hash(status) ^
+      runtimeType.hashCode;
+}
+
+extension $CreateClientDTOExtension on CreateClientDTO {
+  CreateClientDTO copyWith({
+    String? name,
+    String? company,
+    String? email,
+    String? phone,
+    double? totalProjects,
+    enums.CreateClientDTOStatus? status,
+  }) {
+    return CreateClientDTO(
+      name: name ?? this.name,
+      company: company ?? this.company,
+      email: email ?? this.email,
+      phone: phone ?? this.phone,
+      totalProjects: totalProjects ?? this.totalProjects,
+      status: status ?? this.status,
+    );
+  }
+
+  CreateClientDTO copyWithWrapped({
+    Wrapped<String>? name,
+    Wrapped<String>? company,
+    Wrapped<String>? email,
+    Wrapped<String?>? phone,
+    Wrapped<double?>? totalProjects,
+    Wrapped<enums.CreateClientDTOStatus?>? status,
+  }) {
+    return CreateClientDTO(
+      name: (name != null ? name.value : this.name),
+      company: (company != null ? company.value : this.company),
+      email: (email != null ? email.value : this.email),
+      phone: (phone != null ? phone.value : this.phone),
+      totalProjects: (totalProjects != null
+          ? totalProjects.value
+          : this.totalProjects),
+      status: (status != null ? status.value : this.status),
+    );
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class UpdateClientDTO {
+  const UpdateClientDTO({
+    this.name,
+    this.company,
+    this.email,
+    this.phone,
+    this.totalProjects,
+    this.status,
+  });
+
+  factory UpdateClientDTO.fromJson(Map<String, dynamic> json) =>
+      _$UpdateClientDTOFromJson(json);
+
+  static const toJsonFactory = _$UpdateClientDTOToJson;
+  Map<String, dynamic> toJson() => _$UpdateClientDTOToJson(this);
+
+  @JsonKey(name: 'name')
+  final String? name;
+  @JsonKey(name: 'company')
+  final String? company;
+  @JsonKey(name: 'email')
+  final String? email;
+  @JsonKey(name: 'phone')
+  final String? phone;
+  @JsonKey(name: 'totalProjects')
+  final double? totalProjects;
+  @JsonKey(
+    name: 'status',
+    toJson: updateClientDTOStatusNullableToJson,
+    fromJson: updateClientDTOStatusStatusNullableFromJson,
+  )
+  final enums.UpdateClientDTOStatus? status;
+  static enums.UpdateClientDTOStatus?
+  updateClientDTOStatusStatusNullableFromJson(Object? value) =>
+      updateClientDTOStatusNullableFromJson(
+        value,
+        enums.UpdateClientDTOStatus.prospect,
+      );
+
+  static const fromJsonFactory = _$UpdateClientDTOFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is UpdateClientDTO &&
+            (identical(other.name, name) ||
+                const DeepCollectionEquality().equals(other.name, name)) &&
+            (identical(other.company, company) ||
+                const DeepCollectionEquality().equals(
+                  other.company,
+                  company,
+                )) &&
+            (identical(other.email, email) ||
+                const DeepCollectionEquality().equals(other.email, email)) &&
+            (identical(other.phone, phone) ||
+                const DeepCollectionEquality().equals(other.phone, phone)) &&
+            (identical(other.totalProjects, totalProjects) ||
+                const DeepCollectionEquality().equals(
+                  other.totalProjects,
+                  totalProjects,
+                )) &&
+            (identical(other.status, status) ||
+                const DeepCollectionEquality().equals(other.status, status)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(name) ^
+      const DeepCollectionEquality().hash(company) ^
+      const DeepCollectionEquality().hash(email) ^
+      const DeepCollectionEquality().hash(phone) ^
+      const DeepCollectionEquality().hash(totalProjects) ^
+      const DeepCollectionEquality().hash(status) ^
+      runtimeType.hashCode;
+}
+
+extension $UpdateClientDTOExtension on UpdateClientDTO {
+  UpdateClientDTO copyWith({
+    String? name,
+    String? company,
+    String? email,
+    String? phone,
+    double? totalProjects,
+    enums.UpdateClientDTOStatus? status,
+  }) {
+    return UpdateClientDTO(
+      name: name ?? this.name,
+      company: company ?? this.company,
+      email: email ?? this.email,
+      phone: phone ?? this.phone,
+      totalProjects: totalProjects ?? this.totalProjects,
+      status: status ?? this.status,
+    );
+  }
+
+  UpdateClientDTO copyWithWrapped({
+    Wrapped<String?>? name,
+    Wrapped<String?>? company,
+    Wrapped<String?>? email,
+    Wrapped<String?>? phone,
+    Wrapped<double?>? totalProjects,
+    Wrapped<enums.UpdateClientDTOStatus?>? status,
+  }) {
+    return UpdateClientDTO(
+      name: (name != null ? name.value : this.name),
+      company: (company != null ? company.value : this.company),
+      email: (email != null ? email.value : this.email),
+      phone: (phone != null ? phone.value : this.phone),
+      totalProjects: (totalProjects != null
+          ? totalProjects.value
+          : this.totalProjects),
+      status: (status != null ? status.value : this.status),
+    );
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class ImagesUploadPost$RequestBody {
+  const ImagesUploadPost$RequestBody({required this.file});
+
+  factory ImagesUploadPost$RequestBody.fromJson(Map<String, dynamic> json) =>
+      _$ImagesUploadPost$RequestBodyFromJson(json);
+
+  static const toJsonFactory = _$ImagesUploadPost$RequestBodyToJson;
+  Map<String, dynamic> toJson() => _$ImagesUploadPost$RequestBodyToJson(this);
+
+  @JsonKey(name: 'file')
+  final String file;
+  static const fromJsonFactory = _$ImagesUploadPost$RequestBodyFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is ImagesUploadPost$RequestBody &&
+            (identical(other.file, file) ||
+                const DeepCollectionEquality().equals(other.file, file)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(file) ^ runtimeType.hashCode;
+}
+
+extension $ImagesUploadPost$RequestBodyExtension
+    on ImagesUploadPost$RequestBody {
+  ImagesUploadPost$RequestBody copyWith({String? file}) {
+    return ImagesUploadPost$RequestBody(file: file ?? this.file);
+  }
+
+  ImagesUploadPost$RequestBody copyWithWrapped({Wrapped<String>? file}) {
+    return ImagesUploadPost$RequestBody(
+      file: (file != null ? file.value : this.file),
+    );
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
 class CreateProductDTO$VariantImages$Item {
   const CreateProductDTO$VariantImages$Item({
     this.image,
@@ -5581,6 +6069,162 @@ updateFeedbackStatusDTOStatusNullableListFromJson(
       .toList();
 }
 
+String? createClientDTOStatusNullableToJson(
+  enums.CreateClientDTOStatus? createClientDTOStatus,
+) {
+  return createClientDTOStatus?.value;
+}
+
+String? createClientDTOStatusToJson(
+  enums.CreateClientDTOStatus createClientDTOStatus,
+) {
+  return createClientDTOStatus.value;
+}
+
+enums.CreateClientDTOStatus createClientDTOStatusFromJson(
+  Object? createClientDTOStatus, [
+  enums.CreateClientDTOStatus? defaultValue,
+]) {
+  return enums.CreateClientDTOStatus.values.firstWhereOrNull(
+        (e) => e.value == createClientDTOStatus,
+      ) ??
+      defaultValue ??
+      enums.CreateClientDTOStatus.swaggerGeneratedUnknown;
+}
+
+enums.CreateClientDTOStatus? createClientDTOStatusNullableFromJson(
+  Object? createClientDTOStatus, [
+  enums.CreateClientDTOStatus? defaultValue,
+]) {
+  if (createClientDTOStatus == null) {
+    return null;
+  }
+  return enums.CreateClientDTOStatus.values.firstWhereOrNull(
+        (e) => e.value == createClientDTOStatus,
+      ) ??
+      defaultValue;
+}
+
+String createClientDTOStatusExplodedListToJson(
+  List<enums.CreateClientDTOStatus>? createClientDTOStatus,
+) {
+  return createClientDTOStatus?.map((e) => e.value!).join(',') ?? '';
+}
+
+List<String> createClientDTOStatusListToJson(
+  List<enums.CreateClientDTOStatus>? createClientDTOStatus,
+) {
+  if (createClientDTOStatus == null) {
+    return [];
+  }
+
+  return createClientDTOStatus.map((e) => e.value!).toList();
+}
+
+List<enums.CreateClientDTOStatus> createClientDTOStatusListFromJson(
+  List? createClientDTOStatus, [
+  List<enums.CreateClientDTOStatus>? defaultValue,
+]) {
+  if (createClientDTOStatus == null) {
+    return defaultValue ?? [];
+  }
+
+  return createClientDTOStatus
+      .map((e) => createClientDTOStatusFromJson(e.toString()))
+      .toList();
+}
+
+List<enums.CreateClientDTOStatus>? createClientDTOStatusNullableListFromJson(
+  List? createClientDTOStatus, [
+  List<enums.CreateClientDTOStatus>? defaultValue,
+]) {
+  if (createClientDTOStatus == null) {
+    return defaultValue;
+  }
+
+  return createClientDTOStatus
+      .map((e) => createClientDTOStatusFromJson(e.toString()))
+      .toList();
+}
+
+String? updateClientDTOStatusNullableToJson(
+  enums.UpdateClientDTOStatus? updateClientDTOStatus,
+) {
+  return updateClientDTOStatus?.value;
+}
+
+String? updateClientDTOStatusToJson(
+  enums.UpdateClientDTOStatus updateClientDTOStatus,
+) {
+  return updateClientDTOStatus.value;
+}
+
+enums.UpdateClientDTOStatus updateClientDTOStatusFromJson(
+  Object? updateClientDTOStatus, [
+  enums.UpdateClientDTOStatus? defaultValue,
+]) {
+  return enums.UpdateClientDTOStatus.values.firstWhereOrNull(
+        (e) => e.value == updateClientDTOStatus,
+      ) ??
+      defaultValue ??
+      enums.UpdateClientDTOStatus.swaggerGeneratedUnknown;
+}
+
+enums.UpdateClientDTOStatus? updateClientDTOStatusNullableFromJson(
+  Object? updateClientDTOStatus, [
+  enums.UpdateClientDTOStatus? defaultValue,
+]) {
+  if (updateClientDTOStatus == null) {
+    return null;
+  }
+  return enums.UpdateClientDTOStatus.values.firstWhereOrNull(
+        (e) => e.value == updateClientDTOStatus,
+      ) ??
+      defaultValue;
+}
+
+String updateClientDTOStatusExplodedListToJson(
+  List<enums.UpdateClientDTOStatus>? updateClientDTOStatus,
+) {
+  return updateClientDTOStatus?.map((e) => e.value!).join(',') ?? '';
+}
+
+List<String> updateClientDTOStatusListToJson(
+  List<enums.UpdateClientDTOStatus>? updateClientDTOStatus,
+) {
+  if (updateClientDTOStatus == null) {
+    return [];
+  }
+
+  return updateClientDTOStatus.map((e) => e.value!).toList();
+}
+
+List<enums.UpdateClientDTOStatus> updateClientDTOStatusListFromJson(
+  List? updateClientDTOStatus, [
+  List<enums.UpdateClientDTOStatus>? defaultValue,
+]) {
+  if (updateClientDTOStatus == null) {
+    return defaultValue ?? [];
+  }
+
+  return updateClientDTOStatus
+      .map((e) => updateClientDTOStatusFromJson(e.toString()))
+      .toList();
+}
+
+List<enums.UpdateClientDTOStatus>? updateClientDTOStatusNullableListFromJson(
+  List? updateClientDTOStatus, [
+  List<enums.UpdateClientDTOStatus>? defaultValue,
+]) {
+  if (updateClientDTOStatus == null) {
+    return defaultValue;
+  }
+
+  return updateClientDTOStatus
+      .map((e) => updateClientDTOStatusFromJson(e.toString()))
+      .toList();
+}
+
 String? customerFeedbackByStatusGetStatusNullableToJson(
   enums.CustomerFeedbackByStatusGetStatus? customerFeedbackByStatusGetStatus,
 ) {
@@ -5663,6 +6307,322 @@ customerFeedbackByStatusGetStatusNullableListFromJson(
 
   return customerFeedbackByStatusGetStatus
       .map((e) => customerFeedbackByStatusGetStatusFromJson(e.toString()))
+      .toList();
+}
+
+String? apiClientsGetStatusNullableToJson(
+  enums.ApiClientsGetStatus? apiClientsGetStatus,
+) {
+  return apiClientsGetStatus?.value;
+}
+
+String? apiClientsGetStatusToJson(
+  enums.ApiClientsGetStatus apiClientsGetStatus,
+) {
+  return apiClientsGetStatus.value;
+}
+
+enums.ApiClientsGetStatus apiClientsGetStatusFromJson(
+  Object? apiClientsGetStatus, [
+  enums.ApiClientsGetStatus? defaultValue,
+]) {
+  return enums.ApiClientsGetStatus.values.firstWhereOrNull(
+        (e) => e.value == apiClientsGetStatus,
+      ) ??
+      defaultValue ??
+      enums.ApiClientsGetStatus.swaggerGeneratedUnknown;
+}
+
+enums.ApiClientsGetStatus? apiClientsGetStatusNullableFromJson(
+  Object? apiClientsGetStatus, [
+  enums.ApiClientsGetStatus? defaultValue,
+]) {
+  if (apiClientsGetStatus == null) {
+    return null;
+  }
+  return enums.ApiClientsGetStatus.values.firstWhereOrNull(
+        (e) => e.value == apiClientsGetStatus,
+      ) ??
+      defaultValue;
+}
+
+String apiClientsGetStatusExplodedListToJson(
+  List<enums.ApiClientsGetStatus>? apiClientsGetStatus,
+) {
+  return apiClientsGetStatus?.map((e) => e.value!).join(',') ?? '';
+}
+
+List<String> apiClientsGetStatusListToJson(
+  List<enums.ApiClientsGetStatus>? apiClientsGetStatus,
+) {
+  if (apiClientsGetStatus == null) {
+    return [];
+  }
+
+  return apiClientsGetStatus.map((e) => e.value!).toList();
+}
+
+List<enums.ApiClientsGetStatus> apiClientsGetStatusListFromJson(
+  List? apiClientsGetStatus, [
+  List<enums.ApiClientsGetStatus>? defaultValue,
+]) {
+  if (apiClientsGetStatus == null) {
+    return defaultValue ?? [];
+  }
+
+  return apiClientsGetStatus
+      .map((e) => apiClientsGetStatusFromJson(e.toString()))
+      .toList();
+}
+
+List<enums.ApiClientsGetStatus>? apiClientsGetStatusNullableListFromJson(
+  List? apiClientsGetStatus, [
+  List<enums.ApiClientsGetStatus>? defaultValue,
+]) {
+  if (apiClientsGetStatus == null) {
+    return defaultValue;
+  }
+
+  return apiClientsGetStatus
+      .map((e) => apiClientsGetStatusFromJson(e.toString()))
+      .toList();
+}
+
+String? apiClientsGetSortOrderNullableToJson(
+  enums.ApiClientsGetSortOrder? apiClientsGetSortOrder,
+) {
+  return apiClientsGetSortOrder?.value;
+}
+
+String? apiClientsGetSortOrderToJson(
+  enums.ApiClientsGetSortOrder apiClientsGetSortOrder,
+) {
+  return apiClientsGetSortOrder.value;
+}
+
+enums.ApiClientsGetSortOrder apiClientsGetSortOrderFromJson(
+  Object? apiClientsGetSortOrder, [
+  enums.ApiClientsGetSortOrder? defaultValue,
+]) {
+  return enums.ApiClientsGetSortOrder.values.firstWhereOrNull(
+        (e) => e.value == apiClientsGetSortOrder,
+      ) ??
+      defaultValue ??
+      enums.ApiClientsGetSortOrder.swaggerGeneratedUnknown;
+}
+
+enums.ApiClientsGetSortOrder? apiClientsGetSortOrderNullableFromJson(
+  Object? apiClientsGetSortOrder, [
+  enums.ApiClientsGetSortOrder? defaultValue,
+]) {
+  if (apiClientsGetSortOrder == null) {
+    return null;
+  }
+  return enums.ApiClientsGetSortOrder.values.firstWhereOrNull(
+        (e) => e.value == apiClientsGetSortOrder,
+      ) ??
+      defaultValue;
+}
+
+String apiClientsGetSortOrderExplodedListToJson(
+  List<enums.ApiClientsGetSortOrder>? apiClientsGetSortOrder,
+) {
+  return apiClientsGetSortOrder?.map((e) => e.value!).join(',') ?? '';
+}
+
+List<String> apiClientsGetSortOrderListToJson(
+  List<enums.ApiClientsGetSortOrder>? apiClientsGetSortOrder,
+) {
+  if (apiClientsGetSortOrder == null) {
+    return [];
+  }
+
+  return apiClientsGetSortOrder.map((e) => e.value!).toList();
+}
+
+List<enums.ApiClientsGetSortOrder> apiClientsGetSortOrderListFromJson(
+  List? apiClientsGetSortOrder, [
+  List<enums.ApiClientsGetSortOrder>? defaultValue,
+]) {
+  if (apiClientsGetSortOrder == null) {
+    return defaultValue ?? [];
+  }
+
+  return apiClientsGetSortOrder
+      .map((e) => apiClientsGetSortOrderFromJson(e.toString()))
+      .toList();
+}
+
+List<enums.ApiClientsGetSortOrder>? apiClientsGetSortOrderNullableListFromJson(
+  List? apiClientsGetSortOrder, [
+  List<enums.ApiClientsGetSortOrder>? defaultValue,
+]) {
+  if (apiClientsGetSortOrder == null) {
+    return defaultValue;
+  }
+
+  return apiClientsGetSortOrder
+      .map((e) => apiClientsGetSortOrderFromJson(e.toString()))
+      .toList();
+}
+
+String? apiClientsSearchGetStatusNullableToJson(
+  enums.ApiClientsSearchGetStatus? apiClientsSearchGetStatus,
+) {
+  return apiClientsSearchGetStatus?.value;
+}
+
+String? apiClientsSearchGetStatusToJson(
+  enums.ApiClientsSearchGetStatus apiClientsSearchGetStatus,
+) {
+  return apiClientsSearchGetStatus.value;
+}
+
+enums.ApiClientsSearchGetStatus apiClientsSearchGetStatusFromJson(
+  Object? apiClientsSearchGetStatus, [
+  enums.ApiClientsSearchGetStatus? defaultValue,
+]) {
+  return enums.ApiClientsSearchGetStatus.values.firstWhereOrNull(
+        (e) => e.value == apiClientsSearchGetStatus,
+      ) ??
+      defaultValue ??
+      enums.ApiClientsSearchGetStatus.swaggerGeneratedUnknown;
+}
+
+enums.ApiClientsSearchGetStatus? apiClientsSearchGetStatusNullableFromJson(
+  Object? apiClientsSearchGetStatus, [
+  enums.ApiClientsSearchGetStatus? defaultValue,
+]) {
+  if (apiClientsSearchGetStatus == null) {
+    return null;
+  }
+  return enums.ApiClientsSearchGetStatus.values.firstWhereOrNull(
+        (e) => e.value == apiClientsSearchGetStatus,
+      ) ??
+      defaultValue;
+}
+
+String apiClientsSearchGetStatusExplodedListToJson(
+  List<enums.ApiClientsSearchGetStatus>? apiClientsSearchGetStatus,
+) {
+  return apiClientsSearchGetStatus?.map((e) => e.value!).join(',') ?? '';
+}
+
+List<String> apiClientsSearchGetStatusListToJson(
+  List<enums.ApiClientsSearchGetStatus>? apiClientsSearchGetStatus,
+) {
+  if (apiClientsSearchGetStatus == null) {
+    return [];
+  }
+
+  return apiClientsSearchGetStatus.map((e) => e.value!).toList();
+}
+
+List<enums.ApiClientsSearchGetStatus> apiClientsSearchGetStatusListFromJson(
+  List? apiClientsSearchGetStatus, [
+  List<enums.ApiClientsSearchGetStatus>? defaultValue,
+]) {
+  if (apiClientsSearchGetStatus == null) {
+    return defaultValue ?? [];
+  }
+
+  return apiClientsSearchGetStatus
+      .map((e) => apiClientsSearchGetStatusFromJson(e.toString()))
+      .toList();
+}
+
+List<enums.ApiClientsSearchGetStatus>?
+apiClientsSearchGetStatusNullableListFromJson(
+  List? apiClientsSearchGetStatus, [
+  List<enums.ApiClientsSearchGetStatus>? defaultValue,
+]) {
+  if (apiClientsSearchGetStatus == null) {
+    return defaultValue;
+  }
+
+  return apiClientsSearchGetStatus
+      .map((e) => apiClientsSearchGetStatusFromJson(e.toString()))
+      .toList();
+}
+
+String? apiClientsSearchGetSortOrderNullableToJson(
+  enums.ApiClientsSearchGetSortOrder? apiClientsSearchGetSortOrder,
+) {
+  return apiClientsSearchGetSortOrder?.value;
+}
+
+String? apiClientsSearchGetSortOrderToJson(
+  enums.ApiClientsSearchGetSortOrder apiClientsSearchGetSortOrder,
+) {
+  return apiClientsSearchGetSortOrder.value;
+}
+
+enums.ApiClientsSearchGetSortOrder apiClientsSearchGetSortOrderFromJson(
+  Object? apiClientsSearchGetSortOrder, [
+  enums.ApiClientsSearchGetSortOrder? defaultValue,
+]) {
+  return enums.ApiClientsSearchGetSortOrder.values.firstWhereOrNull(
+        (e) => e.value == apiClientsSearchGetSortOrder,
+      ) ??
+      defaultValue ??
+      enums.ApiClientsSearchGetSortOrder.swaggerGeneratedUnknown;
+}
+
+enums.ApiClientsSearchGetSortOrder?
+apiClientsSearchGetSortOrderNullableFromJson(
+  Object? apiClientsSearchGetSortOrder, [
+  enums.ApiClientsSearchGetSortOrder? defaultValue,
+]) {
+  if (apiClientsSearchGetSortOrder == null) {
+    return null;
+  }
+  return enums.ApiClientsSearchGetSortOrder.values.firstWhereOrNull(
+        (e) => e.value == apiClientsSearchGetSortOrder,
+      ) ??
+      defaultValue;
+}
+
+String apiClientsSearchGetSortOrderExplodedListToJson(
+  List<enums.ApiClientsSearchGetSortOrder>? apiClientsSearchGetSortOrder,
+) {
+  return apiClientsSearchGetSortOrder?.map((e) => e.value!).join(',') ?? '';
+}
+
+List<String> apiClientsSearchGetSortOrderListToJson(
+  List<enums.ApiClientsSearchGetSortOrder>? apiClientsSearchGetSortOrder,
+) {
+  if (apiClientsSearchGetSortOrder == null) {
+    return [];
+  }
+
+  return apiClientsSearchGetSortOrder.map((e) => e.value!).toList();
+}
+
+List<enums.ApiClientsSearchGetSortOrder>
+apiClientsSearchGetSortOrderListFromJson(
+  List? apiClientsSearchGetSortOrder, [
+  List<enums.ApiClientsSearchGetSortOrder>? defaultValue,
+]) {
+  if (apiClientsSearchGetSortOrder == null) {
+    return defaultValue ?? [];
+  }
+
+  return apiClientsSearchGetSortOrder
+      .map((e) => apiClientsSearchGetSortOrderFromJson(e.toString()))
+      .toList();
+}
+
+List<enums.ApiClientsSearchGetSortOrder>?
+apiClientsSearchGetSortOrderNullableListFromJson(
+  List? apiClientsSearchGetSortOrder, [
+  List<enums.ApiClientsSearchGetSortOrder>? defaultValue,
+]) {
+  if (apiClientsSearchGetSortOrder == null) {
+    return defaultValue;
+  }
+
+  return apiClientsSearchGetSortOrder
+      .map((e) => apiClientsSearchGetSortOrderFromJson(e.toString()))
       .toList();
 }
 

@@ -54,6 +54,12 @@ const List<NavItem> navItems = [
     path: '/portfolio-categories',
   ),
   NavItem(
+    title: 'Clients',
+    icon: Iconsax.profile_2user,
+    activeIcon: Iconsax.profile_2user5,
+    path: '/clients',
+  ),
+  NavItem(
     title: 'Jobs',
     icon: Iconsax.briefcase,
     activeIcon: Iconsax.briefcase5,
@@ -88,41 +94,40 @@ class _SidebarNavState extends ConsumerState<SidebarNav> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final currentPath = GoRouterState.of(context).uri.path;
 
-    return SafeArea(
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: AppSpacing.animNormal),
-        width: widget.isCollapsed
-            ? AppSpacing.sidebarCollapsedWidth
-            : AppSpacing.sidebarWidth,
-        decoration: BoxDecoration(
-          color: isDark ? AppColors.darkSurface : AppColors.lightSurface,
-          border: Border(
-            right: BorderSide(
-              color: isDark ? AppColors.darkBorder : AppColors.lightBorder,
-            ),
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: AppSpacing.animNormal),
+      width: widget.isCollapsed
+          ? AppSpacing.sidebarCollapsedWidth
+          : AppSpacing.sidebarWidth,
+      decoration: BoxDecoration(
+        color: isDark ? AppColors.darkSurface : AppColors.lightSurface,
+        border: Border(
+          right: BorderSide(
+            color: isDark ? AppColors.darkBorder : AppColors.lightBorder,
           ),
         ),
+      ),
+      child: SafeArea(
         child: Column(
           children: [
             // Logo and toggle
             _buildHeader(isDark),
-      
+
             const Divider(height: 1),
-      
+
             // Nav items
             Expanded(
               child: ListView(
                 padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
                 children: navItems.map((item) {
-                  final isActive = currentPath == item.path ||
-                      (item.path != '/' && currentPath.startsWith(item.path));
+                  final isActive = currentPath == item.path;
                   return _buildNavItem(item, isActive, isDark);
                 }).toList(),
               ),
             ),
-      
+
             const Divider(height: 1),
-      
+
             // Theme toggle at bottom
             _buildThemeToggle(isDark),
           ],

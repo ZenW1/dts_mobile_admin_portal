@@ -15,7 +15,7 @@ abstract class PortfolioRepository {
   Future<GetAllPortfoliosResponseDTO> getFeaturedPortfolios();
 
   /// Create a new portfolio
-  Future<PortfolioResponseDTO> createPortfolio(CreatePortfolioDTO dto);
+  Future<void> createPortfolio(CreatePortfolioDTO dto);
 
   /// Update an existing portfolio
   Future<UpdatePortfolioResponseDTO> updatePortfolio(

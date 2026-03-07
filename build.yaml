@@ -5,7 +5,7 @@ targets:
         options:
           input_folder: "lib/swagger/"
           input_urls:
-            - url: "http://192.168.168.168:3000/swagger/v1/swagger.json"
+            - url: "http://192.168.168.174:3000/swagger/v1/swagger.json"
           #          include_paths:
           #            - '/Mobile/'
           output_folder: "lib/generated_code/"

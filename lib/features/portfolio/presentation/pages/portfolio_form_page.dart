@@ -5,9 +5,10 @@ import 'package:iconsax/iconsax.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/gradient_button.dart';
-import '../../../../core/widgets/custom_text_field.dart';
+import '../../../../core/widgets/widgets.dart';
 import '../../../../core/utils/validators.dart';
 import 'package:dts_admin_portal/generated_code/swagger.swagger.dart';
+import '../../../../core/network/upload_service.dart';
 import '../providers/portfolio_provider.dart';
 
 /// Portfolio create/edit form page
@@ -26,9 +27,11 @@ class _PortfolioFormPageState extends ConsumerState<PortfolioFormPage> {
   final _descriptionController = TextEditingController();
   final _clientNameController = TextEditingController();
   final _imageUrlController = TextEditingController();
+  final _jobScopeController = TextEditingController();
+  List<String> _projectImages = [];
 
   String? _selectedCategoryId;
-  DateTime? _projectDate;
+  DateTimeRange? _projectDateRange;
   bool _isActive = false;
   bool _isLoading = false;
   bool _isEditing = false;
@@ -50,11 +53,29 @@ class _PortfolioFormPageState extends ConsumerState<PortfolioFormPage> {
         _titleController.text = portfolio.title;
         _descriptionController.text = portfolio.description;
         _clientNameController.text = portfolio.$client ?? '';
-        _imageUrlController.text = portfolio.imageUrl;
+        _imageUrlController.text =
+            portfolio.image.isNotEmpty ? portfolio.image.first : '';
         _selectedCategoryId = portfolio.category?.id;
-        _projectDate = portfolio.startDate != null
+        _jobScopeController.text = portfolio.jobScope ?? '';
+        _projectImages = List.from(
+            portfolio.image.length > 1 ? portfolio.image.sublist(1) : []);
+
+        DateTime? parsedStart = portfolio.startDate != null
             ? DateTime.tryParse(portfolio.startDate!)
             : null;
+        DateTime? parsedEnd = portfolio.endDate != null
+            ? DateTime.tryParse(portfolio.endDate!)
+            : null;
+
+        if (parsedStart != null && parsedEnd != null) {
+          _projectDateRange = DateTimeRange(start: parsedStart, end: parsedEnd);
+        } else if (parsedStart != null) {
+          _projectDateRange =
+              DateTimeRange(start: parsedStart, end: parsedStart);
+        } else {
+          _projectDateRange = null;
+        }
+
         _isActive = portfolio.isActive ?? false;
       });
     }
@@ -66,6 +87,7 @@ class _PortfolioFormPageState extends ConsumerState<PortfolioFormPage> {
     _descriptionController.dispose();
     _clientNameController.dispose();
     _imageUrlController.dispose();
+    _jobScopeController.dispose();
     super.dispose();
   }
 
@@ -134,13 +156,45 @@ class _PortfolioFormPageState extends ConsumerState<PortfolioFormPage> {
                     ),
                     const SizedBox(height: AppSpacing.lg),
 
-                    // Image URL
-                    CustomTextField(
-                      controller: _imageUrlController,
-                      label: 'Image URL',
-                      hint: 'Enter image URL',
-                      validator: (value) =>
-                          Validators.required(value, fieldName: 'Image URL'),
+                    // Main Project Image
+                    CustomImagePicker(
+                      label: 'Project Image',
+                      hint: 'Select the main image for the project',
+                      isMultiple: false,
+                      uploadImmediately: false,
+                      initialImages: _imageUrlController.text.isNotEmpty
+                          ? [_imageUrlController.text]
+                          : [],
+                      onImagesChanged: (images) {
+                        setState(() {
+                          _imageUrlController.text =
+                              images.isNotEmpty ? images.first : '';
+                        });
+                      },
+                    ),
+                    // if (_imageUrlController.text.isEmpty)
+                    //   const Padding(
+                    //     padding: EdgeInsets.only(top: 8.0),
+                    //     child: Text(
+                    //       'Project image is required',
+                    //       style:
+                    //           TextStyle(color: AppColors.error, fontSize: 12),
+                    //     ),
+                    //   ),
+                    const SizedBox(height: AppSpacing.lg),
+
+                    // Project Image Gallery
+                    CustomImagePicker(
+                      label: 'Project Gallery',
+                      hint: 'Select additional images for this project',
+                      isMultiple: true,
+                      uploadImmediately: false,
+                      initialImages: _projectImages,
+                      onImagesChanged: (images) {
+                        setState(() {
+                          _projectImages = images;
+                        });
+                      },
                     ),
                     const SizedBox(height: AppSpacing.lg),
 
@@ -149,6 +203,14 @@ class _PortfolioFormPageState extends ConsumerState<PortfolioFormPage> {
                       controller: _clientNameController,
                       label: 'Client Name',
                       hint: 'Enter client name (optional)',
+                    ),
+                    const SizedBox(height: AppSpacing.lg),
+
+                    // Job Scope
+                    CustomTextField(
+                      controller: _jobScopeController,
+                      label: 'Job Scope',
+                      hint: 'Enter job scope (e.g. Mobile App Development)',
                     ),
                     const SizedBox(height: AppSpacing.lg),
 
@@ -210,15 +272,15 @@ class _PortfolioFormPageState extends ConsumerState<PortfolioFormPage> {
                     const SizedBox(height: AppSpacing.sm),
                     InkWell(
                       onTap: () async {
-                        final date = await showDatePicker(
+                        final dateRange = await showDateRangePicker(
                           context: context,
-                          initialDate: _projectDate ?? DateTime.now(),
+                          initialDateRange: _projectDateRange,
                           firstDate: DateTime(2000),
                           lastDate:
-                              DateTime.now().add(const Duration(days: 365)),
+                              DateTime.now().add(const Duration(days: 365 * 5)),
                         );
-                        if (date != null) {
-                          setState(() => _projectDate = date);
+                        if (dateRange != null) {
+                          setState(() => _projectDateRange = dateRange);
                         }
                       },
                       child: Container(
@@ -246,11 +308,11 @@ class _PortfolioFormPageState extends ConsumerState<PortfolioFormPage> {
                             ),
                             const SizedBox(width: AppSpacing.md),
                             Text(
-                              _projectDate != null
-                                  ? '${_projectDate!.day}/${_projectDate!.month}/${_projectDate!.year}'
-                                  : 'Select date (optional)',
+                              _projectDateRange != null
+                                  ? '${_projectDateRange!.start.day}/${_projectDateRange!.start.month}/${_projectDateRange!.start.year} - ${_projectDateRange!.end.day}/${_projectDateRange!.end.month}/${_projectDateRange!.end.year}'
+                                  : 'Select date range (optional)',
                               style: TextStyle(
-                                color: _projectDate != null
+                                color: _projectDateRange != null
                                     ? (isDark
                                         ? AppColors.darkText
                                         : AppColors.lightText)
@@ -363,21 +425,64 @@ class _PortfolioFormPageState extends ConsumerState<PortfolioFormPage> {
   Future<void> _submitForm() async {
     if (!_formKey.currentState!.validate()) return;
 
+    if (_imageUrlController.text.trim().isEmpty) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Please select a project image'),
+            backgroundColor: AppColors.error,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+      return;
+    }
+
     setState(() => _isLoading = true);
 
     try {
+      final uploadService = UploadService();
+      String mainImageUrl = _imageUrlController.text.trim();
+      List<String> galleryUrls = [];
+
+      // Upload main image if it's a local path
+      if (!mainImageUrl.startsWith('http://') &&
+          !mainImageUrl.startsWith('https://')) {
+        final url = await uploadService.uploadImageBytes(mainImageUrl);
+        if (url == null) {
+          throw Exception('Failed to upload main project image.');
+        }
+        mainImageUrl = url;
+      }
+
+      // Upload gallery images if they are local paths
+      for (String path in _projectImages) {
+        if (!path.startsWith('http://') && !path.startsWith('https://')) {
+          final url = await uploadService.uploadImageBytes(path);
+          if (url == null) throw Exception('Failed to upload a gallery image.');
+          galleryUrls.add(url);
+        } else {
+          galleryUrls.add(path);
+        }
+      }
+
       final dto = CreatePortfolioDTO(
         title: _titleController.text.trim(),
         description: _descriptionController.text.trim(),
         category: _selectedCategoryId!,
-        imageUrl: _imageUrlController.text.trim(),
         $client: _clientNameController.text.trim().isEmpty
-            ? null
+            ? ''
             : _clientNameController.text.trim(),
-        startDate: _projectDate?.toIso8601String(),
-        endDate: null,
-        jobScope: null,
-        images: [],
+        startDate: _projectDateRange?.start.toIso8601String(),
+        projectUrl: mainImageUrl,
+        endDate: _projectDateRange?.end.toIso8601String(),
+        jobScope: _jobScopeController.text.trim().isEmpty
+            ? ''
+            : _jobScopeController.text.trim(),
+        image: [
+          mainImageUrl,
+          ...galleryUrls,
+        ],
         isActive: _isActive,
       );
 
