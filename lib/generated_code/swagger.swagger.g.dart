@@ -107,6 +107,11 @@ CreateProductDTO _$CreateProductDTOFromJson(Map<String, dynamic> json) =>
           ?.map((e) => CreateProductDTO$VariantImages$Item.fromJson(
               e as Map<String, dynamic>))
           .toList(),
+      colors:
+          (json['colors'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      materials: (json['materials'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
     );
 
 Map<String, dynamic> _$CreateProductDTOToJson(CreateProductDTO instance) =>
@@ -122,45 +127,123 @@ Map<String, dynamic> _$CreateProductDTOToJson(CreateProductDTO instance) =>
       'createdAt': instance.createdAt?.toIso8601String(),
       'updatedAt': instance.updatedAt?.toIso8601String(),
       'variantImages': instance.variantImages?.map((e) => e.toJson()).toList(),
+      'colors': instance.colors,
+      'materials': instance.materials,
     };
 
-ProductResponseDTO _$ProductResponseDTOFromJson(Map<String, dynamic> json) =>
-    ProductResponseDTO(
+ProductCategoryInResponseDTO _$ProductCategoryInResponseDTOFromJson(
+        Map<String, dynamic> json) =>
+    ProductCategoryInResponseDTO(
+      id: json['_id'] as String,
       name: json['name'] as String,
-      image: json['image'] as String?,
-      categoryId: json['categoryId'] as String,
-      price: (json['price'] as num).toDouble(),
-      stock: (json['stock'] as num).toDouble(),
-      discount: (json['discount'] as num?)?.toDouble(),
       description: json['description'] as String?,
       isActive: json['isActive'] as bool?,
+      products: (json['products'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          [],
       createdAt: json['createdAt'] == null
           ? null
           : DateTime.parse(json['createdAt'] as String),
       updatedAt: json['updatedAt'] == null
           ? null
           : DateTime.parse(json['updatedAt'] as String),
+    );
+
+Map<String, dynamic> _$ProductCategoryInResponseDTOToJson(
+        ProductCategoryInResponseDTO instance) =>
+    <String, dynamic>{
+      '_id': instance.id,
+      'name': instance.name,
+      'description': instance.description,
+      'isActive': instance.isActive,
+      'products': instance.products,
+      'createdAt': instance.createdAt?.toIso8601String(),
+      'updatedAt': instance.updatedAt?.toIso8601String(),
+    };
+
+ProductResponseDTO _$ProductResponseDTOFromJson(Map<String, dynamic> json) =>
+    ProductResponseDTO(
+      id: json['_id'] as String,
+      createdAt: json['createdAt'] == null
+          ? null
+          : DateTime.parse(json['createdAt'] as String),
+      updatedAt: json['updatedAt'] == null
+          ? null
+          : DateTime.parse(json['updatedAt'] as String),
+      name: json['name'] as String,
+      category: json['category'] == null
+          ? null
+          : ProductCategoryInResponseDTO.fromJson(
+              json['category'] as Map<String, dynamic>),
+      colors: (json['colors'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          [],
+      materials: (json['materials'] as List<dynamic>?)
+              ?.map((e) => e as String)
+              .toList() ??
+          [],
+      types:
+          (json['types'] as List<dynamic>?)?.map((e) => e as String).toList() ??
+              [],
+      image: json['image'] as String?,
+      description: json['description'] as String?,
+      price: (json['price'] as num).toDouble(),
+      discount: (json['discount'] as num?)?.toDouble(),
+      stock: (json['stock'] as num).toDouble(),
+      isActive: json['isActive'] as bool?,
       variantImages: (json['variantImages'] as List<dynamic>?)
           ?.map((e) => ProductResponseDTO$VariantImages$Item.fromJson(
               e as Map<String, dynamic>))
           .toList(),
-      id: json['_id'] as String,
     );
 
 Map<String, dynamic> _$ProductResponseDTOToJson(ProductResponseDTO instance) =>
     <String, dynamic>{
-      'name': instance.name,
-      'image': instance.image,
-      'categoryId': instance.categoryId,
-      'price': instance.price,
-      'stock': instance.stock,
-      'discount': instance.discount,
-      'description': instance.description,
-      'isActive': instance.isActive,
+      '_id': instance.id,
       'createdAt': instance.createdAt?.toIso8601String(),
       'updatedAt': instance.updatedAt?.toIso8601String(),
+      'name': instance.name,
+      'category': instance.category?.toJson(),
+      'colors': instance.colors,
+      'materials': instance.materials,
+      'types': instance.types,
+      'image': instance.image,
+      'description': instance.description,
+      'price': instance.price,
+      'discount': instance.discount,
+      'stock': instance.stock,
+      'isActive': instance.isActive,
       'variantImages': instance.variantImages?.map((e) => e.toJson()).toList(),
-      '_id': instance.id,
+    };
+
+SingleProductResponseDTO _$SingleProductResponseDTOFromJson(
+        Map<String, dynamic> json) =>
+    SingleProductResponseDTO(
+      data: ProductResponseDTO.fromJson(json['data'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$SingleProductResponseDTOToJson(
+        SingleProductResponseDTO instance) =>
+    <String, dynamic>{
+      'data': instance.data.toJson(),
+    };
+
+GetAllProductsResponseDTO _$GetAllProductsResponseDTOFromJson(
+        Map<String, dynamic> json) =>
+    GetAllProductsResponseDTO(
+      data: (json['data'] as List<dynamic>?)
+              ?.map(
+                  (e) => ProductResponseDTO.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
+    );
+
+Map<String, dynamic> _$GetAllProductsResponseDTOToJson(
+        GetAllProductsResponseDTO instance) =>
+    <String, dynamic>{
+      'data': instance.data.map((e) => e.toJson()).toList(),
     };
 
 MessageResponseDTO _$MessageResponseDTOFromJson(Map<String, dynamic> json) =>

@@ -8,7 +8,11 @@ import '../../../../core/widgets/gradient_button.dart';
 import '../../../../core/widgets/image_placeholder.dart';
 import '../../../../core/widgets/shimmer_loading.dart';
 import '../../../../core/utils/extensions.dart';
+import '../../../../shared/widgets/color_selector.dart';
 import '../providers/product_provider.dart';
+import '../providers/product_color_provider.dart';
+import '../providers/product_material_provider.dart';
+import '../widgets/material_selector.dart';
 
 /// Product detail page
 class ProductDetailPage extends ConsumerWidget {
@@ -21,12 +25,15 @@ class ProductDetailPage extends ConsumerWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final productAsync = ref.watch(productByIdProvider(id));
     final categoriesAsync = ref.watch(productCategoriesNotifierProvider);
+    final colorsAsync = ref.watch(productColorsNotifierProvider);
+    final materialsAsync = ref.watch(productMaterialsNotifierProvider);
 
     return Scaffold(
       backgroundColor:
           isDark ? AppColors.darkBackground : AppColors.lightBackground,
       body: productAsync.when(
-        data: (product) {
+        data: (products) {
+          final product = products?.data;
           if (product == null) {
             return Center(
               child: Column(
@@ -51,10 +58,35 @@ class ProductDetailPage extends ConsumerWidget {
             );
           }
 
-          final category = categoriesAsync.value?.firstWhere(
-            (c) => c.id == product.categoryId,
-            orElse: () => throw Exception('Category not found'),
-          );
+          final category = categoriesAsync.value
+              ?.where(
+                (c) => c.id == product.category?.id,
+              )
+              .firstOrNull;
+
+          if (category == null) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Iconsax.box_1,
+                    size: 64,
+                    color: isDark
+                        ? AppColors.darkTextSecondary
+                        : AppColors.lightTextSecondary,
+                  ),
+                  const SizedBox(height: AppSpacing.md),
+                  const Text('Category not found'),
+                  const SizedBox(height: AppSpacing.md),
+                  GradientButton(
+                    text: 'Back to Products',
+                    onPressed: () => context.go('/products'),
+                  ),
+                ],
+              ),
+            );
+          }
 
           return SingleChildScrollView(
             padding: const EdgeInsets.all(AppSpacing.lg),
@@ -91,171 +123,295 @@ class ProductDetailPage extends ConsumerWidget {
                 const SizedBox(height: AppSpacing.lg),
 
                 // Content
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Image
-                    Container(
-                      width: 400,
-                      height: 400,
-                      decoration: BoxDecoration(
-                        borderRadius:
-                            BorderRadius.circular(AppSpacing.radiusLg),
-                        border: Border.all(
-                          color: isDark
-                              ? AppColors.darkBorder
-                              : AppColors.lightBorder,
-                        ),
-                      ),
-                      child: ClipRRect(
-                        borderRadius:
-                            BorderRadius.circular(AppSpacing.radiusLg),
-                        child: ImagePlaceholder(
-                          text: product.name,
-                          width: 400,
-                          height: 400,
-                        ),
+                LayoutBuilder(builder: (context, constraints) {
+                  final isMobile = constraints.maxWidth < 600;
+
+                  final imageWidget = Container(
+                    width: isMobile ? double.infinity : 400,
+                    height: isMobile ? 300 : 400,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
+                      border: Border.all(
+                        color: isDark
+                            ? AppColors.darkBorder
+                            : AppColors.lightBorder,
                       ),
                     ),
-                    const SizedBox(width: AppSpacing.xl),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(AppSpacing.radiusLg),
+                      child: product.image != null && product.image!.isNotEmpty
+                          ? Image.network(
+                              product.image!,
+                              fit: BoxFit.cover,
+                              errorBuilder: (_, __, ___) => ImagePlaceholder(
+                                text: product.name,
+                                width: isMobile ? double.infinity : 400,
+                                height: isMobile ? 300 : 400,
+                              ),
+                            )
+                          : ImagePlaceholder(
+                              text: product.name,
+                              width: isMobile ? double.infinity : 400,
+                              height: isMobile ? 300 : 400,
+                            ),
+                    ),
+                  );
 
-                    // Details
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                  final detailsWidget = Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Status and Stock badges
+                      Row(
                         children: [
-                          // Status badge
                           Container(
                             padding: const EdgeInsets.symmetric(
                               horizontal: AppSpacing.md,
                               vertical: AppSpacing.xs,
                             ),
                             decoration: BoxDecoration(
-                              color: product.isActive
-                                  ? AppColors.success.withValues(alpha: 0.1)
-                                  : AppColors.error.withValues(alpha: 0.1),
+                              color: product.isActive ?? false
+                                  ? AppColors.success.withOpacity(0.1)
+                                  : AppColors.error.withOpacity(0.1),
                               borderRadius:
                                   BorderRadius.circular(AppSpacing.radiusSm),
                             ),
                             child: Text(
-                              product.isActive ? 'Active' : 'Inactive',
+                              product.isActive ?? false ? 'Active' : 'Inactive',
                               style: TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
-                                color: product.isActive
+                                color: product.isActive ?? false
                                     ? AppColors.success
                                     : AppColors.error,
                               ),
                             ),
                           ),
-                          const SizedBox(height: AppSpacing.md),
-
-                          // Name
-                          Text(
-                            product.name,
-                            style: Theme.of(context).textTheme.displaySmall,
-                          ),
-                          const SizedBox(height: AppSpacing.sm),
-
-                          // Category
-                          if (category != null)
-                            Row(
-                              children: [
-                                Icon(
-                                  Iconsax.folder,
-                                  size: 16,
-                                  color: isDark
-                                      ? AppColors.darkTextSecondary
-                                      : AppColors.lightTextSecondary,
-                                ),
-                                const SizedBox(width: AppSpacing.xs),
-                                Text(
-                                  category.name,
-                                  style: TextStyle(
-                                    color: isDark
-                                        ? AppColors.darkTextSecondary
-                                        : AppColors.lightTextSecondary,
-                                  ),
-                                ),
-                              ],
+                          const SizedBox(width: AppSpacing.sm),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: AppSpacing.md,
+                              vertical: AppSpacing.xs,
                             ),
-                          const SizedBox(height: AppSpacing.lg),
+                            decoration: BoxDecoration(
+                              color: product.stock > 10
+                                  ? AppColors.info.withOpacity(0.1)
+                                  : AppColors.warning.withOpacity(0.1),
+                              borderRadius:
+                                  BorderRadius.circular(AppSpacing.radiusSm),
+                            ),
+                            child: Text(
+                              'Stock: ${product.stock}',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: product.stock > 10
+                                    ? AppColors.info
+                                    : AppColors.warning,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: AppSpacing.md),
 
-                          // Price
+                      // Name
+                      Text(
+                        product.name,
+                        style:
+                            Theme.of(context).textTheme.displayMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                      ),
+                      const SizedBox(height: AppSpacing.sm),
+
+                      // Category
+                      Row(
+                        children: [
+                          Icon(
+                            Iconsax.folder,
+                            size: 16,
+                            color: isDark
+                                ? AppColors.darkTextSecondary
+                                : AppColors.lightTextSecondary,
+                          ),
+                          const SizedBox(width: AppSpacing.xs),
+                          Text(
+                            category.name,
+                            style: TextStyle(
+                              color: isDark
+                                  ? AppColors.darkTextSecondary
+                                  : AppColors.lightTextSecondary,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: AppSpacing.lg),
+
+                      // Price and Discount
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
                           Text(
                             '\$${product.price.toStringAsFixed(2)}',
                             style: TextStyle(
-                              fontSize: 32,
+                              fontSize: 40,
                               fontWeight: FontWeight.bold,
                               color: isDark
                                   ? AppColors.primaryLight
                                   : AppColors.primary,
                             ),
                           ),
-                          const SizedBox(height: AppSpacing.lg),
-
-                          // Description
-                          Text(
-                            'Description',
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
-                          const SizedBox(height: AppSpacing.sm),
-                          Text(
-                            product.description ?? 'No description available.',
-                            style: TextStyle(
-                              height: 1.6,
-                              color: isDark
-                                  ? AppColors.darkText
-                                  : AppColors.lightText,
-                            ),
-                          ),
-                          const SizedBox(height: AppSpacing.xl),
-
-                          // Metadata
-                          Container(
-                            padding: const EdgeInsets.all(AppSpacing.md),
-                            decoration: BoxDecoration(
-                              color: isDark
-                                  ? AppColors.darkCard
-                                  : AppColors.lightCard,
-                              borderRadius:
-                                  BorderRadius.circular(AppSpacing.radiusMd),
-                              border: Border.all(
-                                color: isDark
-                                    ? AppColors.darkBorder
-                                    : AppColors.lightBorder,
-                              ),
-                            ),
-                            child: Column(
-                              children: [
-                                _buildMetaRow(
-                                  context,
-                                  'Created',
-                                  product.createdAt.formattedDateTime,
-                                  isDark,
-                                ),
-                                const Divider(),
-                                _buildMetaRow(
-                                  context,
-                                  'Last Updated',
-                                  product.updatedAt.formattedDateTime,
-                                  isDark,
-                                ),
-                                const Divider(),
-                                _buildMetaRow(
-                                  context,
-                                  'Product ID',
-                                  product.id,
-                                  isDark,
-                                ),
-                              ],
-                            ),
-                          ),
+                          if (product.discount != null && product.discount! > 0)
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: AppSpacing.sm, bottom: AppSpacing.xs),
+                              child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8, vertical: 4),
+                                  decoration: BoxDecoration(
+                                    color: Colors.red.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                  child: Text(
+                                    '-${product.discount}%',
+                                    style: const TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                    ),
+                                  )),
+                            )
                         ],
                       ),
-                    ),
-                  ],
-                ),
+                      const SizedBox(height: AppSpacing.xl),
+
+                      // Description
+                      Text(
+                        'Description',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleLarge
+                            ?.copyWith(fontWeight: FontWeight.w600),
+                      ),
+                      const SizedBox(height: AppSpacing.sm),
+                      Text(
+                        product.description ??
+                            'No description available for this premium piece.',
+                        style: TextStyle(
+                          height: 1.6,
+                          fontSize: 16,
+                          color: isDark
+                              ? AppColors.darkTextSecondary
+                              : AppColors.lightTextSecondary,
+                        ),
+                      ),
+                      const SizedBox(height: AppSpacing.xl),
+
+                      // Colors & Materials Section
+                      Text(
+                        'Product Options',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleLarge
+                            ?.copyWith(fontWeight: FontWeight.w600),
+                      ),
+                      const SizedBox(height: AppSpacing.md),
+                      
+                      // Colors
+                      colorsAsync.when(
+                        data: (allColors) => ColorSelector(
+                          availableColors: allColors,
+                          selectedColorIds: product.colors ?? [],
+                          onSelectionChanged: (selectedColors) {
+                            // Update product colors (this would typically call a provider)
+                            // For now, this is read-only in the detail view
+                          },
+                          enabled: false, // Read-only in detail view
+                          title: 'Available Colors',
+                        ),
+                        loading: () => const LinearProgressIndicator(),
+                        error: (_, __) => const Text('Error loading colors'),
+                      ),
+                      const SizedBox(height: AppSpacing.lg),
+                      
+                      // Materials
+                      materialsAsync.when(
+                        data: (allMaterials) => MaterialSelector(
+                          availableMaterials: allMaterials,
+                          selectedMaterialIds: product.materials ?? [],
+                          onSelectionChanged: (selectedMaterials) {
+                            // Update product materials (this would typically call a provider)
+                            // For now, this is read-only in the detail view
+                          },
+                          enabled: false, // Read-only in detail view
+                          title: 'Materials',
+                        ),
+                        loading: () => const LinearProgressIndicator(),
+                        error: (_, __) => const Text('Error loading materials'),
+                      ),
+
+                      // Metadata
+                      Container(
+                        padding: const EdgeInsets.all(AppSpacing.lg),
+                        decoration: BoxDecoration(
+                          color:
+                              isDark ? AppColors.darkCard : AppColors.lightCard,
+                          borderRadius:
+                              BorderRadius.circular(AppSpacing.radiusMd),
+                          border: Border.all(
+                            color: isDark
+                                ? AppColors.darkBorder
+                                : AppColors.lightBorder,
+                          ),
+                        ),
+                        child: Column(
+                          children: [
+                            _buildMetaRow(
+                              context,
+                              'Created',
+                              product.createdAt?.formattedDateTime ?? 'N/A',
+                              isDark,
+                            ),
+                            const Divider(height: 24),
+                            _buildMetaRow(
+                              context,
+                              'Last Updated',
+                              product.updatedAt?.formattedDateTime ?? 'N/A',
+                              isDark,
+                            ),
+                            const Divider(height: 24),
+                            _buildMetaRow(
+                              context,
+                              'Product ID',
+                              product.id,
+                              isDark,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+
+                  if (isMobile) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        imageWidget,
+                        const SizedBox(height: AppSpacing.xl),
+                        detailsWidget,
+                      ],
+                    );
+                  }
+
+                  return Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      imageWidget,
+                      const SizedBox(width: AppSpacing.xl),
+                      Expanded(child: detailsWidget),
+                    ],
+                  );
+                }),
               ],
             ),
           );

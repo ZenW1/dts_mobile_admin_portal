@@ -1,38 +1,29 @@
+import 'package:dartz/dartz.dart';
+import '../../../../generated_code/swagger.swagger.dart';
 import '../entities/product.dart';
 import '../entities/product_category.dart';
 
 /// Product repository interface
 abstract class ProductRepository {
-  /// Get all products
-  Future<List<Product>> getAllProducts();
+  Future<Either<String, List<ProductResponseDTO>>> getAllProducts();
 
-  /// Get product by id
-  Future<Product?> getProductById(String id);
+  Future<Either<String, SingleProductResponseDTO?>> getProductById(String id);
 
-  /// Get products by category
-  Future<List<Product>> getProductsByCategory(String categoryId);
+  Future<Either<String, SingleProductResponseDTO>> createProduct(
+      CreateProductDTO product);
 
-  /// Create a new product
-  Future<Product> createProduct(Product product);
+  Future<Either<String, SingleProductResponseDTO>> updateProduct(
+      String id, CreateProductDTO product);
 
-  /// Update an existing product
-  Future<Product> updateProduct(Product product);
+  Future<Either<String, void>> deleteProduct(String id);
 
-  /// Delete a product
-  Future<void> deleteProduct(String id);
+  Future<Either<String, List<ProductCategory>>> getAllCategories();
 
-  /// Get all categories
-  Future<List<ProductCategory>> getAllCategories();
+  Future<Either<String, ProductCategory>> createCategory(
+      ProductCategory category);
 
-  /// Get category by id
-  Future<ProductCategory?> getCategoryById(String id);
+  Future<Either<String, ProductCategory>> updateCategory(
+      String id, ProductCategory category);
 
-  /// Create a new category
-  Future<ProductCategory> createCategory(ProductCategory category);
-
-  /// Update an existing category
-  Future<ProductCategory> updateCategory(ProductCategory category);
-
-  /// Delete a category
-  Future<void> deleteCategory(String id);
+  Future<Either<String, void>> deleteCategory(String id);
 }

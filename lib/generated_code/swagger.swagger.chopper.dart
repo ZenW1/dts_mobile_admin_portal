@@ -106,7 +106,7 @@ final class _$Swagger extends Swagger {
   }
 
   @override
-  Future<Response<ProductResponseDTO>> _CreateProduct(
+  Future<Response<SingleProductResponseDTO>> _CreateProduct(
       {required CreateProductDTO? body}) {
     final Uri $url = Uri.parse('/products/create');
     final $body = body;
@@ -116,22 +116,29 @@ final class _$Swagger extends Swagger {
       client.baseUrl,
       body: $body,
     );
-    return client.send<ProductResponseDTO, ProductResponseDTO>($request);
+    return client
+        .send<SingleProductResponseDTO, SingleProductResponseDTO>($request);
   }
 
   @override
-  Future<Response<List<ProductResponseDTO>>> _GetAllProducts() {
+  Future<Response<GetAllProductsResponseDTO>> _GetAllProducts(
+      {String? categoryId}) {
     final Uri $url = Uri.parse('/products/get-all-products');
+    final Map<String, dynamic> $params = <String, dynamic>{
+      'categoryId': categoryId
+    };
     final Request $request = Request(
       'GET',
       $url,
       client.baseUrl,
+      parameters: $params,
     );
-    return client.send<List<ProductResponseDTO>, ProductResponseDTO>($request);
+    return client
+        .send<GetAllProductsResponseDTO, GetAllProductsResponseDTO>($request);
   }
 
   @override
-  Future<Response<ProductResponseDTO>> _GetProductById(
+  Future<Response<SingleProductResponseDTO>> _GetProductById(
       {required String? productId}) {
     final Uri $url = Uri.parse('/products/${productId}');
     final Request $request = Request(
@@ -139,11 +146,12 @@ final class _$Swagger extends Swagger {
       $url,
       client.baseUrl,
     );
-    return client.send<ProductResponseDTO, ProductResponseDTO>($request);
+    return client
+        .send<SingleProductResponseDTO, SingleProductResponseDTO>($request);
   }
 
   @override
-  Future<Response<ProductResponseDTO>> _UpdateProduct({
+  Future<Response<SingleProductResponseDTO>> _UpdateProduct({
     required String? productId,
     required CreateProductDTO? body,
   }) {
@@ -155,7 +163,8 @@ final class _$Swagger extends Swagger {
       client.baseUrl,
       body: $body,
     );
-    return client.send<ProductResponseDTO, ProductResponseDTO>($request);
+    return client
+        .send<SingleProductResponseDTO, SingleProductResponseDTO>($request);
   }
 
   @override

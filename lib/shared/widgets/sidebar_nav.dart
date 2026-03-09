@@ -42,6 +42,18 @@ const List<NavItem> navItems = [
     path: '/product-categories',
   ),
   NavItem(
+    title: 'Product Colors',
+    icon: Iconsax.colorfilter,
+    activeIcon: Iconsax.colorfilter5,
+    path: '/product-colors',
+  ),
+  NavItem(
+    title: 'Product Materials',
+    icon: Iconsax.box_1,
+    activeIcon: Iconsax.box_15,
+    path: '/product-materials',
+  ),
+  NavItem(
     title: 'Portfolio',
     icon: Iconsax.gallery,
     activeIcon: Iconsax.gallery5,
@@ -296,7 +308,7 @@ class _SidebarNavState extends ConsumerState<SidebarNav> {
                 Switch(
                   value: isDark,
                   onChanged: (_) => themeNotifier.toggleTheme(),
-                  activeColor: AppColors.primaryLight,
+                  activeThumbColor: AppColors.primaryLight,
                 ),
               ],
             ),

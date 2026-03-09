@@ -4,6 +4,12 @@ import '../../features/products/presentation/pages/products_page.dart';
 import '../../features/products/presentation/pages/product_detail_page.dart';
 import '../../features/products/presentation/pages/product_form_page.dart';
 import '../../features/products/presentation/pages/product_categories_page.dart';
+import '../../features/products/presentation/pages/product_colors_page.dart';
+import '../../features/products/presentation/pages/product_color_form_page.dart';
+import '../../features/products/presentation/pages/product_color_detail_page.dart';
+import '../../features/products/presentation/pages/product_materials_page.dart';
+import '../../features/products/presentation/pages/product_material_form_page.dart';
+import '../../features/products/presentation/pages/product_material_detail_page.dart';
 import '../../features/portfolio/presentation/pages/portfolio_page.dart';
 import '../../features/portfolio/presentation/pages/portfolio_detail_page.dart';
 import '../../features/portfolio/presentation/pages/portfolio_form_page.dart';
@@ -71,6 +77,66 @@ final appRouter = GoRouter(
           name: 'product-categories',
           pageBuilder: (context, state) => const NoTransitionPage(
             child: ProductCategoriesPage(),
+          ),
+        ),
+
+        // Product Colors
+        GoRoute(
+          path: '/product-colors',
+          name: 'product-colors',
+          pageBuilder: (context, state) => const NoTransitionPage(
+            child: ProductColorsPage(),
+          ),
+        ),
+        GoRoute(
+          path: '/product-colors/new',
+          name: 'product-color-new',
+          pageBuilder: (context, state) => const NoTransitionPage(
+            child: ProductColorFormPage(),
+          ),
+        ),
+        GoRoute(
+          path: '/product-colors/:id',
+          name: 'product-color-detail',
+          pageBuilder: (context, state) => NoTransitionPage(
+            child: ProductColorDetailPage(id: state.pathParameters['id']!),
+          ),
+        ),
+        GoRoute(
+          path: '/product-colors/:id/edit',
+          name: 'product-color-edit',
+          pageBuilder: (context, state) => NoTransitionPage(
+            child: ProductColorFormPage(id: state.pathParameters['id']),
+          ),
+        ),
+
+        // Product Materials
+        GoRoute(
+          path: '/product-materials',
+          name: 'product-materials',
+          pageBuilder: (context, state) => const NoTransitionPage(
+            child: ProductMaterialsPage(),
+          ),
+        ),
+        GoRoute(
+          path: '/product-materials/new',
+          name: 'product-material-new',
+          pageBuilder: (context, state) => const NoTransitionPage(
+            child: ProductMaterialFormPage(),
+          ),
+        ),
+        GoRoute(
+          path: '/product-materials/:id',
+          name: 'product-material-detail',
+          pageBuilder: (context, state) => NoTransitionPage(
+            child: ProductMaterialDetailPage(id: state.pathParameters['id']!),
+          ),
+        ),
+        GoRoute(
+          path: '/product-materials/:id/edit',
+          name: 'product-material-edit',
+          pageBuilder: (context, state) => NoTransitionPage(
+            child: ProductMaterialFormPage(id: state.pathParameters['id']),
           ),
         ),
 

@@ -1,12 +1,12 @@
+import 'package:dts_admin_portal/generated_code/swagger.swagger.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/image_placeholder.dart';
-import '../../domain/entities/product.dart';
 
 /// Product card widget for list/grid view
 class ProductCard extends StatefulWidget {
-  final Product product;
+  final ProductResponseDTO product;
   final String? categoryName;
   final VoidCallback? onTap;
   final VoidCallback? onEdit;
@@ -72,7 +72,7 @@ class _ProductCardState extends State<ProductCard> {
             children: [
               // Image
               Expanded(
-                flex: 3,
+                flex: 4,
                 child: ClipRRect(
                   borderRadius: const BorderRadius.vertical(
                     top: Radius.circular(AppSpacing.radiusMd),
@@ -80,16 +80,54 @@ class _ProductCardState extends State<ProductCard> {
                   child: Stack(
                     fit: StackFit.expand,
                     children: [
-                      ImagePlaceholder(
-                        text: widget.product.name,
-                        borderRadius: 0,
-                      ),
+                      if (widget.product.image != null &&
+                          widget.product.image!.isNotEmpty)
+                        Image.network(
+                          widget.product.image!,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) => ImagePlaceholder(
+                            text: widget.product.name,
+                            borderRadius: 0,
+                          ),
+                        )
+                      else
+                        ImagePlaceholder(
+                          text: widget.product.name,
+                          borderRadius: 0,
+                        ),
                       // Status badge
                       Positioned(
                         top: AppSpacing.sm,
                         right: AppSpacing.sm,
                         child: _buildStatusBadge(isDark),
                       ),
+                      // Stock badge if low stock
+                      if (widget.product.stock <= 5)
+                        Positioned(
+                          top: AppSpacing.sm,
+                          left: AppSpacing.sm,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: AppSpacing.sm,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColors.error.withValues(alpha: 0.9),
+                              borderRadius:
+                                  BorderRadius.circular(AppSpacing.radiusSm),
+                            ),
+                            child: Text(
+                              widget.product.stock <= 0
+                                  ? 'Out of Stock'
+                                  : 'Low Stock',
+                              style: const TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
                     ],
                   ),
                 ),
@@ -172,11 +210,17 @@ class _ProductCardState extends State<ProductCard> {
               ClipRRect(
                 borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
                 child: SizedBox(
-                  width: 80,
-                  height: 80,
-                  child: ImagePlaceholder(
-                    text: widget.product.name,
-                  ),
+                  width: 100,
+                  height: 100,
+                  child: widget.product.image != null &&
+                          widget.product.image!.isNotEmpty
+                      ? Image.network(
+                          widget.product.image!,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) =>
+                              ImagePlaceholder(text: widget.product.name),
+                        )
+                      : ImagePlaceholder(text: widget.product.name),
                 ),
               ),
               const SizedBox(width: AppSpacing.md),
@@ -266,22 +310,24 @@ class _ProductCardState extends State<ProductCard> {
         vertical: AppSpacing.xs,
       ),
       decoration: BoxDecoration(
-        color: widget.product.isActive
+        color: widget.product.isActive ?? false
             ? AppColors.success.withValues(alpha: 0.1)
             : AppColors.error.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
         border: Border.all(
-          color: widget.product.isActive
+          color: widget.product.isActive ?? false
               ? AppColors.success.withValues(alpha: 0.5)
               : AppColors.error.withValues(alpha: 0.5),
         ),
       ),
       child: Text(
-        widget.product.isActive ? 'Active' : 'Inactive',
+        widget.product.isActive ?? false ? 'Active' : 'Inactive',
         style: TextStyle(
           fontSize: 11,
           fontWeight: FontWeight.w500,
-          color: widget.product.isActive ? AppColors.success : AppColors.error,
+          color: widget.product.isActive ?? false
+              ? AppColors.success
+              : AppColors.error,
         ),
       ),
     );

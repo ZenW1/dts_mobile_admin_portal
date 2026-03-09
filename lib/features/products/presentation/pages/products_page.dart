@@ -217,13 +217,13 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                       crossAxisCount: ResponsiveLayout.gridColumns(context),
                       mainAxisSpacing: AppSpacing.md,
                       crossAxisSpacing: AppSpacing.md,
-                      childAspectRatio: 0.75,
+                      childAspectRatio: 0.65, // Taller cards for premium feel
                     ),
                     delegate: SliverChildBuilderDelegate(
                       (context, index) {
                         final product = products[index];
                         final category = categoriesData
-                            .where((c) => c.id == product.categoryId)
+                            .where((c) => c.id == product.category?.id)
                             .firstOrNull;
                         return ProductCard(
                           product: product,
@@ -242,7 +242,7 @@ class _ProductsPageState extends ConsumerState<ProductsPage> {
                     (context, index) {
                       final product = products[index];
                       final category = categoriesData
-                          .where((c) => c.id == product.categoryId)
+                          .where((c) => c.id == product.category?.id)
                           .firstOrNull;
                       return Padding(
                         padding: const EdgeInsets.only(bottom: AppSpacing.md),

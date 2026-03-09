@@ -1,0 +1,21 @@
+Analyzing dts_admin_portal...                                   
+
+   info • The imported package 'path' isn't a dependency of the importing package • lib/core/network/upload_service.dart:8:8 • depend_on_referenced_packages
+   info • Don't invoke 'print' in production code • lib/core/network/upload_service.dart:50:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/core/network/upload_service.dart:60:7 • avoid_print
+   info • Don't invoke 'print' in production code • lib/features/clients/presentation/pages/client_list_page.dart:168:29 • avoid_print
+warning • The declaration '_buildStatusBadge' isn't referenced • lib/features/jobs/presentation/pages/job_detail_page.dart:228:10 • unused_element
+warning • The declaration '_buildTypeBadge' isn't referenced • lib/features/jobs/presentation/pages/job_detail_page.dart:252:10 • unused_element
+   info • 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre • lib/features/jobs/presentation/pages/job_form_page.dart:163:33 • deprecated_member_use
+warning • The value of the local variable 'jobs' isn't used • lib/features/jobs/presentation/pages/jobs_page.dart:42:11 • unused_local_variable
+   info • The import of '../../../../core/widgets/gradient_button.dart' is unnecessary because all of the used elements are also provided by the import of '../../../../core/widgets/widgets.dart' • lib/features/portfolio/presentation/pages/portfolio_form_page.dart:7:8 • unnecessary_import
+   info • Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check • lib/features/products/presentation/pages/product_categories_page.dart:310:40 • use_build_context_synchronously
+   info • The import of 'package:flutter/services.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' • lib/features/products/presentation/pages/product_colors_page.dart:2:8 • unnecessary_import
+   info • 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre • lib/features/products/presentation/pages/product_form_page.dart:164:25 • deprecated_member_use
+   info • 'activeColor' is deprecated and shouldn't be used. Use activeThumbColor instead. This feature was deprecated after v3.31.0-2.0.pre • lib/features/products/presentation/pages/product_form_page.dart:221:27 • deprecated_member_use
+warning • Duplicate export • lib/generated_code/client_index.dart:2:8 • duplicate_export
+   info • The imported package 'collection' isn't a dependency of the importing package • lib/generated_code/swagger.enums.swagger.dart:2:8 • depend_on_referenced_packages
+warning • Unused import: 'package:collection/collection.dart' • lib/generated_code/swagger.enums.swagger.dart:2:8 • unused_import
+warning • Unused import: 'package:json_annotation/json_annotation.dart' • lib/generated_code/swagger.swagger.dart:4:8 • unused_import
+warning • Unused import: 'package:http/http.dart' • lib/generated_code/swagger.swagger.dart:13:8 • unused_import
+

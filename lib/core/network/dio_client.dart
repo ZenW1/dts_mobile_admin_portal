@@ -15,7 +15,7 @@ class ApiServiceProvider {
 
   ApiServiceProvider._internal() {
     restApi = Swagger.create(
-      baseUrl: Uri.parse('http://192.168.168.174:3000'),
+      baseUrl: Uri.parse('http://192.168.168.175:3000'),
       httpClient: null,
       // authenticator: MyAuthenticator(),
       interceptors: [
