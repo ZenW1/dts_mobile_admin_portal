@@ -83,7 +83,7 @@ class _ProductCardState extends State<ProductCard> {
                       if (widget.product.image != null &&
                           widget.product.image!.isNotEmpty)
                         Image.network(
-                          widget.product.image!,
+                          widget.product.image!.first,
                           fit: BoxFit.cover,
                           errorBuilder: (_, __, ___) => ImagePlaceholder(
                             text: widget.product.name,
@@ -134,7 +134,7 @@ class _ProductCardState extends State<ProductCard> {
               ),
               // Content
               Expanded(
-                flex: 2,
+                flex: 3,
                 child: Padding(
                   padding: const EdgeInsets.all(AppSpacing.md),
                   child: Column(
@@ -215,7 +215,7 @@ class _ProductCardState extends State<ProductCard> {
                   child: widget.product.image != null &&
                           widget.product.image!.isNotEmpty
                       ? Image.network(
-                          widget.product.image!,
+                          widget.product.image!.first,
                           fit: BoxFit.cover,
                           errorBuilder: (_, __, ___) =>
                               ImagePlaceholder(text: widget.product.name),

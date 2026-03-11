@@ -7,6 +7,8 @@ import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/gradient_button.dart';
 import '../../../../core/widgets/custom_text_field.dart';
 import '../../../../core/utils/validators.dart';
+import '../../../../core/services/toast_service.dart';
+
 import '../providers/product_color_provider.dart';
 
 /// Create / Edit product color form
@@ -299,24 +301,16 @@ class _ProductColorFormPageState extends ConsumerState<ProductColorFormPage> {
     if (mounted) {
       setState(() => _isLoading = false);
       if (success) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(_isEditing
-                ? 'Color updated successfully'
-                : 'Color created successfully'),
-            behavior: SnackBarBehavior.floating,
-          ),
+        ToastService.success(
+          message: _isEditing
+              ? 'Color updated successfully'
+              : 'Color created successfully',
         );
         context.go('/product-colors');
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(_isEditing
-                ? 'Failed to update color'
-                : 'Failed to create color'),
-            backgroundColor: AppColors.error,
-            behavior: SnackBarBehavior.floating,
-          ),
+        ToastService.error(
+          message:
+              _isEditing ? 'Failed to update color' : 'Failed to create color',
         );
       }
     }

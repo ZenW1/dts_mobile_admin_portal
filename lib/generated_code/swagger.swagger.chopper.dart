@@ -1069,4 +1069,69 @@ final class _$Swagger extends Swagger {
     );
     return client.send<dynamic, dynamic>($request);
   }
+
+  @override
+  Future<Response<SingleTeamResponseDTO>> _CreateTeam(
+      {required CreateTeamDTO? body}) {
+    final Uri $url = Uri.parse('/teams/create');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+    );
+    return client.send<SingleTeamResponseDTO, SingleTeamResponseDTO>($request);
+  }
+
+  @override
+  Future<Response<GetAllTeamsResponseDTO>> _GetAllTeams() {
+    final Uri $url = Uri.parse('/teams/get-all');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+    );
+    return client
+        .send<GetAllTeamsResponseDTO, GetAllTeamsResponseDTO>($request);
+  }
+
+  @override
+  Future<Response<SingleTeamResponseDTO>> _GetTeamById(
+      {required String? teamId}) {
+    final Uri $url = Uri.parse('/teams/${teamId}');
+    final Request $request = Request(
+      'GET',
+      $url,
+      client.baseUrl,
+    );
+    return client.send<SingleTeamResponseDTO, SingleTeamResponseDTO>($request);
+  }
+
+  @override
+  Future<Response<TeamUpdateResponseDTO>> _UpdateTeam({
+    required String? teamId,
+    required CreateTeamDTO? body,
+  }) {
+    final Uri $url = Uri.parse('/teams/update/${teamId}');
+    final $body = body;
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+      body: $body,
+    );
+    return client.send<TeamUpdateResponseDTO, TeamUpdateResponseDTO>($request);
+  }
+
+  @override
+  Future<Response<MessageResponseDTO>> _DeleteTeam({required String? teamId}) {
+    final Uri $url = Uri.parse('/teams/delete/${teamId}');
+    final Request $request = Request(
+      'POST',
+      $url,
+      client.baseUrl,
+    );
+    return client.send<MessageResponseDTO, MessageResponseDTO>($request);
+  }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import '../services/toast_service.dart';
 
 /// Extension methods for BuildContext
 extension ContextExtensions on BuildContext {
@@ -24,15 +25,13 @@ extension ContextExtensions on BuildContext {
   /// Get screen height
   double get screenHeight => MediaQuery.of(this).size.height;
 
-  /// Show a snackbar
+  /// Show a toast notification
   void showSnackBar(String message, {bool isError = false}) {
-    ScaffoldMessenger.of(this).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: isError ? Colors.red : null,
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
+    if (isError) {
+      ToastService.error(message: message);
+    } else {
+      ToastService.success(message: message);
+    }
   }
 }
 

@@ -13,6 +13,7 @@ class AppStrings {
   static const String portfolio = 'Portfolio';
   static const String portfolioCategories = 'Portfolio Categories';
   static const String jobs = 'Jobs';
+  static const String analytics = 'Analytics';
   static const String settings = 'Settings';
 
   // Actions
@@ -73,4 +74,14 @@ class AppStrings {
   static const String customerName = 'Customer Name';
   static const String phone = 'Phone';
   static const String message = 'Message';
+
+  // Analytics
+  static const String salesSummary = 'Sales Summary';
+  static const String totalSales = 'Total Sales';
+  static const String netSales = 'Net Sales';
+  static const String refunds = 'Refunds';
+  static const String voidTrx = 'Void';
+  static const String tip = 'Tip';
+  static const String abaCashback = 'ABA Cashback';
+  static const String trx = 'trx';
 }

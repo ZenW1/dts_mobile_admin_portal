@@ -6,6 +6,8 @@ import 'package:iconsax/iconsax.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/gradient_button.dart';
+import '../../../../core/services/toast_service.dart';
+
 import '../providers/product_color_provider.dart';
 
 /// Product Color detail page
@@ -119,11 +121,8 @@ class ProductColorDetailPage extends ConsumerWidget {
                     child: GestureDetector(
                       onTap: () {
                         Clipboard.setData(ClipboardData(text: color.hexCode!));
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Hex code copied to clipboard'),
-                            behavior: SnackBarBehavior.floating,
-                          ),
+                        ToastService.info(
+                          message: 'Hex code copied to clipboard',
                         );
                       },
                       child: Container(
@@ -214,12 +213,7 @@ class ProductColorDetailPage extends ConsumerWidget {
                 if (success) {
                   context.go('/product-colors');
                 } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Failed to delete color'),
-                      backgroundColor: AppColors.error,
-                    ),
-                  );
+                  ToastService.error(message: 'Failed to delete color');
                 }
               }
             },

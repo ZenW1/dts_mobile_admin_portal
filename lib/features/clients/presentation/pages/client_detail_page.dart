@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
+import '../../../../core/services/toast_service.dart';
 
 import '../../domain/entities/client.dart';
 import '../providers/client_providers.dart';
@@ -34,7 +35,7 @@ class ClientDetailPage extends ConsumerWidget {
             IconButton(
               icon: const Icon(Iconsax.edit),
               onPressed: () {
-                context.push('/clients/edit/\$clientId',
+                context.push('/clients/edit/$clientId',
                     extra: clientAsync.value);
               },
               tooltip: 'Edit Client',
@@ -129,7 +130,7 @@ class ClientDetailPage extends ConsumerWidget {
           );
         },
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (err, stack) => Center(child: Text('Error: \$err')),
+        error: (err, stack) => Center(child: Text('Error: $err')),
       ),
     );
   }
@@ -216,7 +217,7 @@ class ClientDetailPage extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '\${client.totalProjects}',
+                        '${client.totalProjects}',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -300,7 +301,7 @@ class ClientDetailPage extends ConsumerWidget {
     if (client.name.isNotEmpty) {
       final parts = client.name.split(' ');
       if (parts.length > 1) {
-        initials = '\${parts[0][0]}\${parts[1][0]}'.toUpperCase();
+        initials = '${parts[0][0]}${parts[1][0]}'.toUpperCase();
       } else {
         initials = client.name
             .substring(0, client.name.length > 1 ? 2 : 1)
@@ -329,7 +330,7 @@ class ClientDetailPage extends ConsumerWidget {
       builder: (context) => AlertDialog(
         title: const Text('Delete Client'),
         content: Text(
-            'Are you sure you want to delete \${client.name}? This action cannot be undone.'),
+            'Are you sure you want to delete ${client.name}? This action cannot be undone.'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
@@ -349,18 +350,10 @@ class ClientDetailPage extends ConsumerWidget {
       if (context.mounted) {
         final state = ref.read(clientMutationsProvider);
         if (!state.hasError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-                content: Text('Client deleted successfully'),
-                backgroundColor: AppColors.success),
-          );
+          ToastService.success(message: 'Client deleted successfully');
           context.pop(); // Go back to list
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-                content: Text('Failed to delete: \${state.error}'),
-                backgroundColor: AppColors.error),
-          );
+          ToastService.error(message: 'Failed to delete: ${state.error}');
         }
       }
     }
@@ -439,10 +432,11 @@ class ClientDetailPage extends ConsumerWidget {
                         // Since we don't have direct access here, we could use the standard CustomImagePicker but it uploads to /images/upload.
                         // Let's explain to user or use standard image picker.
                         Navigator.pop(context);
-                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                            content: Text(
-                                'Note: Image uploading via CustomImagePicker is linked to /images/upload. Implementing direct /clients/:id/image POST would require integrating ImagePicker directly here.'),
-                            duration: Duration(seconds: 4)));
+                        ToastService.info(
+                          message:
+                              'Note: Image uploading via CustomImagePicker is linked to /images/upload. Implementing direct /clients/:id/image POST would require integrating ImagePicker directly here.',
+                          duration: const Duration(seconds: 4),
+                        );
                       },
                       icon: const Icon(Iconsax.image),
                       label: const Text(

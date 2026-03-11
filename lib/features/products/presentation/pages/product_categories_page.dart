@@ -307,12 +307,7 @@ class _ProductCategoriesPageState extends ConsumerState<ProductCategoriesPage> {
               } catch (e) {
                 if (dialogContext.mounted) {
                   Navigator.pop(dialogContext);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Error: $e'),
-                      backgroundColor: AppColors.error,
-                    ),
-                  );
+                  context.showSnackBar('Error: $e', isError: true);
                 }
               }
             },

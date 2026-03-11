@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_spacing.dart';
 
@@ -23,6 +24,8 @@ class CustomTextField extends StatelessWidget {
   final TextInputAction? textInputAction;
   final bool isGlass;
 
+  final bool? allowDecimal;
+
   const CustomTextField({
     super.key,
     this.controller,
@@ -43,6 +46,7 @@ class CustomTextField extends StatelessWidget {
     this.focusNode,
     this.textInputAction,
     this.isGlass = false,
+    this.allowDecimal = true,
   });
 
   @override
@@ -77,6 +81,14 @@ class CustomTextField extends StatelessWidget {
           onTap: onTap,
           validator: validator,
           textInputAction: textInputAction,
+          inputFormatters: [
+            if (keyboardType == TextInputType.number ||
+                keyboardType ==
+                    const TextInputType.numberWithOptions(decimal: true))
+              allowDecimal == false
+                  ? FilteringTextInputFormatter.digitsOnly
+                  : FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+          ],
           style: TextStyle(
             fontSize: 14,
             color: isDark ? AppColors.darkText : AppColors.lightText,

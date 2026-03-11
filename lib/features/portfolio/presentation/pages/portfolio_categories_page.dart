@@ -7,6 +7,8 @@ import '../../../../core/widgets/gradient_button.dart';
 import '../../../../core/widgets/custom_text_field.dart';
 import '../../../../core/widgets/shimmer_loading.dart';
 import '../../../../core/widgets/responsive_layout.dart';
+import '../../../../core/services/toast_service.dart';
+
 import 'package:dts_admin_portal/generated_code/swagger.swagger.dart';
 import '../providers/portfolio_provider.dart';
 
@@ -331,12 +333,7 @@ class PortfolioCategoriesPage extends ConsumerWidget {
               } catch (e) {
                 if (dialogContext.mounted) {
                   Navigator.pop(dialogContext);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Error: $e'),
-                      backgroundColor: AppColors.error,
-                    ),
-                  );
+                  ToastService.error(message: 'Error: $e');
                 }
               }
             },

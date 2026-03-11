@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:toastification/toastification.dart';
+
 import 'core/router/app_router.dart';
 import 'core/theme/theme.dart';
 
@@ -19,13 +21,15 @@ class DTSAdminApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final themeMode = ref.watch(themeModeProvider);
 
-    return MaterialApp.router(
-      title: 'DTS Admin Portal',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      themeMode: themeMode,
-      routerConfig: appRouter,
+    return ToastificationWrapper(
+      child: MaterialApp.router(
+        title: 'DTS Admin Portal',
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme,
+        themeMode: themeMode,
+        routerConfig: appRouter,
+      ),
     );
   }
 }

@@ -288,7 +288,7 @@ abstract class Swagger extends ChopperService {
 
   ///Get all product categories
   Future<chopper.Response<GetAllProductCategoriesResponseDTO>>
-      GetAllProductCategories() {
+  GetAllProductCategories() {
     generatedMapping.putIfAbsent(
       GetAllProductCategoriesResponseDTO,
       () => GetAllProductCategoriesResponseDTO.fromJsonFactory,
@@ -300,7 +300,7 @@ abstract class Swagger extends ChopperService {
   ///Get all product categories
   @GET(path: '/product-categories/get-all')
   Future<chopper.Response<GetAllProductCategoriesResponseDTO>>
-      _GetAllProductCategories();
+  _GetAllProductCategories();
 
   ///Get a product category by ID
   ///@param categoryId
@@ -550,7 +550,7 @@ abstract class Swagger extends ChopperService {
 
   ///Get all product colors
   Future<chopper.Response<GetAllProductColorsResponseDTO>>
-      GetAllProductColors() {
+  GetAllProductColors() {
     generatedMapping.putIfAbsent(
       GetAllProductColorsResponseDTO,
       () => GetAllProductColorsResponseDTO.fromJsonFactory,
@@ -562,7 +562,7 @@ abstract class Swagger extends ChopperService {
   ///Get all product colors
   @GET(path: '/product-colors/get-all')
   Future<chopper.Response<GetAllProductColorsResponseDTO>>
-      _GetAllProductColors();
+  _GetAllProductColors();
 
   ///Get a product color by ID
   ///@param colorId
@@ -740,7 +740,7 @@ abstract class Swagger extends ChopperService {
 
   ///Get all product materials
   Future<chopper.Response<GetAllProductMaterialsResponseDTO>>
-      GetAllProductMaterials() {
+  GetAllProductMaterials() {
     generatedMapping.putIfAbsent(
       GetAllProductMaterialsResponseDTO,
       () => GetAllProductMaterialsResponseDTO.fromJsonFactory,
@@ -752,7 +752,7 @@ abstract class Swagger extends ChopperService {
   ///Get all product materials
   @GET(path: '/product-materials/get-all')
   Future<chopper.Response<GetAllProductMaterialsResponseDTO>>
-      _GetAllProductMaterials();
+  _GetAllProductMaterials();
 
   ///Get a product material by ID
   ///@param materialId
@@ -912,7 +912,7 @@ abstract class Swagger extends ChopperService {
 
   ///Create a new portfolio category
   Future<chopper.Response<PortfolioCategoryResponseDTO>>
-      CreatePortfolioCategory({required CreatePortfolioCategoryDTO? body}) {
+  CreatePortfolioCategory({required CreatePortfolioCategoryDTO? body}) {
     generatedMapping.putIfAbsent(
       PortfolioCategoryResponseDTO,
       () => PortfolioCategoryResponseDTO.fromJsonFactory,
@@ -924,12 +924,11 @@ abstract class Swagger extends ChopperService {
   ///Create a new portfolio category
   @POST(path: '/portfolio-categories/create', optionalBody: true)
   Future<chopper.Response<PortfolioCategoryResponseDTO>>
-      _CreatePortfolioCategory(
-          {@Body() required CreatePortfolioCategoryDTO? body});
+  _CreatePortfolioCategory({@Body() required CreatePortfolioCategoryDTO? body});
 
   ///Get all portfolio categories
   Future<chopper.Response<GetAllPortfolioCategoriesResponseDTO>>
-      GetAllPortfolioCategories() {
+  GetAllPortfolioCategories() {
     generatedMapping.putIfAbsent(
       GetAllPortfolioCategoriesResponseDTO,
       () => GetAllPortfolioCategoriesResponseDTO.fromJsonFactory,
@@ -941,12 +940,12 @@ abstract class Swagger extends ChopperService {
   ///Get all portfolio categories
   @GET(path: '/portfolio-categories/get-all')
   Future<chopper.Response<GetAllPortfolioCategoriesResponseDTO>>
-      _GetAllPortfolioCategories();
+  _GetAllPortfolioCategories();
 
   ///Get a portfolio category by ID
   ///@param id
   Future<chopper.Response<PortfolioCategoryResponseDTO>>
-      GetPortfolioCategoryById({required String? id}) {
+  GetPortfolioCategoryById({required String? id}) {
     generatedMapping.putIfAbsent(
       PortfolioCategoryResponseDTO,
       () => PortfolioCategoryResponseDTO.fromJsonFactory,
@@ -959,12 +958,12 @@ abstract class Swagger extends ChopperService {
   ///@param id
   @GET(path: '/portfolio-categories/{id}')
   Future<chopper.Response<PortfolioCategoryResponseDTO>>
-      _GetPortfolioCategoryById({@Path('id') required String? id});
+  _GetPortfolioCategoryById({@Path('id') required String? id});
 
   ///Update a portfolio category
   ///@param id
   Future<chopper.Response<PortfolioCategoryResponseDTO>>
-      UpdatePortfolioCategory({
+  UpdatePortfolioCategory({
     required String? id,
     required CreatePortfolioCategoryDTO? body,
   }) {
@@ -980,7 +979,7 @@ abstract class Swagger extends ChopperService {
   ///@param id
   @POST(path: '/portfolio-categories/update/{id}', optionalBody: true)
   Future<chopper.Response<PortfolioCategoryResponseDTO>>
-      _UpdatePortfolioCategory({
+  _UpdatePortfolioCategory({
     @Path('id') required String? id,
     @Body() required CreatePortfolioCategoryDTO? body,
   });
@@ -1019,12 +1018,12 @@ abstract class Swagger extends ChopperService {
 
   ///Submit customer feedback
   @POST(path: '/customer-feedback/create', optionalBody: true)
-  Future<chopper.Response<CustomerFeedbackResponseDTO>> _CreateCustomerFeedback(
-      {@Body() required CreateCustomerFeedbackDTO? body});
+  Future<chopper.Response<CustomerFeedbackResponseDTO>>
+  _CreateCustomerFeedback({@Body() required CreateCustomerFeedbackDTO? body});
 
   ///Get all customer feedback
   Future<chopper.Response<GetAllCustomerFeedbackResponseDTO>>
-      GetAllCustomerFeedback() {
+  GetAllCustomerFeedback() {
     generatedMapping.putIfAbsent(
       GetAllCustomerFeedbackResponseDTO,
       () => GetAllCustomerFeedbackResponseDTO.fromJsonFactory,
@@ -1036,11 +1035,11 @@ abstract class Swagger extends ChopperService {
   ///Get all customer feedback
   @GET(path: '/customer-feedback/get-all')
   Future<chopper.Response<GetAllCustomerFeedbackResponseDTO>>
-      _GetAllCustomerFeedback();
+  _GetAllCustomerFeedback();
 
   ///Get all active customer feedback
   Future<chopper.Response<GetAllCustomerFeedbackResponseDTO>>
-      GetActiveCustomerFeedback() {
+  GetActiveCustomerFeedback() {
     generatedMapping.putIfAbsent(
       GetAllCustomerFeedbackResponseDTO,
       () => GetAllCustomerFeedbackResponseDTO.fromJsonFactory,
@@ -1052,7 +1051,7 @@ abstract class Swagger extends ChopperService {
   ///Get all active customer feedback
   @GET(path: '/customer-feedback/active')
   Future<chopper.Response<GetAllCustomerFeedbackResponseDTO>>
-      _GetActiveCustomerFeedback();
+  _GetActiveCustomerFeedback();
 
   ///Get feedback statistics
   Future<chopper.Response> GetFeedbackStats() {
@@ -1066,7 +1065,7 @@ abstract class Swagger extends ChopperService {
   ///Get feedback by status
   ///@param status
   Future<chopper.Response<GetAllCustomerFeedbackResponseDTO>>
-      GetFeedbackByStatus({
+  GetFeedbackByStatus({
     required enums.CustomerFeedbackByStatusGetStatus? status,
   }) {
     generatedMapping.putIfAbsent(
@@ -1081,12 +1080,12 @@ abstract class Swagger extends ChopperService {
   ///@param status
   @GET(path: '/customer-feedback/by-status')
   Future<chopper.Response<GetAllCustomerFeedbackResponseDTO>>
-      _GetFeedbackByStatus({@Query('status') required String? status});
+  _GetFeedbackByStatus({@Query('status') required String? status});
 
   ///Get feedback by ID
   ///@param feedbackId
-  Future<chopper.Response<CustomerFeedbackResponseDTO>> GetCustomerFeedbackById(
-      {required String? feedbackId}) {
+  Future<chopper.Response<CustomerFeedbackResponseDTO>>
+  GetCustomerFeedbackById({required String? feedbackId}) {
     generatedMapping.putIfAbsent(
       CustomerFeedbackResponseDTO,
       () => CustomerFeedbackResponseDTO.fromJsonFactory,
@@ -1099,8 +1098,7 @@ abstract class Swagger extends ChopperService {
   ///@param feedbackId
   @GET(path: '/customer-feedback/{feedbackId}')
   Future<chopper.Response<CustomerFeedbackResponseDTO>>
-      _GetCustomerFeedbackById(
-          {@Path('feedbackId') required String? feedbackId});
+  _GetCustomerFeedbackById({@Path('feedbackId') required String? feedbackId});
 
   ///Update customer feedback
   ///@param feedbackId
@@ -1120,7 +1118,7 @@ abstract class Swagger extends ChopperService {
   ///@param feedbackId
   @POST(path: '/customer-feedback/update/{feedbackId}', optionalBody: true)
   Future<chopper.Response<CustomerFeedbackResponseDTO>>
-      _UpdateCustomerFeedback({
+  _UpdateCustomerFeedback({
     @Path('feedbackId') required String? feedbackId,
     @Body() required CreateCustomerFeedbackDTO? body,
   });
@@ -1128,7 +1126,7 @@ abstract class Swagger extends ChopperService {
   ///Update feedback status
   ///@param feedbackId
   Future<chopper.Response<CustomerFeedbackResponseDTO>>
-      UpdateCustomerFeedbackStatus({
+  UpdateCustomerFeedbackStatus({
     required String? feedbackId,
     required UpdateFeedbackStatusDTO? body,
   }) {
@@ -1147,7 +1145,7 @@ abstract class Swagger extends ChopperService {
     optionalBody: true,
   )
   Future<chopper.Response<CustomerFeedbackResponseDTO>>
-      _UpdateCustomerFeedbackStatus({
+  _UpdateCustomerFeedbackStatus({
     @Path('feedbackId') required String? feedbackId,
     @Body() required UpdateFeedbackStatusDTO? body,
   });
@@ -1450,6 +1448,100 @@ abstract class Swagger extends ChopperService {
   @DELETE(path: '/api/clients/{id}/image')
   Future<chopper.Response> _removeClientImage({
     @Path('id') required String? id,
+  });
+
+  ///Create a new team member
+  Future<chopper.Response<SingleTeamResponseDTO>> CreateTeam({
+    required CreateTeamDTO? body,
+  }) {
+    generatedMapping.putIfAbsent(
+      SingleTeamResponseDTO,
+      () => SingleTeamResponseDTO.fromJsonFactory,
+    );
+
+    return _CreateTeam(body: body);
+  }
+
+  ///Create a new team member
+  @POST(path: '/teams/create', optionalBody: true)
+  Future<chopper.Response<SingleTeamResponseDTO>> _CreateTeam({
+    @Body() required CreateTeamDTO? body,
+  });
+
+  ///Get all team members
+  Future<chopper.Response<GetAllTeamsResponseDTO>> GetAllTeams() {
+    generatedMapping.putIfAbsent(
+      GetAllTeamsResponseDTO,
+      () => GetAllTeamsResponseDTO.fromJsonFactory,
+    );
+
+    return _GetAllTeams();
+  }
+
+  ///Get all team members
+  @GET(path: '/teams/get-all')
+  Future<chopper.Response<GetAllTeamsResponseDTO>> _GetAllTeams();
+
+  ///Get a team member by ID
+  ///@param teamId
+  Future<chopper.Response<SingleTeamResponseDTO>> GetTeamById({
+    required String? teamId,
+  }) {
+    generatedMapping.putIfAbsent(
+      SingleTeamResponseDTO,
+      () => SingleTeamResponseDTO.fromJsonFactory,
+    );
+
+    return _GetTeamById(teamId: teamId);
+  }
+
+  ///Get a team member by ID
+  ///@param teamId
+  @GET(path: '/teams/{teamId}')
+  Future<chopper.Response<SingleTeamResponseDTO>> _GetTeamById({
+    @Path('teamId') required String? teamId,
+  });
+
+  ///Update a team member
+  ///@param teamId
+  Future<chopper.Response<TeamUpdateResponseDTO>> UpdateTeam({
+    required String? teamId,
+    required CreateTeamDTO? body,
+  }) {
+    generatedMapping.putIfAbsent(
+      TeamUpdateResponseDTO,
+      () => TeamUpdateResponseDTO.fromJsonFactory,
+    );
+
+    return _UpdateTeam(teamId: teamId, body: body);
+  }
+
+  ///Update a team member
+  ///@param teamId
+  @POST(path: '/teams/update/{teamId}', optionalBody: true)
+  Future<chopper.Response<TeamUpdateResponseDTO>> _UpdateTeam({
+    @Path('teamId') required String? teamId,
+    @Body() required CreateTeamDTO? body,
+  });
+
+  ///Delete a team member
+  ///@param teamId
+  Future<chopper.Response<MessageResponseDTO>> DeleteTeam({
+    required String? teamId,
+  }) {
+    generatedMapping.putIfAbsent(
+      MessageResponseDTO,
+      () => MessageResponseDTO.fromJsonFactory,
+    );
+
+    return _DeleteTeam(teamId: teamId);
+  }
+
+  ///Delete a team member
+  ///@param teamId
+  @POST(path: '/teams/delete/{teamId}', optionalBody: true)
+  Future<chopper.Response<MessageResponseDTO>> _DeleteTeam({
+    @Path('teamId') required String? teamId,
   });
 }
 
@@ -1857,12 +1949,10 @@ class CreateProductDTO {
     required this.stock,
     this.discount,
     this.description,
-    this.isActive,
-    this.createdAt,
-    this.updatedAt,
-    this.variantImages,
     this.colors,
     this.materials,
+    this.types,
+    this.isActive,
   });
 
   factory CreateProductDTO.fromJson(Map<String, dynamic> json) =>
@@ -1873,8 +1963,8 @@ class CreateProductDTO {
 
   @JsonKey(name: 'name')
   final String name;
-  @JsonKey(name: 'image')
-  final String? image;
+  @JsonKey(name: 'image', defaultValue: <String>[])
+  final List<String>? image;
   @JsonKey(name: 'categoryId')
   final String categoryId;
   @JsonKey(name: 'price')
@@ -1885,18 +1975,14 @@ class CreateProductDTO {
   final double? discount;
   @JsonKey(name: 'description')
   final String? description;
+  @JsonKey(name: 'colors', defaultValue: <String>[])
+  final List<String>? colors;
+  @JsonKey(name: 'materials', defaultValue: <String>[])
+  final List<String>? materials;
+  @JsonKey(name: 'types', defaultValue: <String>[])
+  final List<String>? types;
   @JsonKey(name: 'isActive')
   final bool? isActive;
-  @JsonKey(name: 'createdAt')
-  final DateTime? createdAt;
-  @JsonKey(name: 'updatedAt')
-  final DateTime? updatedAt;
-  @JsonKey(name: 'variantImages')
-  final List<CreateProductDTO$VariantImages$Item>? variantImages;
-  @JsonKey(name: 'colors')
-  final List<String>? colors;
-  @JsonKey(name: 'materials')
-  final List<String>? materials;
   static const fromJsonFactory = _$CreateProductDTOFromJson;
 
   @override
@@ -1926,32 +2012,19 @@ class CreateProductDTO {
                   other.description,
                   description,
                 )) &&
-            (identical(other.isActive, isActive) ||
-                const DeepCollectionEquality().equals(
-                  other.isActive,
-                  isActive,
-                )) &&
-            (identical(other.createdAt, createdAt) ||
-                const DeepCollectionEquality().equals(
-                  other.createdAt,
-                  createdAt,
-                )) &&
-            (identical(other.updatedAt, updatedAt) ||
-                const DeepCollectionEquality().equals(
-                  other.updatedAt,
-                  updatedAt,
-                )) &&
-            (identical(other.variantImages, variantImages) ||
-                const DeepCollectionEquality().equals(
-                  other.variantImages,
-                  variantImages,
-                )) &&
             (identical(other.colors, colors) ||
                 const DeepCollectionEquality().equals(other.colors, colors)) &&
             (identical(other.materials, materials) ||
                 const DeepCollectionEquality().equals(
                   other.materials,
                   materials,
+                )) &&
+            (identical(other.types, types) ||
+                const DeepCollectionEquality().equals(other.types, types)) &&
+            (identical(other.isActive, isActive) ||
+                const DeepCollectionEquality().equals(
+                  other.isActive,
+                  isActive,
                 )));
   }
 
@@ -1967,30 +2040,26 @@ class CreateProductDTO {
       const DeepCollectionEquality().hash(stock) ^
       const DeepCollectionEquality().hash(discount) ^
       const DeepCollectionEquality().hash(description) ^
-      const DeepCollectionEquality().hash(isActive) ^
-      const DeepCollectionEquality().hash(createdAt) ^
-      const DeepCollectionEquality().hash(updatedAt) ^
-      const DeepCollectionEquality().hash(variantImages) ^
       const DeepCollectionEquality().hash(colors) ^
       const DeepCollectionEquality().hash(materials) ^
+      const DeepCollectionEquality().hash(types) ^
+      const DeepCollectionEquality().hash(isActive) ^
       runtimeType.hashCode;
 }
 
 extension $CreateProductDTOExtension on CreateProductDTO {
   CreateProductDTO copyWith({
     String? name,
-    String? image,
+    List<String>? image,
     String? categoryId,
     double? price,
     double? stock,
     double? discount,
     String? description,
-    bool? isActive,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-    List<CreateProductDTO$VariantImages$Item>? variantImages,
     List<String>? colors,
     List<String>? materials,
+    List<String>? types,
+    bool? isActive,
   }) {
     return CreateProductDTO(
       name: name ?? this.name,
@@ -2000,29 +2069,25 @@ extension $CreateProductDTOExtension on CreateProductDTO {
       stock: stock ?? this.stock,
       discount: discount ?? this.discount,
       description: description ?? this.description,
-      isActive: isActive ?? this.isActive,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
-      variantImages: variantImages ?? this.variantImages,
       colors: colors ?? this.colors,
       materials: materials ?? this.materials,
+      types: types ?? this.types,
+      isActive: isActive ?? this.isActive,
     );
   }
 
   CreateProductDTO copyWithWrapped({
     Wrapped<String>? name,
-    Wrapped<String?>? image,
+    Wrapped<List<String>?>? image,
     Wrapped<String>? categoryId,
     Wrapped<double>? price,
     Wrapped<double>? stock,
     Wrapped<double?>? discount,
     Wrapped<String?>? description,
-    Wrapped<bool?>? isActive,
-    Wrapped<DateTime?>? createdAt,
-    Wrapped<DateTime?>? updatedAt,
-    Wrapped<List<CreateProductDTO$VariantImages$Item>?>? variantImages,
     Wrapped<List<String>?>? colors,
     Wrapped<List<String>?>? materials,
+    Wrapped<List<String>?>? types,
+    Wrapped<bool?>? isActive,
   }) {
     return CreateProductDTO(
       name: (name != null ? name.value : this.name),
@@ -2032,13 +2097,10 @@ extension $CreateProductDTOExtension on CreateProductDTO {
       stock: (stock != null ? stock.value : this.stock),
       discount: (discount != null ? discount.value : this.discount),
       description: (description != null ? description.value : this.description),
-      isActive: (isActive != null ? isActive.value : this.isActive),
-      createdAt: (createdAt != null ? createdAt.value : this.createdAt),
-      updatedAt: (updatedAt != null ? updatedAt.value : this.updatedAt),
-      variantImages:
-          (variantImages != null ? variantImages.value : this.variantImages),
       colors: (colors != null ? colors.value : this.colors),
       materials: (materials != null ? materials.value : this.materials),
+      types: (types != null ? types.value : this.types),
+      isActive: (isActive != null ? isActive.value : this.isActive),
     );
   }
 }
@@ -2187,7 +2249,6 @@ class ProductResponseDTO {
     this.discount,
     required this.stock,
     this.isActive,
-    this.variantImages,
   });
 
   factory ProductResponseDTO.fromJson(Map<String, dynamic> json) =>
@@ -2212,8 +2273,8 @@ class ProductResponseDTO {
   final List<String>? materials;
   @JsonKey(name: 'types', defaultValue: <String>[])
   final List<String>? types;
-  @JsonKey(name: 'image')
-  final String? image;
+  @JsonKey(name: 'image', defaultValue: <String>[])
+  final List<String>? image;
   @JsonKey(name: 'description')
   final String? description;
   @JsonKey(name: 'price')
@@ -2224,8 +2285,6 @@ class ProductResponseDTO {
   final double stock;
   @JsonKey(name: 'isActive')
   final bool? isActive;
-  @JsonKey(name: 'variantImages')
-  final List<ProductResponseDTO$VariantImages$Item>? variantImages;
   static const fromJsonFactory = _$ProductResponseDTOFromJson;
 
   @override
@@ -2280,11 +2339,6 @@ class ProductResponseDTO {
                 const DeepCollectionEquality().equals(
                   other.isActive,
                   isActive,
-                )) &&
-            (identical(other.variantImages, variantImages) ||
-                const DeepCollectionEquality().equals(
-                  other.variantImages,
-                  variantImages,
                 )));
   }
 
@@ -2307,7 +2361,6 @@ class ProductResponseDTO {
       const DeepCollectionEquality().hash(discount) ^
       const DeepCollectionEquality().hash(stock) ^
       const DeepCollectionEquality().hash(isActive) ^
-      const DeepCollectionEquality().hash(variantImages) ^
       runtimeType.hashCode;
 }
 
@@ -2321,13 +2374,12 @@ extension $ProductResponseDTOExtension on ProductResponseDTO {
     List<String>? colors,
     List<String>? materials,
     List<String>? types,
-    String? image,
+    List<String>? image,
     String? description,
     double? price,
     double? discount,
     double? stock,
     bool? isActive,
-    List<ProductResponseDTO$VariantImages$Item>? variantImages,
   }) {
     return ProductResponseDTO(
       id: id ?? this.id,
@@ -2344,7 +2396,6 @@ extension $ProductResponseDTOExtension on ProductResponseDTO {
       discount: discount ?? this.discount,
       stock: stock ?? this.stock,
       isActive: isActive ?? this.isActive,
-      variantImages: variantImages ?? this.variantImages,
     );
   }
 
@@ -2357,13 +2408,12 @@ extension $ProductResponseDTOExtension on ProductResponseDTO {
     Wrapped<List<String>?>? colors,
     Wrapped<List<String>?>? materials,
     Wrapped<List<String>?>? types,
-    Wrapped<String?>? image,
+    Wrapped<List<String>?>? image,
     Wrapped<String?>? description,
     Wrapped<double>? price,
     Wrapped<double?>? discount,
     Wrapped<double>? stock,
     Wrapped<bool?>? isActive,
-    Wrapped<List<ProductResponseDTO$VariantImages$Item>?>? variantImages,
   }) {
     return ProductResponseDTO(
       id: (id != null ? id.value : this.id),
@@ -2380,8 +2430,6 @@ extension $ProductResponseDTOExtension on ProductResponseDTO {
       discount: (discount != null ? discount.value : this.discount),
       stock: (stock != null ? stock.value : this.stock),
       isActive: (isActive != null ? isActive.value : this.isActive),
-      variantImages:
-          (variantImages != null ? variantImages.value : this.variantImages),
     );
   }
 }
@@ -2738,8 +2786,7 @@ class GetAllProductCategoriesResponseDTO {
 
   factory GetAllProductCategoriesResponseDTO.fromJson(
     Map<String, dynamic> json,
-  ) =>
-      _$GetAllProductCategoriesResponseDTOFromJson(json);
+  ) => _$GetAllProductCategoriesResponseDTOFromJson(json);
 
   static const toJsonFactory = _$GetAllProductCategoriesResponseDTOToJson;
   Map<String, dynamic> toJson() =>
@@ -3982,8 +4029,7 @@ class GetAllProductMaterialsResponseDTO {
 
   factory GetAllProductMaterialsResponseDTO.fromJson(
     Map<String, dynamic> json,
-  ) =>
-      _$GetAllProductMaterialsResponseDTOFromJson(json);
+  ) => _$GetAllProductMaterialsResponseDTOFromJson(json);
 
   static const toJsonFactory = _$GetAllProductMaterialsResponseDTOToJson;
   Map<String, dynamic> toJson() =>
@@ -4800,8 +4846,7 @@ class GetAllPortfolioCategoriesResponseDTO {
 
   factory GetAllPortfolioCategoriesResponseDTO.fromJson(
     Map<String, dynamic> json,
-  ) =>
-      _$GetAllPortfolioCategoriesResponseDTOFromJson(json);
+  ) => _$GetAllPortfolioCategoriesResponseDTOFromJson(json);
 
   static const toJsonFactory = _$GetAllPortfolioCategoriesResponseDTOToJson;
   Map<String, dynamic> toJson() =>
@@ -4941,8 +4986,9 @@ extension $CreateCustomerFeedbackDTOExtension on CreateCustomerFeedbackDTO {
     Wrapped<String?>? subject,
   }) {
     return CreateCustomerFeedbackDTO(
-      customerName:
-          (customerName != null ? customerName.value : this.customerName),
+      customerName: (customerName != null
+          ? customerName.value
+          : this.customerName),
       email: (email != null ? email.value : this.email),
       phone: (phone != null ? phone.value : this.phone),
       message: (message != null ? message.value : this.message),
@@ -5085,8 +5131,9 @@ extension $CustomerFeedbackResponseDTOExtension on CustomerFeedbackResponseDTO {
     Wrapped<DateTime?>? updatedAt,
   }) {
     return CustomerFeedbackResponseDTO(
-      customerName:
-          (customerName != null ? customerName.value : this.customerName),
+      customerName: (customerName != null
+          ? customerName.value
+          : this.customerName),
       email: (email != null ? email.value : this.email),
       phone: (phone != null ? phone.value : this.phone),
       message: (message != null ? message.value : this.message),
@@ -5105,8 +5152,7 @@ class GetAllCustomerFeedbackResponseDTO {
 
   factory GetAllCustomerFeedbackResponseDTO.fromJson(
     Map<String, dynamic> json,
-  ) =>
-      _$GetAllCustomerFeedbackResponseDTOFromJson(json);
+  ) => _$GetAllCustomerFeedbackResponseDTOFromJson(json);
 
   static const toJsonFactory = _$GetAllCustomerFeedbackResponseDTOToJson;
   Map<String, dynamic> toJson() =>
@@ -5709,11 +5755,11 @@ class CreateClientDTO {
   )
   final enums.CreateClientDTOStatus? status;
   static enums.CreateClientDTOStatus?
-      createClientDTOStatusStatusNullableFromJson(Object? value) =>
-          createClientDTOStatusNullableFromJson(
-            value,
-            enums.CreateClientDTOStatus.prospect,
-          );
+  createClientDTOStatusStatusNullableFromJson(Object? value) =>
+      createClientDTOStatusNullableFromJson(
+        value,
+        enums.CreateClientDTOStatus.prospect,
+      );
 
   static const fromJsonFactory = _$CreateClientDTOFromJson;
 
@@ -5787,8 +5833,9 @@ extension $CreateClientDTOExtension on CreateClientDTO {
       company: (company != null ? company.value : this.company),
       email: (email != null ? email.value : this.email),
       phone: (phone != null ? phone.value : this.phone),
-      totalProjects:
-          (totalProjects != null ? totalProjects.value : this.totalProjects),
+      totalProjects: (totalProjects != null
+          ? totalProjects.value
+          : this.totalProjects),
       status: (status != null ? status.value : this.status),
     );
   }
@@ -5828,11 +5875,11 @@ class UpdateClientDTO {
   )
   final enums.UpdateClientDTOStatus? status;
   static enums.UpdateClientDTOStatus?
-      updateClientDTOStatusStatusNullableFromJson(Object? value) =>
-          updateClientDTOStatusNullableFromJson(
-            value,
-            enums.UpdateClientDTOStatus.prospect,
-          );
+  updateClientDTOStatusStatusNullableFromJson(Object? value) =>
+      updateClientDTOStatusNullableFromJson(
+        value,
+        enums.UpdateClientDTOStatus.prospect,
+      );
 
   static const fromJsonFactory = _$UpdateClientDTOFromJson;
 
@@ -5906,9 +5953,379 @@ extension $UpdateClientDTOExtension on UpdateClientDTO {
       company: (company != null ? company.value : this.company),
       email: (email != null ? email.value : this.email),
       phone: (phone != null ? phone.value : this.phone),
-      totalProjects:
-          (totalProjects != null ? totalProjects.value : this.totalProjects),
+      totalProjects: (totalProjects != null
+          ? totalProjects.value
+          : this.totalProjects),
       status: (status != null ? status.value : this.status),
+    );
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class CreateTeamDTO {
+  const CreateTeamDTO({
+    required this.name,
+    this.avatar,
+    this.description,
+    this.role,
+    this.isActive,
+  });
+
+  factory CreateTeamDTO.fromJson(Map<String, dynamic> json) =>
+      _$CreateTeamDTOFromJson(json);
+
+  static const toJsonFactory = _$CreateTeamDTOToJson;
+  Map<String, dynamic> toJson() => _$CreateTeamDTOToJson(this);
+
+  @JsonKey(name: 'name')
+  final String name;
+  @JsonKey(name: 'avatar')
+  final String? avatar;
+  @JsonKey(name: 'description')
+  final String? description;
+  @JsonKey(name: 'role')
+  final String? role;
+  @JsonKey(name: 'isActive')
+  final bool? isActive;
+  static const fromJsonFactory = _$CreateTeamDTOFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is CreateTeamDTO &&
+            (identical(other.name, name) ||
+                const DeepCollectionEquality().equals(other.name, name)) &&
+            (identical(other.avatar, avatar) ||
+                const DeepCollectionEquality().equals(other.avatar, avatar)) &&
+            (identical(other.description, description) ||
+                const DeepCollectionEquality().equals(
+                  other.description,
+                  description,
+                )) &&
+            (identical(other.role, role) ||
+                const DeepCollectionEquality().equals(other.role, role)) &&
+            (identical(other.isActive, isActive) ||
+                const DeepCollectionEquality().equals(
+                  other.isActive,
+                  isActive,
+                )));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(name) ^
+      const DeepCollectionEquality().hash(avatar) ^
+      const DeepCollectionEquality().hash(description) ^
+      const DeepCollectionEquality().hash(role) ^
+      const DeepCollectionEquality().hash(isActive) ^
+      runtimeType.hashCode;
+}
+
+extension $CreateTeamDTOExtension on CreateTeamDTO {
+  CreateTeamDTO copyWith({
+    String? name,
+    String? avatar,
+    String? description,
+    String? role,
+    bool? isActive,
+  }) {
+    return CreateTeamDTO(
+      name: name ?? this.name,
+      avatar: avatar ?? this.avatar,
+      description: description ?? this.description,
+      role: role ?? this.role,
+      isActive: isActive ?? this.isActive,
+    );
+  }
+
+  CreateTeamDTO copyWithWrapped({
+    Wrapped<String>? name,
+    Wrapped<String?>? avatar,
+    Wrapped<String?>? description,
+    Wrapped<String?>? role,
+    Wrapped<bool?>? isActive,
+  }) {
+    return CreateTeamDTO(
+      name: (name != null ? name.value : this.name),
+      avatar: (avatar != null ? avatar.value : this.avatar),
+      description: (description != null ? description.value : this.description),
+      role: (role != null ? role.value : this.role),
+      isActive: (isActive != null ? isActive.value : this.isActive),
+    );
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class TeamResponseDTO {
+  const TeamResponseDTO({
+    required this.name,
+    this.avatar,
+    this.description,
+    this.role,
+    this.isActive,
+    required this.id,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  factory TeamResponseDTO.fromJson(Map<String, dynamic> json) =>
+      _$TeamResponseDTOFromJson(json);
+
+  static const toJsonFactory = _$TeamResponseDTOToJson;
+  Map<String, dynamic> toJson() => _$TeamResponseDTOToJson(this);
+
+  @JsonKey(name: 'name')
+  final String name;
+  @JsonKey(name: 'avatar')
+  final String? avatar;
+  @JsonKey(name: 'description')
+  final String? description;
+  @JsonKey(name: 'role')
+  final String? role;
+  @JsonKey(name: 'isActive')
+  final bool? isActive;
+  @JsonKey(name: '_id')
+  final String id;
+  @JsonKey(name: 'createdAt')
+  final DateTime? createdAt;
+  @JsonKey(name: 'updatedAt')
+  final DateTime? updatedAt;
+  static const fromJsonFactory = _$TeamResponseDTOFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is TeamResponseDTO &&
+            (identical(other.name, name) ||
+                const DeepCollectionEquality().equals(other.name, name)) &&
+            (identical(other.avatar, avatar) ||
+                const DeepCollectionEquality().equals(other.avatar, avatar)) &&
+            (identical(other.description, description) ||
+                const DeepCollectionEquality().equals(
+                  other.description,
+                  description,
+                )) &&
+            (identical(other.role, role) ||
+                const DeepCollectionEquality().equals(other.role, role)) &&
+            (identical(other.isActive, isActive) ||
+                const DeepCollectionEquality().equals(
+                  other.isActive,
+                  isActive,
+                )) &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.createdAt, createdAt) ||
+                const DeepCollectionEquality().equals(
+                  other.createdAt,
+                  createdAt,
+                )) &&
+            (identical(other.updatedAt, updatedAt) ||
+                const DeepCollectionEquality().equals(
+                  other.updatedAt,
+                  updatedAt,
+                )));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(name) ^
+      const DeepCollectionEquality().hash(avatar) ^
+      const DeepCollectionEquality().hash(description) ^
+      const DeepCollectionEquality().hash(role) ^
+      const DeepCollectionEquality().hash(isActive) ^
+      const DeepCollectionEquality().hash(id) ^
+      const DeepCollectionEquality().hash(createdAt) ^
+      const DeepCollectionEquality().hash(updatedAt) ^
+      runtimeType.hashCode;
+}
+
+extension $TeamResponseDTOExtension on TeamResponseDTO {
+  TeamResponseDTO copyWith({
+    String? name,
+    String? avatar,
+    String? description,
+    String? role,
+    bool? isActive,
+    String? id,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+  }) {
+    return TeamResponseDTO(
+      name: name ?? this.name,
+      avatar: avatar ?? this.avatar,
+      description: description ?? this.description,
+      role: role ?? this.role,
+      isActive: isActive ?? this.isActive,
+      id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
+  TeamResponseDTO copyWithWrapped({
+    Wrapped<String>? name,
+    Wrapped<String?>? avatar,
+    Wrapped<String?>? description,
+    Wrapped<String?>? role,
+    Wrapped<bool?>? isActive,
+    Wrapped<String>? id,
+    Wrapped<DateTime?>? createdAt,
+    Wrapped<DateTime?>? updatedAt,
+  }) {
+    return TeamResponseDTO(
+      name: (name != null ? name.value : this.name),
+      avatar: (avatar != null ? avatar.value : this.avatar),
+      description: (description != null ? description.value : this.description),
+      role: (role != null ? role.value : this.role),
+      isActive: (isActive != null ? isActive.value : this.isActive),
+      id: (id != null ? id.value : this.id),
+      createdAt: (createdAt != null ? createdAt.value : this.createdAt),
+      updatedAt: (updatedAt != null ? updatedAt.value : this.updatedAt),
+    );
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class SingleTeamResponseDTO {
+  const SingleTeamResponseDTO({required this.data});
+
+  factory SingleTeamResponseDTO.fromJson(Map<String, dynamic> json) =>
+      _$SingleTeamResponseDTOFromJson(json);
+
+  static const toJsonFactory = _$SingleTeamResponseDTOToJson;
+  Map<String, dynamic> toJson() => _$SingleTeamResponseDTOToJson(this);
+
+  @JsonKey(name: 'data')
+  final TeamResponseDTO data;
+  static const fromJsonFactory = _$SingleTeamResponseDTOFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is SingleTeamResponseDTO &&
+            (identical(other.data, data) ||
+                const DeepCollectionEquality().equals(other.data, data)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(data) ^ runtimeType.hashCode;
+}
+
+extension $SingleTeamResponseDTOExtension on SingleTeamResponseDTO {
+  SingleTeamResponseDTO copyWith({TeamResponseDTO? data}) {
+    return SingleTeamResponseDTO(data: data ?? this.data);
+  }
+
+  SingleTeamResponseDTO copyWithWrapped({Wrapped<TeamResponseDTO>? data}) {
+    return SingleTeamResponseDTO(data: (data != null ? data.value : this.data));
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class GetAllTeamsResponseDTO {
+  const GetAllTeamsResponseDTO({required this.data});
+
+  factory GetAllTeamsResponseDTO.fromJson(Map<String, dynamic> json) =>
+      _$GetAllTeamsResponseDTOFromJson(json);
+
+  static const toJsonFactory = _$GetAllTeamsResponseDTOToJson;
+  Map<String, dynamic> toJson() => _$GetAllTeamsResponseDTOToJson(this);
+
+  @JsonKey(name: 'data', defaultValue: <TeamResponseDTO>[])
+  final List<TeamResponseDTO> data;
+  static const fromJsonFactory = _$GetAllTeamsResponseDTOFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is GetAllTeamsResponseDTO &&
+            (identical(other.data, data) ||
+                const DeepCollectionEquality().equals(other.data, data)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(data) ^ runtimeType.hashCode;
+}
+
+extension $GetAllTeamsResponseDTOExtension on GetAllTeamsResponseDTO {
+  GetAllTeamsResponseDTO copyWith({List<TeamResponseDTO>? data}) {
+    return GetAllTeamsResponseDTO(data: data ?? this.data);
+  }
+
+  GetAllTeamsResponseDTO copyWithWrapped({
+    Wrapped<List<TeamResponseDTO>>? data,
+  }) {
+    return GetAllTeamsResponseDTO(
+      data: (data != null ? data.value : this.data),
+    );
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class TeamUpdateResponseDTO {
+  const TeamUpdateResponseDTO({required this.data, required this.message});
+
+  factory TeamUpdateResponseDTO.fromJson(Map<String, dynamic> json) =>
+      _$TeamUpdateResponseDTOFromJson(json);
+
+  static const toJsonFactory = _$TeamUpdateResponseDTOToJson;
+  Map<String, dynamic> toJson() => _$TeamUpdateResponseDTOToJson(this);
+
+  @JsonKey(name: 'data')
+  final TeamResponseDTO data;
+  @JsonKey(name: 'message')
+  final String message;
+  static const fromJsonFactory = _$TeamUpdateResponseDTOFromJson;
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other is TeamUpdateResponseDTO &&
+            (identical(other.data, data) ||
+                const DeepCollectionEquality().equals(other.data, data)) &&
+            (identical(other.message, message) ||
+                const DeepCollectionEquality().equals(other.message, message)));
+  }
+
+  @override
+  String toString() => jsonEncode(this);
+
+  @override
+  int get hashCode =>
+      const DeepCollectionEquality().hash(data) ^
+      const DeepCollectionEquality().hash(message) ^
+      runtimeType.hashCode;
+}
+
+extension $TeamUpdateResponseDTOExtension on TeamUpdateResponseDTO {
+  TeamUpdateResponseDTO copyWith({TeamResponseDTO? data, String? message}) {
+    return TeamUpdateResponseDTO(
+      data: data ?? this.data,
+      message: message ?? this.message,
+    );
+  }
+
+  TeamUpdateResponseDTO copyWithWrapped({
+    Wrapped<TeamResponseDTO>? data,
+    Wrapped<String>? message,
+  }) {
+    return TeamUpdateResponseDTO(
+      data: (data != null ? data.value : this.data),
+      message: (message != null ? message.value : this.message),
     );
   }
 }
@@ -5952,163 +6369,6 @@ extension $ImagesUploadPost$RequestBodyExtension
   ImagesUploadPost$RequestBody copyWithWrapped({Wrapped<String>? file}) {
     return ImagesUploadPost$RequestBody(
       file: (file != null ? file.value : this.file),
-    );
-  }
-}
-
-@JsonSerializable(explicitToJson: true)
-class CreateProductDTO$VariantImages$Item {
-  const CreateProductDTO$VariantImages$Item({
-    this.image,
-    this.color,
-    this.material,
-  });
-
-  factory CreateProductDTO$VariantImages$Item.fromJson(
-    Map<String, dynamic> json,
-  ) =>
-      _$CreateProductDTO$VariantImages$ItemFromJson(json);
-
-  static const toJsonFactory = _$CreateProductDTO$VariantImages$ItemToJson;
-  Map<String, dynamic> toJson() =>
-      _$CreateProductDTO$VariantImages$ItemToJson(this);
-
-  @JsonKey(name: 'image')
-  final String? image;
-  @JsonKey(name: 'color')
-  final String? color;
-  @JsonKey(name: 'material')
-  final String? material;
-  static const fromJsonFactory = _$CreateProductDTO$VariantImages$ItemFromJson;
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other is CreateProductDTO$VariantImages$Item &&
-            (identical(other.image, image) ||
-                const DeepCollectionEquality().equals(other.image, image)) &&
-            (identical(other.color, color) ||
-                const DeepCollectionEquality().equals(other.color, color)) &&
-            (identical(other.material, material) ||
-                const DeepCollectionEquality().equals(
-                  other.material,
-                  material,
-                )));
-  }
-
-  @override
-  String toString() => jsonEncode(this);
-
-  @override
-  int get hashCode =>
-      const DeepCollectionEquality().hash(image) ^
-      const DeepCollectionEquality().hash(color) ^
-      const DeepCollectionEquality().hash(material) ^
-      runtimeType.hashCode;
-}
-
-extension $CreateProductDTO$VariantImages$ItemExtension
-    on CreateProductDTO$VariantImages$Item {
-  CreateProductDTO$VariantImages$Item copyWith({
-    String? image,
-    String? color,
-    String? material,
-  }) {
-    return CreateProductDTO$VariantImages$Item(
-      image: image ?? this.image,
-      color: color ?? this.color,
-      material: material ?? this.material,
-    );
-  }
-
-  CreateProductDTO$VariantImages$Item copyWithWrapped({
-    Wrapped<String?>? image,
-    Wrapped<String?>? color,
-    Wrapped<String?>? material,
-  }) {
-    return CreateProductDTO$VariantImages$Item(
-      image: (image != null ? image.value : this.image),
-      color: (color != null ? color.value : this.color),
-      material: (material != null ? material.value : this.material),
-    );
-  }
-}
-
-@JsonSerializable(explicitToJson: true)
-class ProductResponseDTO$VariantImages$Item {
-  const ProductResponseDTO$VariantImages$Item({
-    this.image,
-    this.color,
-    this.material,
-  });
-
-  factory ProductResponseDTO$VariantImages$Item.fromJson(
-    Map<String, dynamic> json,
-  ) =>
-      _$ProductResponseDTO$VariantImages$ItemFromJson(json);
-
-  static const toJsonFactory = _$ProductResponseDTO$VariantImages$ItemToJson;
-  Map<String, dynamic> toJson() =>
-      _$ProductResponseDTO$VariantImages$ItemToJson(this);
-
-  @JsonKey(name: 'image')
-  final String? image;
-  @JsonKey(name: 'color')
-  final String? color;
-  @JsonKey(name: 'material')
-  final String? material;
-  static const fromJsonFactory =
-      _$ProductResponseDTO$VariantImages$ItemFromJson;
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other is ProductResponseDTO$VariantImages$Item &&
-            (identical(other.image, image) ||
-                const DeepCollectionEquality().equals(other.image, image)) &&
-            (identical(other.color, color) ||
-                const DeepCollectionEquality().equals(other.color, color)) &&
-            (identical(other.material, material) ||
-                const DeepCollectionEquality().equals(
-                  other.material,
-                  material,
-                )));
-  }
-
-  @override
-  String toString() => jsonEncode(this);
-
-  @override
-  int get hashCode =>
-      const DeepCollectionEquality().hash(image) ^
-      const DeepCollectionEquality().hash(color) ^
-      const DeepCollectionEquality().hash(material) ^
-      runtimeType.hashCode;
-}
-
-extension $ProductResponseDTO$VariantImages$ItemExtension
-    on ProductResponseDTO$VariantImages$Item {
-  ProductResponseDTO$VariantImages$Item copyWith({
-    String? image,
-    String? color,
-    String? material,
-  }) {
-    return ProductResponseDTO$VariantImages$Item(
-      image: image ?? this.image,
-      color: color ?? this.color,
-      material: material ?? this.material,
-    );
-  }
-
-  ProductResponseDTO$VariantImages$Item copyWithWrapped({
-    Wrapped<String?>? image,
-    Wrapped<String?>? color,
-    Wrapped<String?>? material,
-  }) {
-    return ProductResponseDTO$VariantImages$Item(
-      image: (image != null ? image.value : this.image),
-      color: (color != null ? color.value : this.color),
-      material: (material != null ? material.value : this.material),
     );
   }
 }
@@ -6291,7 +6551,7 @@ enums.UpdateFeedbackStatusDTOStatus updateFeedbackStatusDTOStatusFromJson(
 }
 
 enums.UpdateFeedbackStatusDTOStatus?
-    updateFeedbackStatusDTOStatusNullableFromJson(
+updateFeedbackStatusDTOStatusNullableFromJson(
   Object? updateFeedbackStatusDTOStatus, [
   enums.UpdateFeedbackStatusDTOStatus? defaultValue,
 ]) {
@@ -6321,7 +6581,7 @@ List<String> updateFeedbackStatusDTOStatusListToJson(
 }
 
 List<enums.UpdateFeedbackStatusDTOStatus>
-    updateFeedbackStatusDTOStatusListFromJson(
+updateFeedbackStatusDTOStatusListFromJson(
   List? updateFeedbackStatusDTOStatus, [
   List<enums.UpdateFeedbackStatusDTOStatus>? defaultValue,
 ]) {
@@ -6335,7 +6595,7 @@ List<enums.UpdateFeedbackStatusDTOStatus>
 }
 
 List<enums.UpdateFeedbackStatusDTOStatus>?
-    updateFeedbackStatusDTOStatusNullableListFromJson(
+updateFeedbackStatusDTOStatusNullableListFromJson(
   List? updateFeedbackStatusDTOStatus, [
   List<enums.UpdateFeedbackStatusDTOStatus>? defaultValue,
 ]) {
@@ -6517,7 +6777,7 @@ String? customerFeedbackByStatusGetStatusToJson(
 }
 
 enums.CustomerFeedbackByStatusGetStatus
-    customerFeedbackByStatusGetStatusFromJson(
+customerFeedbackByStatusGetStatusFromJson(
   Object? customerFeedbackByStatusGetStatus, [
   enums.CustomerFeedbackByStatusGetStatus? defaultValue,
 ]) {
@@ -6529,7 +6789,7 @@ enums.CustomerFeedbackByStatusGetStatus
 }
 
 enums.CustomerFeedbackByStatusGetStatus?
-    customerFeedbackByStatusGetStatusNullableFromJson(
+customerFeedbackByStatusGetStatusNullableFromJson(
   Object? customerFeedbackByStatusGetStatus, [
   enums.CustomerFeedbackByStatusGetStatus? defaultValue,
 ]) {
@@ -6544,7 +6804,7 @@ enums.CustomerFeedbackByStatusGetStatus?
 
 String customerFeedbackByStatusGetStatusExplodedListToJson(
   List<enums.CustomerFeedbackByStatusGetStatus>?
-      customerFeedbackByStatusGetStatus,
+  customerFeedbackByStatusGetStatus,
 ) {
   return customerFeedbackByStatusGetStatus?.map((e) => e.value!).join(',') ??
       '';
@@ -6552,7 +6812,7 @@ String customerFeedbackByStatusGetStatusExplodedListToJson(
 
 List<String> customerFeedbackByStatusGetStatusListToJson(
   List<enums.CustomerFeedbackByStatusGetStatus>?
-      customerFeedbackByStatusGetStatus,
+  customerFeedbackByStatusGetStatus,
 ) {
   if (customerFeedbackByStatusGetStatus == null) {
     return [];
@@ -6562,7 +6822,7 @@ List<String> customerFeedbackByStatusGetStatusListToJson(
 }
 
 List<enums.CustomerFeedbackByStatusGetStatus>
-    customerFeedbackByStatusGetStatusListFromJson(
+customerFeedbackByStatusGetStatusListFromJson(
   List? customerFeedbackByStatusGetStatus, [
   List<enums.CustomerFeedbackByStatusGetStatus>? defaultValue,
 ]) {
@@ -6576,7 +6836,7 @@ List<enums.CustomerFeedbackByStatusGetStatus>
 }
 
 List<enums.CustomerFeedbackByStatusGetStatus>?
-    customerFeedbackByStatusGetStatusNullableListFromJson(
+customerFeedbackByStatusGetStatusNullableListFromJson(
   List? customerFeedbackByStatusGetStatus, [
   List<enums.CustomerFeedbackByStatusGetStatus>? defaultValue,
 ]) {
@@ -6811,7 +7071,7 @@ List<enums.ApiClientsSearchGetStatus> apiClientsSearchGetStatusListFromJson(
 }
 
 List<enums.ApiClientsSearchGetStatus>?
-    apiClientsSearchGetStatusNullableListFromJson(
+apiClientsSearchGetStatusNullableListFromJson(
   List? apiClientsSearchGetStatus, [
   List<enums.ApiClientsSearchGetStatus>? defaultValue,
 ]) {
@@ -6848,7 +7108,7 @@ enums.ApiClientsSearchGetSortOrder apiClientsSearchGetSortOrderFromJson(
 }
 
 enums.ApiClientsSearchGetSortOrder?
-    apiClientsSearchGetSortOrderNullableFromJson(
+apiClientsSearchGetSortOrderNullableFromJson(
   Object? apiClientsSearchGetSortOrder, [
   enums.ApiClientsSearchGetSortOrder? defaultValue,
 ]) {
@@ -6878,7 +7138,7 @@ List<String> apiClientsSearchGetSortOrderListToJson(
 }
 
 List<enums.ApiClientsSearchGetSortOrder>
-    apiClientsSearchGetSortOrderListFromJson(
+apiClientsSearchGetSortOrderListFromJson(
   List? apiClientsSearchGetSortOrder, [
   List<enums.ApiClientsSearchGetSortOrder>? defaultValue,
 ]) {
@@ -6892,7 +7152,7 @@ List<enums.ApiClientsSearchGetSortOrder>
 }
 
 List<enums.ApiClientsSearchGetSortOrder>?
-    apiClientsSearchGetSortOrderNullableListFromJson(
+apiClientsSearchGetSortOrderNullableListFromJson(
   List? apiClientsSearchGetSortOrder, [
   List<enums.ApiClientsSearchGetSortOrder>? defaultValue,
 ]) {
@@ -6966,8 +7226,9 @@ class $JsonSerializableConverter extends chopper.JsonConverter {
 
     if (ResultType == DateTime) {
       return response.copyWith(
-        body: DateTime.parse((response.body as String).replaceAll('"', ''))
-            as ResultType,
+        body:
+            DateTime.parse((response.body as String).replaceAll('"', ''))
+                as ResultType,
       );
     }
 

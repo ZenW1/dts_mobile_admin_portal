@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:http_parser/http_parser.dart';
 import 'dart:io';
@@ -93,7 +94,11 @@ class UploadService {
         return null;
       }
 
-      final streamedResponse = await request.send();
+      final streamedResponse = await request.send().timeout(
+            const Duration(seconds: 30),
+            onTimeout: () => throw TimeoutException(
+                'Image upload timed out after 30 seconds'),
+          );
       final response = await http.Response.fromStream(streamedResponse);
 
       if (response.statusCode >= 200 && response.statusCode < 300) {

@@ -163,12 +163,13 @@ class _ClientListPageState extends ConsumerState<ClientListPage> {
                         }
                         final clientId = clients[index].id;
                         return ClientCard(
-                          client: clients[index],
-                          onTap: () {
-                            print('Tapped client: ${clients[index].name} (ID: $clientId)');
-                            context.push('/clients/$clientId');
-                          }
-                        );
+                            client: clients[index],
+                            onTap: () {
+                              context.pushNamed(
+                                'client-detail',
+                                pathParameters: {'id': clientId},
+                              );
+                            });
                       },
                     ),
                   );

@@ -284,7 +284,7 @@ class _JobsPageState extends ConsumerState<JobsPage> {
                   const Spacer(),
                   TextButton.icon(
                     onPressed: () {
-                      // context.go('/jobs/$jobId');
+                      context.go('/jobs/${job.id ?? ''}');
                     },
                     icon: const Text('View Details'),
                     label: const Icon(Iconsax.arrow_right_3, size: 16),

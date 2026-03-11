@@ -65,8 +65,7 @@ class _GradientButtonState extends State<GradientButton>
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
-      cursor:
-          isDisabled ? SystemMouseCursors.forbidden : SystemMouseCursors.click,
+      cursor: isDisabled ? SystemMouseCursors.forbidden : SystemMouseCursors.click,
       child: GestureDetector(
         onTapDown: (_) => _controller.forward(),
         onTapUp: (_) => _controller.reverse(),

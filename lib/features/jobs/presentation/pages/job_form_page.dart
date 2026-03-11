@@ -7,6 +7,7 @@ import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/gradient_button.dart';
 import '../../../../core/widgets/custom_text_field.dart';
 import '../../../../core/utils/validators.dart';
+import '../../../../core/services/toast_service.dart';
 
 import '../../../../generated_code/swagger.swagger.dart';
 import '../providers/job_provider.dart';
@@ -286,25 +287,16 @@ class _JobFormPageState extends ConsumerState<JobFormPage> {
       }
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(_isEditing
-                ? 'Job updated successfully'
-                : 'Job posted successfully'),
-            behavior: SnackBarBehavior.floating,
-          ),
+        ToastService.success(
+          message: _isEditing
+              ? 'Job updated successfully'
+              : 'Job posted successfully',
         );
         context.go('/jobs');
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error: $e'),
-            backgroundColor: AppColors.error,
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
+        ToastService.error(message: 'Error: $e');
       }
     } finally {
       if (mounted) {

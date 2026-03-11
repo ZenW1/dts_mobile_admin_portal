@@ -9,6 +9,8 @@ import '../../../../core/widgets/widgets.dart';
 import '../../../../core/utils/validators.dart';
 import 'package:dts_admin_portal/generated_code/swagger.swagger.dart';
 import '../../../../core/network/upload_service.dart';
+import '../../../../core/services/toast_service.dart';
+
 import '../providers/portfolio_provider.dart';
 
 /// Portfolio create/edit form page
@@ -427,13 +429,7 @@ class _PortfolioFormPageState extends ConsumerState<PortfolioFormPage> {
 
     if (_imageUrlController.text.trim().isEmpty) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Please select a project image'),
-            backgroundColor: AppColors.error,
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
+        ToastService.error(message: 'Please select a project image');
       }
       return;
     }
@@ -495,25 +491,16 @@ class _PortfolioFormPageState extends ConsumerState<PortfolioFormPage> {
       }
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(_isEditing
-                ? 'Portfolio updated successfully'
-                : 'Portfolio created successfully'),
-            behavior: SnackBarBehavior.floating,
-          ),
+        ToastService.success(
+          message: _isEditing
+              ? 'Portfolio updated successfully'
+              : 'Portfolio created successfully',
         );
         context.go('/portfolio');
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error: $e'),
-            backgroundColor: AppColors.error,
-            behavior: SnackBarBehavior.floating,
-          ),
-        );
+        ToastService.error(message: 'Error: $e');
       }
     } finally {
       if (mounted) {

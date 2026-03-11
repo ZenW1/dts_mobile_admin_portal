@@ -7,6 +7,8 @@ import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/gradient_button.dart';
 import '../../../../core/widgets/custom_text_field.dart';
 import '../../../../core/utils/validators.dart';
+import '../../../../core/services/toast_service.dart';
+
 import '../providers/product_material_provider.dart';
 
 /// Create / Edit product material form
@@ -170,24 +172,17 @@ class _ProductMaterialFormPageState
     if (mounted) {
       setState(() => _isLoading = false);
       if (success) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(_isEditing
-                ? 'Material updated successfully'
-                : 'Material created successfully'),
-            behavior: SnackBarBehavior.floating,
-          ),
+        ToastService.success(
+          message: _isEditing
+              ? 'Material updated successfully'
+              : 'Material created successfully',
         );
         context.go('/product-materials');
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(_isEditing
-                ? 'Failed to update material'
-                : 'Failed to create material'),
-            backgroundColor: AppColors.error,
-            behavior: SnackBarBehavior.floating,
-          ),
+        ToastService.error(
+          message: _isEditing
+              ? 'Failed to update material'
+              : 'Failed to create material',
         );
       }
     }

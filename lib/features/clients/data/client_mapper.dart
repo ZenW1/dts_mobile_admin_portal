@@ -19,7 +19,7 @@ extension ClientMapper on Map<String, dynamic> {
     }
 
     return Client(
-      id: this['_id'] ?? '',
+      id: this['_id'] ?? this['id'] ?? '',
       name: this['name'] ?? '',
       company: this['company'] ?? '',
       email: this['email'] ?? '',

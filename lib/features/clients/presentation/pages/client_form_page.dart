@@ -6,6 +6,8 @@ import 'package:iconsax/iconsax.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/custom_image_picker.dart';
+import '../../../../core/widgets/responsive_layout.dart';
+import '../../../../core/services/toast_service.dart';
 
 import '../../../../generated_code/swagger.swagger.dart';
 import '../../domain/entities/client.dart';
@@ -114,23 +116,15 @@ class _ClientFormPageState extends ConsumerState<ClientFormPage> {
     }
 
     if (mounted && !ref.read(clientMutationsProvider).hasError) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(isEditing
-              ? 'Client updated successfully'
-              : 'Client created successfully'),
-          backgroundColor: AppColors.success,
-        ),
+      ToastService.success(
+        message: isEditing
+            ? 'Client updated successfully'
+            : 'Client created successfully',
       );
       context.pop();
     } else if (mounted) {
       final error = ref.read(clientMutationsProvider).error;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error: $error'),
-          backgroundColor: AppColors.error,
-        ),
-      );
+      ToastService.error(message: 'Error: $error');
     }
   }
 
@@ -183,7 +177,9 @@ class _ClientFormPageState extends ConsumerState<ClientFormPage> {
         backgroundColor: Colors.transparent,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(AppSpacing.xl),
+        padding: ResponsiveLayout.isMobile(context)
+            ? const EdgeInsets.all(AppSpacing.md)
+            : const EdgeInsets.all(AppSpacing.xl),
         child: Form(
           key: _formKey,
           child: Column(
@@ -235,177 +231,249 @@ class _ClientFormPageState extends ConsumerState<ClientFormPage> {
                     const SizedBox(height: AppSpacing.xl),
 
                     // Name & Company
-                    Row(
-                      children: [
-                        Expanded(
-                          child: _buildTextField(
-                            controller: _nameController,
-                            label: 'Full Name *',
-                            hint: 'e.g., Jane Doe',
-                            validator: (v) => _validateRequired(v, 'Name'),
-                            icon: Iconsax.user,
-                          ),
-                        ),
-                        const SizedBox(width: AppSpacing.md),
-                        Expanded(
-                          child: _buildTextField(
-                            controller: _companyController,
-                            label: 'Company *',
-                            hint: 'e.g., Acme Corp',
-                            validator: (v) => _validateRequired(v, 'Company'),
-                            icon: Iconsax.building,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: AppSpacing.lg),
-
-                    // Email & Phone
-                    Row(
-                      children: [
-                        Expanded(
-                          child: _buildTextField(
-                            controller: _emailController,
-                            label: 'Email Address *',
-                            hint: 'jane@example.com',
-                            validator: _validateEmail,
-                            icon: Iconsax.sms,
-                            keyboardType: TextInputType.emailAddress,
-                          ),
-                        ),
-                        const SizedBox(width: AppSpacing.md),
-                        Expanded(
-                          child: _buildTextField(
-                            controller: _phoneController,
-                            label: 'Phone (Optional)',
-                            hint: '+1 234 567 8900',
-                            icon: Iconsax.call,
-                            keyboardType: TextInputType.phone,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: AppSpacing.lg),
-
-                    // Total Projects & Status
-                    Row(
-                      children: [
-                        Expanded(
-                          child: _buildTextField(
-                            controller: _projectsController,
-                            label: 'Total Projects *',
-                            hint: '0',
-                            validator: _validateNumber,
-                            icon: Iconsax.folder,
-                            keyboardType: TextInputType.number,
-                          ),
-                        ),
-                        const SizedBox(width: AppSpacing.md),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                    ResponsiveLayout.isMobile(context)
+                        ? Column(
                             children: [
-                              Text(
-                                'Status *',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: isDark
-                                      ? AppColors.darkText
-                                      : AppColors.lightText,
+                              _buildTextField(
+                                controller: _nameController,
+                                label: 'Full Name *',
+                                hint: 'e.g., Jane Doe',
+                                validator: (v) => _validateRequired(v, 'Name'),
+                                icon: Iconsax.user,
+                              ),
+                              const SizedBox(height: AppSpacing.lg),
+                              _buildTextField(
+                                controller: _companyController,
+                                label: 'Company *',
+                                hint: 'e.g., Acme Corp',
+                                validator: (v) =>
+                                    _validateRequired(v, 'Company'),
+                                icon: Iconsax.building,
+                              ),
+                            ],
+                          )
+                        : Row(
+                            children: [
+                              Expanded(
+                                child: _buildTextField(
+                                  controller: _nameController,
+                                  label: 'Full Name *',
+                                  hint: 'e.g., Jane Doe',
+                                  validator: (v) =>
+                                      _validateRequired(v, 'Name'),
+                                  icon: Iconsax.user,
                                 ),
                               ),
-                              const SizedBox(height: AppSpacing.sm),
-                              DropdownButtonFormField<ClientStatus>(
-                                initialValue: _status,
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        AppSpacing.radiusMd),
-                                    borderSide: BorderSide(
-                                      color: isDark
-                                          ? AppColors.darkBorder
-                                          : AppColors.lightBorder,
-                                    ),
-                                  ),
-                                  filled: true,
-                                  fillColor: isDark
-                                      ? AppColors.darkBackground
-                                      : AppColors.lightBackground,
+                              const SizedBox(width: AppSpacing.md),
+                              Expanded(
+                                child: _buildTextField(
+                                  controller: _companyController,
+                                  label: 'Company *',
+                                  hint: 'e.g., Acme Corp',
+                                  validator: (v) =>
+                                      _validateRequired(v, 'Company'),
+                                  icon: Iconsax.building,
                                 ),
-                                items: const [
-                                  DropdownMenuItem(
-                                      value: ClientStatus.active,
-                                      child: Text('Active')),
-                                  DropdownMenuItem(
-                                      value: ClientStatus.inactive,
-                                      child: Text('Inactive')),
-                                  DropdownMenuItem(
-                                      value: ClientStatus.prospect,
-                                      child: Text('Prospect')),
-                                ],
-                                onChanged: (value) {
-                                  if (value != null) {
-                                    setState(() => _status = value);
-                                  }
-                                },
                               ),
                             ],
                           ),
-                        ),
-                      ],
-                    ),
+                    const SizedBox(height: AppSpacing.lg),
+
+                    // Email & Phone
+                    ResponsiveLayout.isMobile(context)
+                        ? Column(
+                            children: [
+                              _buildTextField(
+                                controller: _emailController,
+                                label: 'Email Address *',
+                                hint: 'jane@example.com',
+                                validator: _validateEmail,
+                                icon: Iconsax.sms,
+                                keyboardType: TextInputType.emailAddress,
+                              ),
+                              const SizedBox(height: AppSpacing.lg),
+                              _buildTextField(
+                                controller: _phoneController,
+                                label: 'Phone (Optional)',
+                                hint: '+1 234 567 8900',
+                                icon: Iconsax.call,
+                                keyboardType: TextInputType.phone,
+                              ),
+                            ],
+                          )
+                        : Row(
+                            children: [
+                              Expanded(
+                                child: _buildTextField(
+                                  controller: _emailController,
+                                  label: 'Email Address *',
+                                  hint: 'jane@example.com',
+                                  validator: _validateEmail,
+                                  icon: Iconsax.sms,
+                                  keyboardType: TextInputType.emailAddress,
+                                ),
+                              ),
+                              const SizedBox(width: AppSpacing.md),
+                              Expanded(
+                                child: _buildTextField(
+                                  controller: _phoneController,
+                                  label: 'Phone (Optional)',
+                                  hint: '+1 234 567 8900',
+                                  icon: Iconsax.call,
+                                  keyboardType: TextInputType.phone,
+                                ),
+                              ),
+                            ],
+                          ),
+                    const SizedBox(height: AppSpacing.lg),
+
+                    // Total Projects & Status
+                    ResponsiveLayout.isMobile(context)
+                        ? Column(
+                            children: [
+                              _buildTextField(
+                                controller: _projectsController,
+                                label: 'Total Projects *',
+                                hint: '0',
+                                validator: _validateNumber,
+                                icon: Iconsax.folder,
+                                keyboardType: TextInputType.number,
+                              ),
+                              const SizedBox(height: AppSpacing.lg),
+                              _buildStatusPicker(isDark),
+                            ],
+                          )
+                        : Row(
+                            children: [
+                              Expanded(
+                                child: _buildTextField(
+                                  controller: _projectsController,
+                                  label: 'Total Projects *',
+                                  hint: '0',
+                                  validator: _validateNumber,
+                                  icon: Iconsax.folder,
+                                  keyboardType: TextInputType.number,
+                                ),
+                              ),
+                              const SizedBox(width: AppSpacing.md),
+                              Expanded(
+                                child: _buildStatusPicker(isDark),
+                              ),
+                            ],
+                          ),
                   ],
                 ),
               ),
 
               const SizedBox(height: AppSpacing.xl),
 
-              // Action Buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(
-                    onPressed:
-                        mutationState.isLoading ? null : () => context.pop(),
-                    style: TextButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppSpacing.xl,
-                        vertical: AppSpacing.md,
-                      ),
-                    ),
-                    child: const Text('Cancel'),
-                  ),
-                  const SizedBox(width: AppSpacing.md),
-                  ElevatedButton(
-                    onPressed: mutationState.isLoading ? null : _submit,
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppSpacing.xl,
-                        vertical: AppSpacing.md,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(AppSpacing.radiusMd),
-                      ),
-                    ),
-                    child: mutationState.isLoading
-                        ? const SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: CircularProgressIndicator(
-                              strokeWidth: 2,
-                              color: Colors.white,
-                            ),
-                          )
-                        : Text(isEditing ? 'Save Changes' : 'Create Client'),
-                  ),
-                ],
-              ),
+              _buildActionButtons(isEditing, mutationState, context),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildStatusPicker(bool isDark) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Status *',
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+            color: isDark ? AppColors.darkText : AppColors.lightText,
+          ),
+        ),
+        const SizedBox(height: AppSpacing.sm),
+        DropdownButtonFormField<ClientStatus>(
+          initialValue: _status,
+          decoration: InputDecoration(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+              borderSide: BorderSide(
+                color: isDark ? AppColors.darkBorder : AppColors.lightBorder,
+              ),
+            ),
+            filled: true,
+            fillColor:
+                isDark ? AppColors.darkBackground : AppColors.lightBackground,
+          ),
+          items: const [
+            DropdownMenuItem(value: ClientStatus.active, child: Text('Active')),
+            DropdownMenuItem(
+                value: ClientStatus.inactive, child: Text('Inactive')),
+            DropdownMenuItem(
+                value: ClientStatus.prospect, child: Text('Prospect')),
+          ],
+          onChanged: (value) {
+            if (value != null) {
+              setState(() => _status = value);
+            }
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildActionButtons(
+      bool isEditing, dynamic mutationState, BuildContext context) {
+    final isMobile = ResponsiveLayout.isMobile(context);
+
+    final cancelButton = TextButton(
+      onPressed: mutationState.isLoading ? null : () => context.pop(),
+      style: TextButton.styleFrom(
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.xl,
+          vertical: AppSpacing.md,
+        ),
+      ),
+      child: const Text('Cancel'),
+    );
+
+    final submitButton = ElevatedButton(
+      onPressed: mutationState.isLoading ? null : _submit,
+      style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.xl,
+          vertical: AppSpacing.md,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppSpacing.radiusMd),
+        ),
+      ),
+      child: mutationState.isLoading
+          ? const SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                color: Colors.white,
+              ),
+            )
+          : Text(isEditing ? 'Save Changes' : 'Create Client'),
+    );
+
+    if (isMobile) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SizedBox(width: double.infinity, child: submitButton),
+          const SizedBox(height: AppSpacing.sm),
+          SizedBox(width: double.infinity, child: cancelButton),
+        ],
+      );
+    }
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        cancelButton,
+        const SizedBox(width: AppSpacing.md),
+        submitButton,
+      ],
     );
   }
 

@@ -111,7 +111,11 @@ class _MaterialSelectorState extends ConsumerState<MaterialSelector> {
                   runSpacing: 8,
                   children: selectedMaterials.map((material) {
                     return Chip(
-                      label: Text(material.name),
+                      label: Text(material.name,
+                      style: isDark
+                          ? TextStyle(color: AppColors.darkText)
+                          : TextStyle(color: AppColors.lightText)
+                      ),
                       backgroundColor: isDark
                           ? AppColors.darkCard
                           : AppColors.lightCard,

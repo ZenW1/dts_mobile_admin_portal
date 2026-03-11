@@ -72,7 +72,9 @@ class _ColorSelectorState extends ConsumerState<ColorSelector> {
               ),
             ),
             child: Text(
-              widget.enabled ? 'Tap "Select Colors" to add colors' : 'No colors selected',
+              widget.enabled
+                  ? 'Tap "Select Colors" to add colors'
+                  : 'No colors selected',
               style: TextStyle(
                 color: isDark
                     ? AppColors.darkTextSecondary
@@ -111,28 +113,36 @@ class _ColorSelectorState extends ConsumerState<ColorSelector> {
                   runSpacing: 8,
                   children: selectedColors.map((color) {
                     return Chip(
-                      label: Text(color.name),
-                      avatar: color.hexCode != null && color.hexCode!.startsWith('#')
+                      label: Text(color.name,
+                          style: TextStyle(
+                            color: isDark
+                                ? AppColors.darkText
+                                : AppColors.lightText,
+                          )),
+                      avatar: color.hexCode != null &&
+                              color.hexCode!.startsWith('#')
                           ? Container(
-                        width: 12,
-                        height: 12,
-                        decoration: BoxDecoration(
-                          color: Color(int.parse(
-                              color.hexCode!.replaceAll('#', '0xFF'))),
-                          shape: BoxShape.circle,
-                        ),
-                      )
+                              width: 12,
+                              height: 12,
+                              decoration: BoxDecoration(
+                                color: Color(int.parse(
+                                    color.hexCode!.replaceAll('#', '0xFF'))),
+                                shape: BoxShape.circle,
+                              ),
+                            )
                           : null,
-                      backgroundColor: isDark
-                          ? AppColors.darkCard
-                          : AppColors.lightCard,
-                      deleteIcon: widget.enabled ? const Icon(Icons.close, size: 16) : null,
+                      backgroundColor:
+                          isDark ? AppColors.darkCard : AppColors.lightCard,
+                      deleteIcon: widget.enabled
+                          ? const Icon(Icons.close, size: 16)
+                          : null,
                       onDeleted: widget.enabled
                           ? () {
-                        final newSelection = List<String>.from(widget.selectedColorIds)
-                          ..remove(color.id);
-                        widget.onSelectionChanged(newSelection);
-                      }
+                              final newSelection =
+                                  List<String>.from(widget.selectedColorIds)
+                                    ..remove(color.id);
+                              widget.onSelectionChanged(newSelection);
+                            }
                           : null,
                     );
                   }).toList(),
@@ -161,7 +171,8 @@ class _ColorSelectorState extends ConsumerState<ColorSelector> {
     );
 
     if (selectedColors != null) {
-      widget.onSelectionChanged(selectedColors.map((color) => color.id).toList());
+      widget
+          .onSelectionChanged(selectedColors.map((color) => color.id).toList());
     }
   }
 

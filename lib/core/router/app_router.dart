@@ -25,6 +25,10 @@ import '../../features/clients/presentation/pages/client_list_page.dart';
 import '../../features/clients/presentation/pages/client_detail_page.dart';
 import '../../features/clients/presentation/pages/client_form_page.dart';
 import '../../features/clients/domain/entities/client.dart';
+import '../../features/analytics/presentation/pages/analytics_page.dart';
+import '../../features/teams/presentation/pages/team_list_page.dart';
+import '../../features/teams/presentation/pages/team_detail_page.dart';
+import '../../features/teams/presentation/pages/team_form_page.dart';
 import '../../shared/layouts/admin_layout.dart';
 
 /// Application router configuration
@@ -271,6 +275,44 @@ final appRouter = GoRouter(
             ),
           ),
         ),
+        // Team Management
+        GoRoute(
+          path: '/teams',
+          name: 'teams',
+          pageBuilder: (context, state) => const NoTransitionPage(
+            child: TeamListPage(),
+          ),
+        ),
+        GoRoute(
+          path: '/teams/new',
+          name: 'team-new',
+          pageBuilder: (context, state) => const NoTransitionPage(
+            child: TeamFormPage(),
+          ),
+        ),
+        GoRoute(
+          path: '/teams/:id',
+          name: 'team-detail',
+          pageBuilder: (context, state) => NoTransitionPage(
+            child: TeamDetailPage(id: state.pathParameters['id']!),
+          ),
+        ),
+        GoRoute(
+          path: '/teams/:id/edit',
+          name: 'team-edit',
+          pageBuilder: (context, state) => NoTransitionPage(
+            child: TeamFormPage(id: state.pathParameters['id']),
+          ),
+        ),
+
+        // Analytics
+        // GoRoute(
+        //   path: '/analytics',
+        //   name: 'analytics',
+        //   pageBuilder: (context, state) => const NoTransitionPage(
+        //     child: AnalyticsPage(),
+        //   ),
+        // ),
       ],
     ),
   ],

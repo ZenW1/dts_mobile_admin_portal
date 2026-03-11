@@ -77,11 +77,23 @@ const List<NavItem> navItems = [
     activeIcon: Iconsax.briefcase5,
     path: '/jobs',
   ),
+  // NavItem(
+  //   title: 'Analytics',
+  //   icon: Iconsax.chart_2,
+  //   activeIcon: Iconsax.chart_21,
+  //   path: '/analytics',
+  // ),
   NavItem(
     title: 'Customer Feedback',
     icon: Iconsax.message_text,
     activeIcon: Iconsax.message_text_1,
     path: '/feedbacks',
+  ),
+  NavItem(
+    title: 'Team',
+    icon: Iconsax.people,
+    activeIcon: Iconsax.people5,
+    path: '/teams',
   ),
 ];
 

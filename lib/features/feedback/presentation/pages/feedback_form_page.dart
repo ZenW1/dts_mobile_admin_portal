@@ -10,6 +10,7 @@ import '../../../../core/utils/validators.dart';
 import '../../domain/entities/customer_feedback.dart';
 import '../providers/feedback_provider.dart';
 import '../widgets/rating_widget.dart';
+import '../../../../core/utils/extensions.dart';
 
 /// Feedback create/edit form page
 class FeedbackFormPage extends ConsumerStatefulWidget {
@@ -505,20 +506,5 @@ class _FeedbackFormPageState extends ConsumerState<FeedbackFormPage> {
         setState(() => _isLoading = false);
       }
     }
-  }
-}
-
-extension on BuildContext {
-  void showSnackBar(String message, {bool isError = false}) {
-    ScaffoldMessenger.of(this).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: isError ? AppColors.error : AppColors.success,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppSpacing.radiusSm),
-        ),
-      ),
-    );
   }
 }

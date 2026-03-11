@@ -5,6 +5,8 @@ import 'package:iconsax/iconsax.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_spacing.dart';
 import '../../../../core/widgets/gradient_button.dart';
+import '../../../../core/services/toast_service.dart';
+
 import '../providers/product_material_provider.dart';
 
 /// Product Material detail page
@@ -255,12 +257,7 @@ class ProductMaterialDetailPage extends ConsumerWidget {
                 if (success) {
                   context.go('/product-materials');
                 } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Failed to delete material'),
-                      backgroundColor: AppColors.error,
-                    ),
-                  );
+                  ToastService.error(message: 'Failed to delete material');
                 }
               }
             },
